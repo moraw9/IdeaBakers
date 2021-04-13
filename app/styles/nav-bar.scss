@@ -1,0 +1,47 @@
+.menu{
+    padding: 20px 5px;
+    border: 2px solid #dedada;
+
+    .logo-col{
+        text-align: center;
+        font-size: 30px;
+        font-weight: 900;
+        background: rgb(255,0,0);
+        background: linear-gradient(55deg, rgba(255,0,0,1) 0%, rgba(180,20,20,1) 28%, rgba(124,14,14,1) 65%, rgba(65,10,10,1) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .main-menu-col{
+        margin: auto;
+
+        .items-wrapper{
+            float: right;
+            width: fit-content;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            .search-col{
+                padding-right: 15px;
+                font-size: 18px;
+                input{
+                    border: 1px solid gray;
+                    border-radius: 2px;
+                    font-size: 15px;
+                    
+                }
+                .search-icon{
+                    padding: 5px;
+                }
+
+            }
+            .log-col{
+                .login{
+                    font-size: 20px;
+                }
+
+            }
+        }
+
+    }
+}
