@@ -1,0 +1,29 @@
+.card-columns{
+    margin-top: 20px;
+    .card{
+        box-shadow: 2px 2px 4px grey;
+        padding: 10px;
+        .idea-img{
+            background-image: url('https://ksr-ugc.imgix.net/assets/032/801/830/240a13bc4ad329b1e30e806f6d0d0d19_original.jpg?ixlib=rb-2.1.0&w=680&fit=max&v=1616163012&auto=format&frame=1&q=92&s=51e61d92aa13c2e4b9502d7e06baf37f');
+            min-height: 300px;
+            background-position: center;
+            background-size: cover;
+        }
+        .idea-title{
+            h1{
+                text-align: center;
+            }
+        }
+        .idea-short-description{
+            padding: 5px;
+            text-align: justify;
+        }
+        .idea-author{
+            float: right;
+            font-size: 15px;
+            span{
+                color: grey;
+            }
+        }
+    }
+}
