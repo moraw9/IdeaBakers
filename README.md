@@ -1,7 +1,6 @@
 # idea-bakers
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+IdeaBakers is a crowd-platform that will allow users to add their ideas and collect kudos (virtual currency) to bake the given idea. 
 
 ## Prerequisites
 
