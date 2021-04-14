@@ -22,25 +22,16 @@ module.exports = function (environment) {
       // when it is created
     },
 
-    // firebase: {
-    //   apiKey: 'AIzaSyCDm0NDtQLio5iIyReouRymZBM9_AwSvTI',
-    //   authDomain: 'ideabakers-c756c.firebaseapp.com',
-    //   projectId: 'ideabakers-c756c',
-    //   storageBucket: 'ideabakers-c756c.appspot.com',
-    //   messagingSenderId: '1015093689161',
-    //   appId: '1:1015093689161:web:87653614b931daec5cf898',
-    //   measurementId: 'G-GZBEW44Z8M',
-    // },
-
     firebase: {
-      apiKey: 'AIzaSyC7zJseKKcWFpaIRlXV7pC-xr6ozVKf70M',
-      authDomain: 'tensile-pier-259013.firebaseapp.com',
-      projectId: 'tensile-pier-259013',
-      storageBucket: 'tensile-pier-259013.appspot.com',
-      messagingSenderId: '103206900593',
-      appId: '1:103206900593:web:57193396c99330c1aadcd0',
-      measurementId: 'G-VYYPEPP9GE',
+      apiKey: 'AIzaSyCDm0NDtQLio5iIyReouRymZBM9_AwSvTI',
+      authDomain: 'ideabakers-c756c.firebaseapp.com',
+      projectId: 'ideabakers-c756c',
+      storageBucket: 'ideabakers-c756c.appspot.com',
+      messagingSenderId: '1015093689161',
+      appId: '1:1015093689161:web:87653614b931daec5cf898',
+      measurementId: 'G-GZBEW44Z8M',
     },
+
   };
 
   if (environment === 'development') {
