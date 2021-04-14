@@ -1,5 +1,5 @@
 <section>
-    {{#each model as |idea|}}
+  {{#each @model as |idea|}}
     <div class="card">
         <div class="idea-img" style="background-image: url({{idea.imageURL}});"></div>
         <div class="idea-short-description">
@@ -9,5 +9,5 @@
             {{idea.user}}
         </div>
     </div>
-    {{/each}}
+  {{/each}}
 </section>

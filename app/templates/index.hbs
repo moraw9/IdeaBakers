@@ -1,9 +1,6 @@
 <Header />
 <div class="card-columns">
-    {{#each model as |idea| }}
-    {{model}}
-    <h1>{{idea.title}}</h1>
+  {{#each this.model as |idea|}}
     <Idea @idea={{idea}} />
-    {{/each}}
-   
+  {{/each}}
 </div>
