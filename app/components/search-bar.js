@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-export default class IdeasComponent extends Component {
+export default class SearchBarComponent extends Component {
   @tracked query = '';
 }

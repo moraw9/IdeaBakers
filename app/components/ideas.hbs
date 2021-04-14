@@ -1,13 +1,5 @@
-<section>
-  {{#each @model as |idea|}}
-    <div class="card">
-        <div class="idea-img" style="background-image: url({{idea.imageURL}});"></div>
-        <div class="idea-short-description">
-            {{ idea.description}}
-        </div>
-        <div class="idea-author">
-            {{idea.user}}
-        </div>
-    </div>
+<div class="card-columns">
+  {{#each @ideas as |idea|}}
+    <Idea @idea={{idea}} />
   {{/each}}
-</section>
+</div>
