@@ -2,7 +2,7 @@
     <div class="idea-img" style="background-image: url({{@idea.imageURL}});" ></div>
     <div class="idea-title"><h1>{{@idea.title}}</h1></div>
     <div class="idea-short-description">
-        {{@idea.description}}
+        {{ getExcerpt @idea.description}}
     </div>
     <div class="idea-author">
      <span>Created by: </span> <i>{{@idea.user}}</i>

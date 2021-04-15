@@ -1,5 +1,8 @@
 <div class="card-columns">
-  {{#each @ideas as |idea|}}
+  <Ideas::Filter @ideas={{@ideas}} @query={{@query}} as |results| >
+    {{#each results as |idea|}}
     <Idea @idea={{idea}} />
-  {{/each}}
+    {{/each}}
+  </Ideas::Filter>
 </div>
+

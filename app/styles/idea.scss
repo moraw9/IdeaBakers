@@ -1,11 +1,16 @@
 .card-columns{
     margin-top: 20px;
-    display: flex;
+    @media(max-width: 850px){
+        column-count: 2!important;
+    }
+    @media(max-width: 600px){
+        column-count: 1!important;
+    }
     .card{
         box-shadow: 2px 2px 4px grey;
         padding: 10px;
+
         .idea-img{
-            // background-image: url('https://ksr-ugc.imgix.net/assets/032/801/830/240a13bc4ad329b1e30e806f6d0d0d19_original.jpg?ixlib=rb-2.1.0&w=680&fit=max&v=1616163012&auto=format&frame=1&q=92&s=51e61d92aa13c2e4b9502d7e06baf37f');
             min-height: 300px;
             background-position: center;
             background-size: cover;
@@ -28,3 +33,19 @@
         }
     }
 }
+// @media(min-width:800px){
+//     .card-columns{
+//         column-count: 3!important;
+//         .card{
+//             width: 33%!important;
+//         }
+//     }
+// }
+// @media(min-width:576px){
+//     .card-columns{
+//         column-count: 2!important;
+//         .card{
+//             width: 50%!important;
+//         }
+//     }
+// }
