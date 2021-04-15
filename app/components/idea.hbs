@@ -1,7 +1,7 @@
 <div class="card">
     <div class="idea-img" style="background-image: url({{@idea.imageURL}});" ></div>
     <div class="idea-title">
-        <LinkTo @route="idea-details" @model={{@idea}}>
+        <LinkTo @route="idea-details" @model={{@idea.id}}>
         <h1>{{@idea.title}}</h1>
         </LinkTo>
     </div>

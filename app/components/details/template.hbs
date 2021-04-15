@@ -1,1 +1,19 @@
-{{@id.id}}
+<NavBar />
+<div class="body">
+  <Header />
+  <div class="details-wrapper">
+    <div class="card">
+      <h1>{{this.model.title}}</h1>
+      <img src="{{this.model.imageURL}}">
+      <div class="description">
+        <p>{{this.model.description}}</p>
+      </div>
+      <div class="details">
+        Number of kudos: <span>{{this.model.numberOfKudos}}</span>
+      </div>
+      <div class="details">
+        Author: <span>{{this.model.user}}</span> 
+      </div>
+    </div>
+  </div>
+</div>
