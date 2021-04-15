@@ -16,8 +16,16 @@
             background-size: cover;
         }
         .idea-title{
-            h1{
-                text-align: center;
+            a{
+                text-decoration: none;
+                color: black;
+                h1{
+                    text-align: center;
+                }
+                &:hover{
+                    color: #7c0e0e;
+                }
+
             }
         }
         .idea-short-description{

@@ -1,10 +1,14 @@
 <div class="card">
     <div class="idea-img" style="background-image: url({{@idea.imageURL}});" ></div>
-    <div class="idea-title"><h1>{{@idea.title}}</h1></div>
+    <div class="idea-title">
+        <LinkTo @route="idea-details" @model={{@idea}}>
+        <h1>{{@idea.title}}</h1>
+        </LinkTo>
+    </div>
     <div class="idea-short-description">
         {{ getExcerpt @idea.description}}
     </div>
     <div class="idea-author">
-     <span>Created by: </span> <i>{{@idea.user}}</i>
+        <span>Created by: </span><i>{{@idea.user}}</i>
     </div>
 </div>

@@ -9,17 +9,14 @@ export default class IndexComponent extends Component {
 
   constructor(){
     super(...arguments);
-    console.log("Konstruktor");
-  
     this.model = this.store.findAll('idea');
   }
   @tracked query = '';
 
   @action 
   setSearchQuery(event) {
-    // this.set('query', event.target.value);
+
     this.query = event.target.value;
-    console.log("Cokolwiek");
   };
 
   get results(){
@@ -27,6 +24,7 @@ export default class IndexComponent extends Component {
 
     if(query){
       return model.filter((idea) => idea.title.includes(query));
+      
     }
     
     return model;
