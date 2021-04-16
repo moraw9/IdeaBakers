@@ -30,14 +30,18 @@
                 font-size: 18px;
                 label{
                     margin-bottom: 0!important;
+                    background-color: $darkRed;
+                    border-radius: 2px;
+                    
                     input{
                         border: 1px solid gray;
                         border-radius: 2px;
-                        font-size: 15px;
+                        // font-size: 15px;
                         
                     }
                     .search-icon{
                         padding: 5px;
+                        color: whitesmoke;
                     }
                 }
                
@@ -51,6 +55,15 @@
             }
         }
 
+    }
+}
+.btn-outline-danger {
+    color: $red;
+    border-color: $red;
+    &:hover{
+        color: #fff;
+        background-color: $red;
+        border-color: $red;
     }
 }
 @media(max-width: 576px){

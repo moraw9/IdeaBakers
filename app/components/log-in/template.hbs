@@ -1,0 +1,22 @@
+<NavBar />
+<div class="body">
+  <Header />
+  <div class="row no gutters log-in-wrapper">
+    <div class="col-sm-12 col-md-6 join-to-us-col"></div>
+    <div class="col-sm-12 col-md-6 log-in-col">
+      <div class="row">
+        <div class="log-in-box col-md-8 col-sm-10 col-11">
+        {{#if this.isLogInForm}}
+          <LogIn::Form  @title="Log in" @isRegisterForm={{false}} @buttonContent="Log in"/>
+        {{else}}
+          <LogIn::Form  @title="Sign up"  @isRegisterForm={{true}} @buttonContent="Sign up"/>
+        {{/if}}
+        <div class="change-state content-frame top">
+          {{this.stateText}} <button onclick={{fn this.toggleForm}} class="btn btn-primary">{{this.buttonName}}</button>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
