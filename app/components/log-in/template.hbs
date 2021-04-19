@@ -2,14 +2,25 @@
 <div class="body">
   <Header />
   <div class="row no gutters log-in-wrapper">
-    <div class="col-sm-12 col-md-6 join-to-us-col"></div>
+    <div class="col-sm-12 col-md-6 join-to-us-col">
+      <div class="frame-wrapper">
+        <div class="black-frame">
+            <div class="red-frame">
+                <div class="join-to-us-content-wrapper">
+                  <header class="join-header"><h1>Become a <span>Idea Baker</span></h1></header>
+                  <div class="join-content"><p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore laudantium explicabo quis ab, nulla hic porro impedit placeat, inventore voluptatem iure quia asperiores maxime incidunt accusamus harum! Nostrum amet ea dolore eos labore quia, beatae ab debitis nesciunt cum, ipsa magni corporis? Voluptas voluptates, accusantium temporibus culpa, dolor sed ullam eius iure ab possimus cum, vitae hic minus eligendi ex ratione sint magni illo quae omnis deleniti aliquam id? Nihil cumque iure voluptatum sapiente similique hic voluptate quo ipsa tempore quia? Nobis sapiente temporibus ad eum! Architecto veniam unde libero hic, dolor quibusdam similique, in doloremque at, corrupti odio officiis.</p></div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
     <div class="col-sm-12 col-md-6 log-in-col">
       <div class="row">
         <div class="log-in-box col-md-8 col-sm-10 col-11">
         {{#if this.isLogInForm}}
-          <LogIn::Form  @title="Log in" @isRegisterForm={{false}} @buttonContent="Log in"/>
+          <LogIn::logInForm />
         {{else}}
-          <LogIn::Form  @title="Sign up"  @isRegisterForm={{true}} @buttonContent="Sign up"/>
+            <LogIn::registerForm /> 
         {{/if}}
         <div class="change-state content-frame top">
           {{this.stateText}} <button onclick={{fn this.toggleForm}} class="btn btn-primary">{{this.buttonName}}</button>
