@@ -2,10 +2,12 @@
 
 module.exports = function (environment) {
   let ENV = {
+
     modulePrefix: 'idea-bakers',
     environment,
     rootURL: '/',
     locationType: 'auto',
+    
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
@@ -31,7 +33,6 @@ module.exports = function (environment) {
       appId: '1:1015093689161:web:87653614b931daec5cf898',
       measurementId: 'G-GZBEW44Z8M',
     },
-
   };
 
   if (environment === 'development') {

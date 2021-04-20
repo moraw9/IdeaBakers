@@ -19,7 +19,7 @@ export default {
   email: [
     validatePresence(true),
     validateFormat({ type: 'email' }),
-    validateUniqueness(),
+    // validateUniqueness(),
   ],
   pswd: [
     validatePresence(true),
