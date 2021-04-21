@@ -2,8 +2,9 @@
     <div class=" logo">IdeaBakers</div>
     <div class="main-menu">
         <div class="items-wrapper">
+            {{#if @isHomePage}}
             <NavBar::SearchBar @value={{@query}} @onChange={{@setSearchQuery}} />
-
+            {{/if}}
             {{#if this.session.isAuthenticated}}
                 <a {{on "click" this.invalidateSession}}>Logout</a>
             {{else}}
