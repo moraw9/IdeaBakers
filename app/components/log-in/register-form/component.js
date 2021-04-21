@@ -1,10 +1,10 @@
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 import { Changeset } from 'ember-changeset';
 import lookupValidator from 'ember-changeset-validations';
 import { action } from '@ember/object';
 import RegisterValidators from '../../../validations/register';
 import { inject as service } from '@ember/service';
-
+import { later } from '@ember/runloop';
 
 export default class RegisterFormComponent extends Component {
   @service store;
@@ -12,49 +12,60 @@ export default class RegisterFormComponent extends Component {
   constructor() {
     super(...arguments);
     this.userModel = this.store.createRecord('user');
-    this.changeset = new Changeset(this.userModel , lookupValidator(RegisterValidators),RegisterValidators) ;
-
-  };
-
+    this.changeset = new Changeset(
+      this.userModel,
+      lookupValidator(RegisterValidators),
+      RegisterValidators
+    );
+  }
 
   @action
-  register(changeset) {     
+  async register(changeset) {
+
+    const parent = document.getElementById('email').closest('.form-group');
+
+    function checkIfErrorIs() {
+      return parent.lastChild.textContent == 'This email is arleady exists!';
+    }
+
+    const users = await this.store.findAll('user');
+    later(
+      this,
+      () => {
+        const emails = users.map((user) => user.email);
+        const [email] = emails.filter(email => email === changeset.email);
+        if(email){
+          if(!checkIfErrorIs()){
+            let html=`<p class="text-danger">This email is arleady exists!</p>`;
+            parent.insertAdjacentHTML('beforeend', html);
+          }
+          return;
+        }
+        else if(checkIfErrorIs()){
+         parent.removeChild( parent.lastChild );
+        }
+      },
+      500
+    );
+
     changeset.validate().then(() => {
-      if(changeset.get('isValid')){
+      if (changeset.get('isValid')) {
         this.changeset.save();
         alert('Registration completed successfully!');
-      }     
+        changeset.rollback();
+      }
     });
-  };
+  }
 
-  @action setValue( { target: { name, value } }){
-     this.changeset[name] = value;
-     const {model} = this;
-     console.log(model);
-     console.log(this.model);
-
-    if(name === 'email'){
-      // let user = model.filter( record => record.email === value);
-      // console.log( model.filter( record => record.email === value));
-      // console.log("user", user);
-      // if(user && user.email == value){
-      //   let html =`
-      //   <p class="text-danger">This email is already exist.</p>
-      //   `;
-      //   document.getElementById('email').insertAdjacentHTML('beforeend', html);
-      // }else{
-      // this.changeset[name] = value;
-      // }
-
-    };
-  };
+  @action setValue({ target: { name, value } }) {
+    this.changeset[name] = value;
+  }
 
   @action
   rollback(changeset) {
     return changeset.rollback();
   }
-  @action clear(){
-    this.set('changeset.name', '');
+  @action clear() {
+    this.changeset.name = '';
   }
-
 }
