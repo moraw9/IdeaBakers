@@ -21,16 +21,17 @@ module.exports = function (environment) {
       // Here you can pass flags/options to your application instance
       // when it is created
     },
-    
+
     firebase: {
-      apiKey: "AIzaSyCDm0NDtQLio5iIyReouRymZBM9_AwSvTI",
-      authDomain: "ideabakers-c756c.firebaseapp.com",
-      projectId: "ideabakers-c756c",
-      storageBucket: "ideabakers-c756c.appspot.com",
-      messagingSenderId: "1015093689161",
-      appId: "1:1015093689161:web:87653614b931daec5cf898",
-      measurementId: "G-GZBEW44Z8M",
+      apiKey: 'AIzaSyCDm0NDtQLio5iIyReouRymZBM9_AwSvTI',
+      authDomain: 'ideabakers-c756c.firebaseapp.com',
+      projectId: 'ideabakers-c756c',
+      storageBucket: 'ideabakers-c756c.appspot.com',
+      messagingSenderId: '1015093689161',
+      appId: '1:1015093689161:web:87653614b931daec5cf898',
+      measurementId: 'G-GZBEW44Z8M',
     },
+
   };
 
   if (environment === 'development') {

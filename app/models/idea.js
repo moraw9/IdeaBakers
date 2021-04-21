@@ -6,4 +6,5 @@ export default class IdeaModel extends Model {
   @attr('string') imageURL;
   @attr('string') user;
   @attr('number') numberOfKudos;
+
 }

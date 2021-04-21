@@ -1,0 +1,31 @@
+.details-wrapper{
+  max-width: 1000px;
+  margin: auto;
+  margin-bottom: 30px;
+  .card{
+    box-shadow: 2px 2px 3px black;
+    padding: 15px;
+    h1{
+      margin: 10px 0;
+      text-align: center;
+    }
+    img{
+      width: 95%;
+      margin: auto;
+      object-fit: cover;
+    }
+    .description{
+      margin: 20px 15px;
+      text-align: justify;
+    }
+    .details{
+      font-size: 1.2rem;
+      color: $darkRed;
+      font-weight: 700;
+      span{
+        color: #4a4949;
+        font-weight: 400;
+      }
+    }
+  }
+}
