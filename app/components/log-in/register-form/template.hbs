@@ -24,7 +24,7 @@
     <div class="form-group">
       <label for="pwd">Password:</label>
       <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pswd" value={{this.changeset.pswd}} onchange={{fn this.setValue}} >
-        {{#if this.changeset.error.pswd}}
+      {{#if this.changeset.error.pswd}}
         <p class="text-danger">{{this.changeset.error.pswd.validation}}</p>
       {{/if}}
     </div>

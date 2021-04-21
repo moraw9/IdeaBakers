@@ -21,11 +21,26 @@ export default class RegisterFormComponent extends Component {
 
   @action
   async register(changeset) {
+    const parent = document.getElementById('email').closest('.form-group');
+    function checkIfwarringIs() {
+      return parent.lastChild.textContent == 'This email is arleady exists!';
+    }
     const users = await this.store.findAll('user');
     later(
       this,
       () => {
-        users.map((user) => console.log(user.email));
+        const emails = users.map((user) => user.email);
+        const [email] = emails.filter(email => email === changeset.email);
+        if(email){
+          if(!checkIfwarringIs()){
+            let html=`<p class="text-danger">This email is arleady exists!</p>`;
+            parent.insertAdjacentHTML('beforeend', html);
+          }
+          return;
+        }
+        else if(checkIfwarringIs()){
+         parent.removeChild( parent.lastChild );
+        }
       },
       500
     );
