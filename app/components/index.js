@@ -10,11 +10,14 @@ export default class IndexComponent extends Component {
   constructor(){
     super(...arguments);
     this.model = this.store.findAll('idea');
+    console.log(this.model);
+
   }
   @tracked query = '';
 
   @action 
   setSearchQuery(event) {
+    debugger;
 
     this.query = event.target.value;
   };

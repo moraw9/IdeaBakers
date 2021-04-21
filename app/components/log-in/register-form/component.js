@@ -15,8 +15,18 @@ export default class RegisterFormComponent extends Component {
     console.log("changeset", this.changeset);
   };
   @action
-  register(changeset) {
+  async register(changeset) {
+
+    const a = await this.store.findAll('user');
+    console.log(a);
+    const users = this.store.peekAll('user');
+    console.log(users);
+    debugger; 
+
+
+
     changeset.validate().then(() => {
+      
       if(changeset.get('isValid')){
         this.changeset.save();
         alert('Registration completed successfully!');
@@ -26,6 +36,7 @@ export default class RegisterFormComponent extends Component {
   };
   @action setValue({ target: { name, value } }){
     this.changeset[name] = value;
+    
 
   }
 
