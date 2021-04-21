@@ -20,10 +20,10 @@
         {{#if this.isLogInForm}}
           <LogIn::logInForm />
         {{else}}
-            <LogIn::registerForm /> 
+            <LogIn::registerForm />
         {{/if}}
         <div class="change-state content-frame top">
-          {{this.stateText}} <button onclick={{fn this.toggleForm}} class="btn btn-primary">{{this.buttonName}}</button>
+          {{this.stateText}} <button type="button" onclick={{fn this.toggleForm}} class="btn btn-primary">{{this.buttonName}}</button>
         </div>
       </div>
       </div>
