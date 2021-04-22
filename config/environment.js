@@ -34,20 +34,6 @@ module.exports = function (environment) {
       measurementId: 'G-GZBEW44Z8M',
       
     },
-    // 'ember-cloud-firestore-adapter': {
-    //   emulator: {
-    //     hostname: 'localhost',
-    //     firestorePort: 8080,
-    //     // authPort: 9099  // optional if not using auth
-    //   },
-    // },
-    torii: {
-      providers: {
-        'firebase': {
-
-        }
-      }
-    },
   };
 
   if (environment === 'development') {

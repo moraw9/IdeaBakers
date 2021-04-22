@@ -16,12 +16,13 @@ export default class LogInFormComponent extends Component {
     let { identification, password } = this;
 
     try {
-      this.session.authenticate('authenticator:firebase', (auth) => {
+      await this.session.authenticate('authenticator:firebase', (auth) => {
         return auth.signInWithEmailAndPassword(identification, password);
       });
 
     } catch(error) {
-      this.errorMessage = error.error || error;
+      this.errorMessage = "Incorrect email or password!"
+
     }
   
     if (this.session.isAuthenticated) {
