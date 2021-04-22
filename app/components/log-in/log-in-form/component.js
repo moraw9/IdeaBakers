@@ -2,51 +2,30 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { action } from "@ember/object";
 import { tracked } from "@glimmer/tracking";
-// import firebase from 'firebase/app';
 
 
 export default class LogInFormComponent extends Component {
   @tracked errorMessage;
   @tracked isAuthenticated = false;
   @service store;
-  // @service firebaseApp;
+  @service session;
 
   @action
   async authenticate(e) {
     e.preventDefault();
     let { identification, password } = this;
-    const parent = document.getElementById('pswd').closest('.form-group');
 
-    function checkIfErrorIs() {
-      return parent.lastChild.textContent == 'Incorrect login or password!';
+    try {
+      this.session.authenticate('authenticator:firebase', (auth) => {
+        return auth.signInWithEmailAndPassword(identification, password);
+      });
+
+    } catch(error) {
+      this.errorMessage = error.error || error;
     }
-    function removeError(){
-      parent.removeChild( parent.lastChild );
-    }
-    function addError() {
-      let html=`<p class="text-danger">Incorrect login or password!</p>`;
-      parent.insertAdjacentHTML('beforeend', html);
-    }
-
-    const users = await this.store.findAll('user');
-
-    let loginExist = users.filter(user => user.email === identification);
-    let passwordExist = users.filter(user => user.pswd === password);
-
-    if(loginExist.length && passwordExist.length){
-      this.isAuthenticated = true;
-      if(checkIfErrorIs()){
-        removeError();
-      }
-    }else if(loginExist || passwordExist){
-      if(!checkIfErrorIs()){
-        addError();
-      }
-    }
-
-    if (this.isAuthenticated) {
+  
+    if (this.session.isAuthenticated) {
       // What to do with all this success?
-      alert("zalogowano!");
     }
   }
 

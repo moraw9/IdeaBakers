@@ -50,6 +50,7 @@ export default class RegisterFormComponent extends Component {
 
     changeset.validate().then(() => {
       if (changeset.get('isValid')) {
+        firebase.auth().createUserWithEmailAndPassword(this.changeset.email, this.changeset.pswd);
         this.changeset.save();
         alert('Registration completed successfully!');
         changeset.rollback();

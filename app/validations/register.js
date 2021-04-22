@@ -11,7 +11,7 @@ import validateUniqueness from './uniqueness';
 export default {
   name: [
     validatePresence(true),
-    validateLength({ min: 4}),
+    validateLength({ min: 3}),
     // validateInclusion({^[a-zA-Z] });
     
   ],

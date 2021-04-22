@@ -6,11 +6,16 @@ import { inject as service } from '@ember/service';
 
 export default class LogInComponent extends Component {
   @service store;
+  @service session;
   // @service firebaseApp;
 
   @tracked isLogInForm = true;
   @tracked stateText = "New to IdeaBakers?";
   @tracked buttonName = "Sign up";
+
+    beforeModel(){
+      return get(this, 'session').fetch().catch(() => {});
+    }
 
   @action
   toggleForm() {
@@ -25,9 +30,14 @@ export default class LogInComponent extends Component {
     this.isLogInForm = !this.isLogInForm;
   };
   @action
-  async googleLogin() {
-  //   const auth = await this.get('firebaseApp').auth();
-  //   const provider = new firebase.auth.GoogleAuthProvider();
-  //   return auth.signInWithPopup(provider);
+  googleLogin() {
+    var provider = new firebase.auth.GoogleAuthProvider();
+    try{
+      this.session.authenticate('authenticator:firebase', (auth) => {
+        return auth.signInWithPopup(provider);
+      });
+    } catch(error) {
+      this.errorMessage = error.error || error;
+    }
   }
 }
