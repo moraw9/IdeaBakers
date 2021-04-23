@@ -1,14 +1,16 @@
-.home-page-header{
-    padding: 20px 10px;
-    text-align: center;
-    .belt{
-        width: 80%;
-        margin: auto;
-        height: 3px;
-        background: rgb(255,0,0);
-        background: linear-gradient(55deg, rgba(255,0,0,1) 0%, rgba(180,20,20,1) 28%, rgba(124,14,14,1) 65%, rgba(65,10,10,1) 100%);
-    }
-    h4{
-        font-size: 1.3rem;
-    }
+.home-page-header {
+  padding: 20px 10px;
+  text-align: center;
+
+  .belt {
+    width: 80%;
+    margin: auto;
+    height: 3px;
+    background: rgb(255,0,0);
+    background: linear-gradient(55deg, rgba(255,0,0,1) 0%, rgba(180,20,20,1) 28%, rgba(124,14,14,1) 65%, rgba(65,10,10,1) 100%);
+  }
+
+  h4{
+    font-size: 1.3rem;
+  }
 }

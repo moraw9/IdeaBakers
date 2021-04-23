@@ -12,7 +12,7 @@
           <LogIn::Form  @title="Sign up"  @isRegisterForm={{true}} @buttonContent="Sign up"/>
         {{/if}}
         <div class="change-state content-frame top">
-          {{this.stateText}} <button onclick={{fn this.toggleForm}} class="btn btn-primary">{{this.buttonName}}</button>
+          {{this.stateText}} <button type="button" onclick={{fn this.toggleForm}} class="btn btn-primary">{{this.buttonName}}</button>
         </div>
       </div>
       </div>

@@ -1,68 +1,64 @@
-/* new version */
-.card  {
-    display: flex;
-    flex-direction: column;
-    margin: 1%;
-    width: 31%;
-    box-shadow: 2px 2px 4px grey;
-    padding: 5px;
-
-    @media(max-width: 850px){
-        width: 48%!important;
-    }
-    @media(max-width: 600px){
-        width: 100%!important;
-    }
+.card {
+  display: flex;
+  flex-direction: column;
+  margin: 1%;
+  width: 31%;
+  box-shadow: 2px 2px 4px grey;
+  padding: 5px;
+  
+  @media(max-width: 850px) {
+    width: 48%!important;
+  }
+  @media(max-width: 600px) {
+    width: 100%!important;
+  }
    
+  .idea-img {
+    min-height: 300px;
+    background-position: center;
+    background-size: cover;
+  }
 
-    .idea-img{
-        min-height: 300px;
-        background-position: center;
-        background-size: cover;
-    }
-    .idea-title{
-        margin: 10px 0;
-       
-        a{
-            text-decoration: none;
-            color: black;
-            h1{
-                text-align: center;
-                font-size: 2rem;
-            }
-            &:hover{
-                color: #7c0e0e;
-            }
+  .idea-title {
+    margin: 10px 0;
 
-        }
-    }
-    .idea-short-description{
-        padding: 5px;
-        text-align: justify;
-        flex-grow: 1;
-    }
-    .idea-author{
-        text-align: right;
-        font-size: 15px;
-        span{
-            color: grey;
-        }
-    }
+    a {
+      text-decoration: none;
+      color: black;
 
-    &__wrap {
+      h1 {
+        text-align: center;
+        font-size: 2rem;
+      }
 
-        &--outer {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            width: 100%;
-        }
-
-        // &--inner {
-        //     display: flex;
-        //     flex-direction: row;
-        //     width:100%;
-           
-        // }
+      &:hover {
+        color: #7c0e0e;
+      }
     }
+  }
+
+  .idea-short-description {
+    padding: 5px;
+    text-align: justify;
+    flex-grow: 1;
+  }
+
+  .idea-author {
+    text-align: right;
+    font-size: 15px;
+
+    span {
+      color: grey;
+    }
+  }
+
+  &__wrap {
+
+    &--outer {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+  }
 }
