@@ -1,8 +1,7 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { action } from "@ember/object";
-import { tracked } from "@glimmer/tracking";
-
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 export default class LogInFormComponent extends Component {
   @tracked errorMessage;
@@ -13,18 +12,15 @@ export default class LogInFormComponent extends Component {
   @action
   async authenticate(e) {
     e.preventDefault();
-    let { identification, password } = this;
+    const { identification, password } = this;
 
     try {
       await this.session.authenticate('authenticator:firebase', (auth) => {
         return auth.signInWithEmailAndPassword(identification, password);
       });
-
-    } catch(error) {
-      this.errorMessage = "Incorrect email or password!"
-
+    } catch (error) {
+      this.errorMessage = 'Incorrect email or password!';
     }
-  
     if (this.session.isAuthenticated) {
       // What to do with all this success?
     }

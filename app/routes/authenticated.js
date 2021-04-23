@@ -5,6 +5,6 @@ export default class AuthenticatedRoute extends Route {
   @service session;
 
   beforeModel(transition) {
-    this.get('session').requireAuthentication(transition, 'login');
+    this.session.requireAuthentication(transition, 'login');
   }
 }

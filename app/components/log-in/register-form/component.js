@@ -5,7 +5,6 @@ import { action } from '@ember/object';
 import RegisterValidators from '../../../validations/register';
 import { inject as service } from '@ember/service';
 import { later } from '@ember/runloop';
-
 export default class RegisterFormComponent extends Component {
   @service store;
 
@@ -21,7 +20,6 @@ export default class RegisterFormComponent extends Component {
 
   @action
   async register(changeset) {
-
     const parent = document.getElementById('email').closest('.form-group');
 
     function checkIfErrorIs() {
@@ -33,16 +31,15 @@ export default class RegisterFormComponent extends Component {
       this,
       () => {
         const emails = users.map((user) => user.email);
-        const [email] = emails.filter(email => email === changeset.email);
-        if(email){
-          if(!checkIfErrorIs()){
+        const [email] = emails.filter((email) => email === changeset.email);
+        if (email) {
+          if (!checkIfErrorIs()) {
             let html=`<p class="text-danger">This email is arleady exists!</p>`;
             parent.insertAdjacentHTML('beforeend', html);
           }
           return;
-        }
-        else if(checkIfErrorIs()){
-         parent.removeChild( parent.lastChild );
+        } else if (checkIfErrorIs()) {
+          parent.removeChild(parent.lastChild);
         }
       },
       500
@@ -50,7 +47,12 @@ export default class RegisterFormComponent extends Component {
 
     changeset.validate().then(() => {
       if (changeset.get('isValid')) {
-        firebase.auth().createUserWithEmailAndPassword(this.changeset.email, this.changeset.pswd);
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(
+            this.changeset.email,
+            this.changeset.pswd
+          );
         this.changeset.save();
         alert('Registration completed successfully!');
         changeset.rollback();
