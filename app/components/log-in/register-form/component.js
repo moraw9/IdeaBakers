@@ -7,7 +7,6 @@ import { inject as service } from '@ember/service';
 import { later } from '@ember/runloop';
 export default class RegisterFormComponent extends Component {
   @service store;
-
   constructor() {
     super(...arguments);
     this.userModel = this.store.createRecord('user');
@@ -46,13 +45,13 @@ export default class RegisterFormComponent extends Component {
     changeset.validate().then(() => {
       if (changeset.get('isValid')) {
         this.changeset.save();
-        alert('Registration completed successfully!');
         changeset.rollback();
       }
     });
   }
 
-  @action setValue({ target: { name, value } }) {
+  @action
+  setValue({ target: { name, value } }) {
     this.changeset[name] = value;
   }
 
