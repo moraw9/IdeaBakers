@@ -1,13 +1,13 @@
 <nav class="menu">
-    <div class=" logo">IdeaBakers</div>
-    <div class="main-menu">
-        <div class="items-wrapper">
-            <NavBar::SearchBar @value={{@query}} @onChange={{@setSearchQuery}} />
-            <LinkTo @route="log-in">
-                <div class="log btn btn-outline-danger" >
-                    <div class="login">Log in  <span class="login-icon"><i class="far fa-user"></i></span></div>                
-                </div>
-            </LinkTo>
-        </div>        
-    </div>
+  <div class=" logo">IdeaBakers</div>
+  <div class="main-menu">
+    <div class="items-wrapper">
+      <NavBar::SearchBar @value={{@query}} @onChange={{@setSearchQuery}} />
+      <LinkTo @route="log-in">
+        <div class="log btn btn-outline-danger" >
+          <div class="login">Log in  <span class="login-icon"><i class="far fa-user"></i></span></div>                
+        </div>
+      </LinkTo>
+    </div>        
+  </div>
 </nav>
