@@ -1,8 +1,8 @@
 <div class="card__wrap--outer">
-    <Filter @ideas={{@ideas}} @query={{@query}} as |results| >
-      {{#each results as |idea|}}
+  <Filter @ideas={{@ideas}} @query={{@query}} as |results| >
+    {{#each results as |idea|}}
       <Idea @idea={{idea}} />
-      {{/each}}
-    </Filter>
+    {{/each}}
+  </Filter>
 </div>
 

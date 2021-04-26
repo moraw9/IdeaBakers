@@ -7,7 +7,6 @@ import { inject as service } from '@ember/service';
 import { later } from '@ember/runloop';
 export default class RegisterFormComponent extends Component {
   @service store;
-
   constructor() {
     super(...arguments);
     this.userModel = this.store.createRecord('user');
@@ -47,6 +46,7 @@ export default class RegisterFormComponent extends Component {
 
     changeset.validate().then(() => {
       if (changeset.get('isValid')) {
+        // eslint-disable-next-line no-undef
         firebase
           .auth()
           .createUserWithEmailAndPassword(
@@ -54,13 +54,13 @@ export default class RegisterFormComponent extends Component {
             this.changeset.pswd
           );
         this.changeset.save();
-        alert('Registration completed successfully!');
         changeset.rollback();
       }
     });
   }
 
-  @action setValue({ target: { name, value } }) {
+  @action
+  setValue({ target: { name, value } }) {
     this.changeset[name] = value;
   }
 

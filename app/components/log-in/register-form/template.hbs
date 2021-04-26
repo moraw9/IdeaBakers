@@ -5,7 +5,7 @@
   <form>
     <div class="form-group">
       <label for="name">Name:</label>
-      <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" value={{this.changeset.name}} onchange={{fn this.setValue}} />
+      <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" value={{this.changeset.name}} onchange={{fn this.setValue}} >
       {{#if this.changeset.error.name}}
         <p class="text-danger">{{this.changeset.error.name.validation}}</p>
       {{/if}}
@@ -24,7 +24,7 @@
     <div class="form-group">
       <label for="pwd">Password:</label>
       <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pswd" value={{this.changeset.pswd}} onchange={{fn this.setValue}} >
-        {{#if this.changeset.error.pswd}}
+      {{#if this.changeset.error.pswd}}
         <p class="text-danger">{{this.changeset.error.pswd.validation}}</p>
       {{/if}}
     </div>

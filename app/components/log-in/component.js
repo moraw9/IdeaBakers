@@ -30,6 +30,7 @@ export default class LogInComponent extends Component {
   }
   @action
   googleLogin() {
+    // eslint-disable-next-line no-undef
     var provider = new firebase.auth.GoogleAuthProvider();
     try {
       this.session.authenticate('authenticator:firebase', (auth) => {
