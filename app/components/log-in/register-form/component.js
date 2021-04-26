@@ -5,7 +5,6 @@ import { action } from '@ember/object';
 import RegisterValidators from '../../../validations/register';
 import { inject as service } from '@ember/service';
 import { later } from '@ember/runloop';
-
 export default class RegisterFormComponent extends Component {
   @service store;
 
@@ -30,16 +29,15 @@ export default class RegisterFormComponent extends Component {
       this,
       () => {
         const emails = users.map((user) => user.email);
-        const [email] = emails.filter(email => email === changeset.email);
-        if(email){
-          if(!checkIfwarringIs()){
-            let html=`<p class="text-danger">This email is arleady exists!</p>`;
+        const [email] = emails.filter((email) => email === changeset.email);
+        if (email) {
+          if (!checkIfwarringIs()) {
+            let html = `<p class="text-danger">This email is already exists!</p>`;
             parent.insertAdjacentHTML('beforeend', html);
           }
           return;
-        }
-        else if(checkIfwarringIs()){
-         parent.removeChild( parent.lastChild );
+        } else if (checkIfwarringIs()) {
+          parent.removeChild(parent.lastChild);
         }
       },
       500
