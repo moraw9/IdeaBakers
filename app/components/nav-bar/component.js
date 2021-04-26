@@ -7,6 +7,7 @@ export default class NavBarComponent extends Component {
   constructor() {
     super(...arguments);
     this.load();
+    this.isActive = true;
   }
 
   @action
