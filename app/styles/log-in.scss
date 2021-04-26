@@ -1,0 +1,49 @@
+.log-in-box {
+  border: 2px solid #e2dddd;
+  border-radius: 5px;
+  margin: auto;
+  padding:0!important;
+
+  .header {
+    text-align: center;
+  }
+
+  .content-frame {
+    background-color: rgba(241,238,234,0.2);
+    padding: 20px;
+    text-align: center;
+    color: #3D3D66;
+  }
+
+  .top {
+    border-top: 1px solid #F1EEEA;
+  }
+
+  .buttom {
+    border-bottom: 1px solid #F1EEEA;
+  }
+
+  form {
+   width: 80%;
+   margin: 20px auto;
+
+   label {
+     color: #3D3D66;
+     font-weight: 700;
+     font-size: 1.1rem;
+     &.check-box-text{
+      font-weight: 400;
+      font-size: .9rem;
+     }
+   }
+
+   .button-wrapper {
+    display: flex;
+    align-items: center;
+
+    .log-in-button {
+      margin:auto;
+      }
+    }
+  }
+}
