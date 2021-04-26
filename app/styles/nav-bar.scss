@@ -46,24 +46,22 @@
           }
         }
       }
+      .user-profile-link-wrapper {
+        font-size: 1.2rem;
+        margin-right: 5px;
 
-      .log {
-
-        .login {
-          font-size: 20px;
+          span {
+            margin-left: 4px;        
+          }
         }
+    }
+
+    .log {
+
+      .login {
+        font-size: 1.2rem;
       }
     }
-  }
-}
-.btn-outline-danger {
-  color: $red;
-  border-color: $red;
-
-  &:hover {
-    color: #fff;
-    background-color: $red;
-    border-color: $red;
   }
 }
 
