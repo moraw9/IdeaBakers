@@ -3,31 +3,24 @@ import {
   validateLength,
   validateConfirmation,
   validateFormat,
-  validateInclusion,
-
 } from 'ember-changeset-validations/validators';
-import validateUniqueness from './uniqueness';
 
 export default {
-  name: [
-    validatePresence(true),
-    validateLength({ min: 3}),
-    // validateInclusion({^[a-zA-Z] });
-    
-  ],
+  name: [validatePresence(true), validateLength({ min: 3 })],
   surname: validatePresence(true),
-  email: [
-    validatePresence(true),
-    validateFormat({ type: 'email' }),
-    // validateUniqueness(),
-  ],
+  email: [validatePresence(true), validateFormat({ type: 'email' })],
   pswd: [
     validatePresence(true),
-    validateLength({ min: 8, message: 'Password is too short (minimum is 8 characters)'}),
-    // validateInclusion([]),
-    
+    validateLength({
+      min: 8,
+      message: 'Password is too short (minimum is 8 characters)',
+    }),
   ],
-  rpswd: [validatePresence(true),
-    validateConfirmation({ on: 'pswd', message: `Repeat password doesn't match password` }),
-  ]
+  rpswd: [
+    validatePresence(true),
+    validateConfirmation({
+      on: 'pswd',
+      message: `Repeat password doesn't match password`,
+    }),
+  ],
 };

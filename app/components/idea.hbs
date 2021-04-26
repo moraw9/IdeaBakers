@@ -1,4 +1,5 @@
 <div class="card">
+  {{!-- allowed when `allowDynamicStyles` is enabled  --}}
   <div class="idea-img" style={{html-safe (concat "background-image: url(" @idea.imageURL ");" ) }} ></div>
   <div class="idea-title">
     <LinkTo @route="idea-details" @model={{@idea.id}}>
