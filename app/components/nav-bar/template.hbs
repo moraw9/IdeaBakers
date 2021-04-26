@@ -6,6 +6,11 @@
         <NavBar::SearchBar @value={{@query}} @onChange={{@setSearchQuery}} />
       {{/if}}
       {{#if this.session.isAuthenticated}}
+        <div class="user-profile-link-wrapper">
+          <LinkTo @route="user-profile">
+          <div class="user-profil-link-content">Marzena<span><i class="far fa-user"></i></span></div>
+          </LinkTo>
+        </div>
         <button type="button" class="log btn btn-outline-danger" {{on "click" this.invalidateSession}}>
           <div class="login">Logout  <span class="login-icon"><i class="fas fa-sign-out-alt"></i></span></div>
         </button>
