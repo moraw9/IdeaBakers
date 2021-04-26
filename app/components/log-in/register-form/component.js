@@ -20,9 +20,11 @@ export default class RegisterFormComponent extends Component {
   @action
   async register(changeset) {
     const parent = document.getElementById('email').closest('.form-group');
-    function checkIfwarringIs() {
+
+    function checkIfErrorIs() {
       return parent.lastChild.textContent == 'This email is arleady exists!';
     }
+
     const users = await this.store.findAll('user');
     later(
       this,
@@ -30,12 +32,12 @@ export default class RegisterFormComponent extends Component {
         const emails = users.map((user) => user.email);
         const [email] = emails.filter((email) => email === changeset.email);
         if (email) {
-          if (!checkIfwarringIs()) {
-            let html = `<p class="text-danger">This email is already exists!</p>`;
+          if (!checkIfErrorIs()) {
+            let html=`<p class="text-danger">This email is arleady exists!</p>`;
             parent.insertAdjacentHTML('beforeend', html);
           }
           return;
-        } else if (checkIfwarringIs()) {
+        } else if (checkIfErrorIs()) {
           parent.removeChild(parent.lastChild);
         }
       },
@@ -44,6 +46,13 @@ export default class RegisterFormComponent extends Component {
 
     changeset.validate().then(() => {
       if (changeset.get('isValid')) {
+        // eslint-disable-next-line no-undef
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(
+            this.changeset.email,
+            this.changeset.pswd
+          );
         this.changeset.save();
         changeset.rollback();
       }

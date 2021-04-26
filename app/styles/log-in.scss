@@ -18,15 +18,13 @@
           top: -40px;
           left: -40px;
           z-index: 2;
-
+           
           @media(max-width:1030px) {
             width: 350px;
           }
-
           @media(max-width:800px) {
             width: 300px;
           }
-
           @media(max-width:768px) {
             width: 400px;
           }
@@ -103,54 +101,77 @@
       }
     }
   }
-  .log-in-col {
+   .log-in-col {
 
-    .log-in-box {
-      border: 2px solid #e2dddd;
-      border-radius: 5px;
-      margin: auto;
-      padding:0;
-      
-      .header {
-        text-align: center;  
-      }
+    .log-in-wrapper {
+       margin: 20px auto;
 
-      .content-frame {
-        background-color: rgba(241,238,234,0.2);
-        padding: 20px;
-        text-align: center;
-        color: #3D3D66;
-      }
-
-      .top {
-        border-top: 1px solid #F1EEEA;
-      }
-
-      .bottom {
-        border-bottom: 1px solid #F1EEEA;
-      }
-
-      form {
-      width: 80%;
-      margin: 20px auto;
-
-      label {
-        color: #3D3D66;
-        font-weight: 700;
-        font-size: 1.1rem;
-
-        &.check-box-text {
-          font-weight: 400;
-          font-size: .9rem;
+      .log-in-box {
+        border: 2px solid #e2dddd;
+        border-radius: 5px;
+        margin: auto;
+        padding:0!important;
+        
+        .header {
+          text-align: center; 
         }
-      }
 
-      .button-wrapper {
-        display: flex;
-        align-items: center;
+        .content-frame {
+          background-color: rgba(241,238,234,0.2);
+          padding: 20px;
+          text-align: center;
+          color: #3D3D66;    
+        }
 
-        .log-in-button {
-          margin:auto;
+        .top {
+          border-top: 1px solid #F1EEEA;
+        }
+
+        .bottom {
+          border-bottom: 1px solid #F1EEEA;
+        }
+
+        form {
+          width: 80%;
+          margin: 20px auto;
+
+          label {
+            color: #3D3D66;
+            font-weight: 700;
+            font-size: 1.1rem;
+
+            &.check-box-text {
+              font-weight: 400;
+              font-size: .9rem;
+            }
+          }
+
+        .button-wrapper {
+          display: flex;
+          align-items: center;
+
+          .button {
+            margin:auto;
+            }
+          }
+
+          p {
+            color: #dc3545 !important;
+            text-align: center;
+            padding-top: 5px;
+          }
+        }
+        .googleButton {
+          display: block;
+          margin: 10px auto;
+          border: 1px solid transparent;
+          cursor: pointer;
+          border-radius: .25rem;
+          background-color: #cdcdcd;
+
+          &:hover {
+            background-color: #007bff87;
+            border-color: #007bff
           }
         }
       }

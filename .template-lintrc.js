@@ -1,5 +1,14 @@
 'use strict';
 
 module.exports = {
-  extends: 'octane',
+  extends: 'recommended',
+  rules: {
+    'no-inline-styles': [
+      true,
+      {
+        allowDynamicStyles: true,
+      },
+    ],
+    'style-concatenation': true,
+  },
 };
