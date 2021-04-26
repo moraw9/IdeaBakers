@@ -31,7 +31,6 @@ module.exports = function (environment) {
       appId: '1:1015093689161:web:87653614b931daec5cf898',
       measurementId: 'G-GZBEW44Z8M',
     },
-
   };
 
   if (environment === 'development') {

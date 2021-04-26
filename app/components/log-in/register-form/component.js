@@ -16,9 +16,11 @@ export default class RegisterFormComponent extends Component {
       RegisterValidators
     );
   }
-  @action async register(changeset) {
+
+  @action
+  async register(changeset) {
     const parent = document.getElementById('email').closest('.form-group');
-    function checkIfErrorIs() {
+    function checkIfwarringIs() {
       return parent.lastChild.textContent == 'This email is arleady exists!';
     }
     const users = await this.store.findAll('user');
@@ -28,34 +30,33 @@ export default class RegisterFormComponent extends Component {
         const emails = users.map((user) => user.email);
         const [email] = emails.filter((email) => email === changeset.email);
         if (email) {
-          if (!checkIfErrorIs()) {
-            let html = `<p class="text-danger">This email is arleady exists!</p>`;
+          if (!checkIfwarringIs()) {
+            let html = `<p class="text-danger">This email is already exists!</p>`;
             parent.insertAdjacentHTML('beforeend', html);
           }
           return;
-        } else if (checkIfErrorIs()) {
+        } else if (checkIfwarringIs()) {
           parent.removeChild(parent.lastChild);
         }
       },
       500
     );
+
     changeset.validate().then(() => {
       if (changeset.get('isValid')) {
-        firebase
-          .auth()
-          .createUserWithEmailAndPassword(
-            this.changeset.email,
-            this.changeset.pswd
-          );
         this.changeset.save();
         changeset.rollback();
       }
     });
   }
-  @action setValue({ target: { name, value } }) {
+
+  @action
+  setValue({ target: { name, value } }) {
     this.changeset[name] = value;
   }
-  @action rollback(changeset) {
+
+  @action
+  rollback(changeset) {
     return changeset.rollback();
   }
   @action clear() {

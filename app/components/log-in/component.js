@@ -5,7 +5,9 @@ export default class LogInComponent extends Component {
   @tracked isLogInForm = true;
   @tracked stateText = 'New to IdeaBakers?';
   @tracked buttonName = 'Sign up';
-  @action toggleForm() {
+
+  @action
+  toggleForm() {
     if (this.isLogInForm) {
       this.buttonName = 'Log in';
       this.stateText = 'Have an account?';

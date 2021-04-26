@@ -5,8 +5,8 @@
 
   {{#if @isRegisterForm}}
     <div class="form-group">
-      <label for="email">Name:</label>
-      <input type="email" class="form-control" id="name" placeholder="Enter name" name="name">
+      <label for="email">Username:</label>
+      <input type="email" class="form-control" id="username" placeholder="Enter username" name="username">
     </div>
   {{/if}}
     <div class="form-group">
@@ -17,6 +17,13 @@
       <label for="pwd">Password:</label>
       <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pswd">
     </div>
+    {{#if @isRegisterForm}}
+    <div class="form-group">
+      <label for="pwd">Repeat password:</label>
+      <input type="password" class="form-control" id="rpwd" placeholder="Enter password" name="rpswd">
+    </div>
+    {{/if}}
+
     {{#unless @isRegisterForm}}
       <div class="form-group form-check">
         <label class="form-check-label check-box-text">

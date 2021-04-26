@@ -5,14 +5,14 @@
   width: 31%;
   box-shadow: 2px 2px 4px grey;
   padding: 5px;
-  
-  @media(max-width: 850px) {
-    width: 48%;
+
+  @media(max-width: 850px){
+    width: 48%
   }
-  @media(max-width: 600px) {
+  @media(max-width: 600px){
     width: 100%;
   }
-   
+
   .idea-img {
     min-height: 300px;
     background-position: center;
@@ -21,7 +21,7 @@
 
   .idea-title {
     margin: 10px 0;
-
+  
     a {
       text-decoration: none;
       color: black;

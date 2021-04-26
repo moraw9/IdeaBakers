@@ -1,48 +1,158 @@
-.log-in-box {
-  border: 2px solid #e2dddd;
-  border-radius: 5px;
-  margin: auto;
-  padding:0!important;
+ .log-in-wrapper { 
+   margin-top: 20px;
 
-  .header {
-    text-align: center;
+   .join-to-us-col {
+     margin: auto;
+
+     .frame-wrapper {
+      margin: auto;
+      padding: 50px;
+      padding-bottom: 5px;
+      max-width: 100%;
+
+      .black-frame {
+        margin: auto;
+          width: 460px;
+          border: 6px solid black;
+          position: relative;
+          top: -40px;
+          left: -40px;
+          z-index: 2;
+
+          @media(max-width:1030px) {
+            width: 350px;
+          }
+
+          @media(max-width:800px) {
+            width: 300px;
+          }
+
+          @media(max-width:768px) {
+            width: 400px;
+          }
+
+          .red-frame {
+            width: 450px;
+            position: relative;
+            bottom: -15px;
+            right: -30px;
+            box-sizing: border-box;
+            $border: 5px;
+            background: white;
+            background-clip: padding-box; 
+            border: solid $border transparent; 
+
+            &:before {
+              content: '';
+              position: absolute;
+              top: 0; right: 0; bottom: 0; left: 0;
+              z-index: -1;
+              margin: -$border; 
+              border-radius: inherit; 
+              background: linear-gradient(55deg, rgba(255,0,0,1) 0%, rgba(180,20,20,1) 28%, rgba(124,14,14,1) 65%, rgba(65,10,10,1) 100%);
+            }
+
+            @media(max-width:1030px) {
+              width: 350px;
+            }
+
+            @media(max-width:800px) {
+              width: 300px;
+            }
+
+            @media(max-width:768px) {
+              width: 400px;
+            }
+          
+            .join-to-us-content-wrapper {
+              padding: 10px;
+              position: relative;
+              background-color: rgb(248, 246, 246);
+              border: 2px solid silver;
+              top: 10px;
+              left: -18px;
+
+              .join-header {
+                padding: 10px 0;
+                text-align: center;
+                background-color: whitesmoke;
+                box-shadow: 0px 2px 3px #585858;
+
+                h1 {
+
+                  span {
+                    background: rgb(255,0,0);
+                    background: linear-gradient(55deg, rgba(255,0,0,1) 0%, rgba(180,20,20,1) 28%, rgba(124,14,14,1) 65%, rgba(65,10,10,1) 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                  }
+                }
+              }
+
+              .join-content {
+                margin-top: 15px;
+                padding: 0 5px;
+                text-align: justify;
+                font-size: 1.1rem;
+              }
+            }
+          }
+      }
+      .white-frame {
+        border: 6px solid white;
+      }
+    }
   }
+  .log-in-col {
 
-  .content-frame {
-    background-color: rgba(241,238,234,0.2);
-    padding: 20px;
-    text-align: center;
-    color: #3D3D66;
-  }
+    .log-in-box {
+      border: 2px solid #e2dddd;
+      border-radius: 5px;
+      margin: auto;
+      padding:0;
+      
+      .header {
+        text-align: center;  
+      }
 
-  .top {
-    border-top: 1px solid #F1EEEA;
-  }
+      .content-frame {
+        background-color: rgba(241,238,234,0.2);
+        padding: 20px;
+        text-align: center;
+        color: #3D3D66;
+      }
 
-  .buttom {
-    border-bottom: 1px solid #F1EEEA;
-  }
+      .top {
+        border-top: 1px solid #F1EEEA;
+      }
 
-  form {
-   width: 80%;
-   margin: 20px auto;
+      .bottom {
+        border-bottom: 1px solid #F1EEEA;
+      }
 
-   label {
-     color: #3D3D66;
-     font-weight: 700;
-     font-size: 1.1rem;
-     &.check-box-text{
-      font-weight: 400;
-      font-size: .9rem;
-     }
-   }
+      form {
+      width: 80%;
+      margin: 20px auto;
 
-   .button-wrapper {
-    display: flex;
-    align-items: center;
+      label {
+        color: #3D3D66;
+        font-weight: 700;
+        font-size: 1.1rem;
 
-    .log-in-button {
-      margin:auto;
+        &.check-box-text {
+          font-weight: 400;
+          font-size: .9rem;
+        }
+      }
+
+      .button-wrapper {
+        display: flex;
+        align-items: center;
+
+        .log-in-button {
+          margin:auto;
+          }
+        }
       }
     }
   }
