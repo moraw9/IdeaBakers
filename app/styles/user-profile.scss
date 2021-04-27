@@ -37,6 +37,65 @@
 
       .user-data-content {
         transform: translateY(-4rem);
+        width: 100%;
+
+        .spinner-wrapper {
+          display: flex;
+          align-items: center;
+          .spinner-border {
+            margin: auto;
+          }
+        }
+        //information
+        .user-information-wrapper {
+
+          .data-group {
+            margin-bottom: 20px;
+            background-color: whitesmoke;
+            border-radius: 5px;
+
+            .label {
+              border-left: 5px solid #4e1e1e;
+              padding: 3px 0px 3px 15px;
+              font-size: 1.1rem;
+              font-weight: 500;
+              border-bottom: 2px solid #80808026;
+            }
+
+            .user-data {
+              border-right: 5px solid #081bff;
+              text-align: center;
+              padding: 3px 0;
+              font-size: 1.3rem;
+              box-shadow: 2px 3px 3px #928585f2;
+            }
+          }
+        }
+        
+        .button-wrapper {
+          display: flex;
+          align-items: center;
+          flex-direction: row;
+
+          .btn {
+            margin: auto;
+          }
+
+          .edit-button {
+            background-color: #081bffd9;
+            border-color: #081bff;
+            color: white;
+            margin: auto;
+            
+            i {
+              padding-left: 5px;
+            }
+
+            &:hover {
+              background-color: #1929f1b5;
+            }
+          }
+        }
       }
     }
   } 
