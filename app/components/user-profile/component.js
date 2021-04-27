@@ -50,4 +50,8 @@ export default class UserProfileComponent extends Component {
     this.isUpdate = !this.isUpdate;
     console.log(this.isUpdate);
   }
+  @action
+  downloadData(data) {
+    console.log('dane w górze', data);
+  }
 }
