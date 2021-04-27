@@ -26,7 +26,7 @@ export default class UserFormComponent extends Component {
   }
   @action
   sendData() {
-    console.log("weszło");
+    console.log('weszło');
     this.args.downloadData(this.data);
   }
 }

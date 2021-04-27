@@ -35,7 +35,7 @@
                 <button type="button" onclick={{fn this.toggleUpdate }} class="btn edit-button btn-primary">Edit<i class="fas fa-pencil-alt"></i></button>
               </div>                 
             {{else}}
-            <UserProfile::UserForm @userData={{this.userData}} @toggleUpdate={{this.toggleUpdate}} @downloadData={{fn this.downloadData}}/>
+            <UserProfile::UserForm @userData={{this.userData}} @toggleUpdate={{this.toggleUpdate}} @downloadData={{fn this.downloadData}} @changeset={{this.changeset}}/>
             {{/if}}
           {{/if}} 
         </div>

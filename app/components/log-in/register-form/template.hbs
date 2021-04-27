@@ -13,6 +13,9 @@
     <div class="form-group">
       <label for="surname">Surname:</label>
       <input type="text" class="form-control" id="surname" placeholder="Enter surname" name="surname" value={{this.changeset.surname}} onchange={{fn this.setValue}}>
+      {{#if this.changeset.error.surname}}
+        <p class="text-danger">{{this.changeset.error.surname.validation}}</p>
+      {{/if}}
     </div>
     <div class="form-group">
       <label for="email">Email:</label>

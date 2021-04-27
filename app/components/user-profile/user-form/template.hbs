@@ -2,22 +2,37 @@
   <div class="form-group">
     <label for="name" class="label">Name</label>
     <input type="text" class="form-control" id="name" placeholder="{{@userData.name}}" name="name" onchange={{fn this.setValue}}>
+    {{#if @changeset.error.name}}
+      <p class="text-danger">{{@changeset.error.name.validation}}</p>
+    {{/if}}
   </div>
   <div class="form-group">
     <label for="surname">Surname</label>
     <input type="text" class="form-control" id="surname" placeholder="{{@userData.surname}}" name="surname" onchange={{fn this.setValue}}>
+    {{#if @changeset.error.surname}}
+      <p class="text-danger">{{@changeset.error.surname.validation}}</p>
+    {{/if}}
   </div>
   <div class="form-group">
     <label for="email">Email</label>
     <input type="email" class="form-control" id="email" placeholder="{{@userData.email}}" name="email" onchange={{fn this.setValue}}>
+    {{#if @changeset.error.email}}
+      <p class="text-danger">{{@changeset.error.email.validation}}</p>
+    {{/if}}
   </div>
   <div class="form-group">
     <label for="pwd">New password</label>
     <input type="password" class="form-control" id="pwd" name="pswd" onchange={{fn this.setValue}}>
+    {{#if @changeset.error.pswd}}
+      <p class="text-danger">{{@changeset.error.pswd.validation}}</p>
+    {{/if}}
   </div>
   <div class="form-group">
     <label for="pwd">Repeat password</label>
     <input type="password" class="form-control" id="rpwd" name="rpswd" onchange={{fn this.setValue}}>
+    {{#if @changeset.error.rpswd}}
+      <p class="text-danger">{{@changeset.error.email.rpswd}}</p>
+    {{/if}}
   </div>
   <div class="button-wrapper">
     <button type="button" class="btn btn btn-success" onclick={{fn this.sendData}}>Save</button>
