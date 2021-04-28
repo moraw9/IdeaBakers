@@ -15,6 +15,8 @@ export default class UserProfileComponent extends Component {
   @service session;
   @service currentUser;
   @alias('findUserDataTask.lastSuccessful.value') userData;
+  @tracked currentUser;
+  @tracked dbUserRer;
 
   @tracked isUpdate = true;
   constructor() {
@@ -32,17 +34,14 @@ export default class UserProfileComponent extends Component {
     // eslint-disable-next-line no-undef
     this.currentUser = firebase.auth().currentUser;
   }
-  @task *findUserDataTask() {
+  @task({ restartable: true }) *findUserDataTask() {
     const users = yield this.store.findAll('user');
     const [res] = users.filter((user) => user.email == this.currentUser.email);
     return res;
   }
-  @task *findUserEmailTask(email) {
-    console.log('email', email);
-    const users = yield this.store.findAll('user');
-    const [res] = users.filter((user) => user.email == email);
-    console.log('res', res);
-    return res.email;
+  @task *findUserRecordTask() {
+    const [record] = yield this.store.findRecord('user', this.userData.id);
+    return record;
   }
   @action
   setValue({ target: { name, value } }) {
@@ -60,22 +59,13 @@ export default class UserProfileComponent extends Component {
   @action
   async downloadData(data) {
     this.prepareChangesetToValidate(data);
-    if (this.changeset.email != this.userData.email) {
-      this.findUserEmailTask.perform(this.changeset.email);
-      console.log(
-        'this.findUserEmailTask.lastSuccessful',
-        this.findUserEmailTask.lastSuccessful.value
-      );
-    }
-    if (this.findUserEmailTask.lastSuccessful.value) {
-      this.changeset.validate().then(() => {
-        if (this.changeset.get('isValid')) {
-          this.updateData();
-        }
-      });
-    } else {
-      alert('Email exists!');
-    }
+    // this.findUserRecordTask.perform();
+    this.changeset.validate().then(() => {
+      if (this.changeset.get('isValid')) {
+        this.updateData(data);
+        this.toggleUpdate();
+      }
+    });
   }
 
   prepareChangesetToValidate(data) {
@@ -90,7 +80,63 @@ export default class UserProfileComponent extends Component {
   checkIfErrorIs(parent) {
     return parent.lastChild.textContent == 'This email is arleady exists!';
   }
-  updateData() {
-    console.log('Jesteś prawie u celu, brawo Ty! <3 ');
+  updateData(data) {
+    if (data.pswd) {
+      this.currentUser
+        .updatePassword(data.pswd)
+        .then(function () {
+          console.log('Update pswd successful');
+        })
+        .catch(function (error) {
+          console.log('pswd error', error);
+        });
+      this.store.findRecord('user', this.userData.id).then(function (user) {
+        user.pswd = user.rpswd = data.pswd;
+        user.save();
+      });
+    }
+    if (data.name) {
+      this.currentUser
+        .updateProfile({
+          displayName: data.name,
+        })
+        .then(function () {
+          console.log('Update name successful');
+        })
+        .catch(function (error) {
+          console.log('name error', error);
+        });
+      console.log('email', this.userData.email);
+      this.store.findRecord('user', this.userData.id).then(function (user) {
+        user.name = data.name;
+        user.save();
+      });
+    }
+    if (data.surname) {
+      this.store.findRecord('user', this.userData.id).then(function (user) {
+        user.surname = data.surname;
+        user.save();
+      });
+    }
+    if (data.email) {
+      this.currentUser
+        .updateEmail(data.email)
+        .then(function () {
+          console.log('Update email successful');
+        })
+        .then(() => {
+          this.findUserDataTask.perform();
+          this.load();
+          // console.log('user data', this.userData.name);
+          // console.log('current', this.currentUser.displayName);
+        })
+        .catch(function (error) {
+          console.log('mail error', error);
+        });
+      this.store.findRecord('user', this.userData.id).then(function (user) {
+        user.email = data.email;
+        user.save();
+      });
+    }
   }
 }
