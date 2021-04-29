@@ -11,15 +11,20 @@ import { alias } from '@ember/object/computed';
 export default class UserProfileComponent extends Component {
   @service store;
   @service session;
-  @alias('findUserDataTask.lastSuccessful.value') userData;
-  @tracked currentUser;
-  @tracked dbUserRer;
 
+  @alias('findUserDataTask.lastSuccessful.value') userData;
+  @alias('currentUser.displayName') currentName;
+
+  @tracked isNotGoogleUser = true;
+  @tracked currentUser;
   @tracked isUpdate = true;
+
   constructor() {
     super(...arguments);
+
     this.load();
     this.findUserDataTask.perform();
+
     this.userModel = this.store.createRecord('user');
     this.changeset = new Changeset(
       this.userModel,
@@ -27,40 +32,48 @@ export default class UserProfileComponent extends Component {
       RegisterValidators
     );
   }
+
   async load() {
     // eslint-disable-next-line no-undef
     this.currentUser = firebase.auth().currentUser;
   }
+
   @task({ restartable: true }) *findUserDataTask() {
     const users = yield this.store.findAll('user');
-    const [res] = users.filter((user) => user.email == this.currentUser.email);
+    let [res] = users.filter((user) => user.email == this.currentUser.email);
+    if (!res) {
+      this.isNotGoogleUser = false;
+      res = {};
+      let spaceIndex = this.currentName.indexOf(' ');
+      res.name = this.currentName.slice(0, spaceIndex);
+      res.surname = this.currentName.slice(
+        spaceIndex + 1,
+        this.currentName.length
+      );
+      res.email = this.currentUser.email;
+    }
     return res;
   }
-  @task *findUserRecordTask() {
-    const [record] = yield this.store.findRecord('user', this.userData.id);
-    return record;
-  }
-  @action
-  setValue({ target: { name, value } }) {
-    this.changeset[name] = value;
+
+  @task({ restartable: true }) *findEmailTask(email) {
+    const users = yield this.store.findAll('user');
+    const [res] = users.filter((user) => user.email == email);
+    return res;
   }
 
-  @action
-  rollback(changeset) {
-    return changeset.rollback();
-  }
   @action
   toggleUpdate() {
     this.isUpdate = !this.isUpdate;
   }
+
   @action
-  async downloadData(data) {
+  async setDataToUpdate(data) {
     this.prepareChangesetToValidate(data);
     // this.findUserRecordTask.perform();
+
     this.changeset.validate().then(() => {
       if (this.changeset.get('isValid')) {
         this.updateData(data);
-        this.toggleUpdate();
       }
     });
   }
@@ -74,9 +87,24 @@ export default class UserProfileComponent extends Component {
     this.changeset.pswd = data.pswd ? data.pswd : this.userData.pswd;
     this.changeset.rpswd = data.rpswd ? data.rpswd : this.userData.rpswd;
   }
-  checkIfErrorIs(parent) {
-    return parent.lastChild.textContent == 'This email is arleady exists!';
+
+  toggleEmailExistenceError(isError) {
+    const parent = document.getElementById('email').closest('.form-group');
+
+    function checkIfErrorIs() {
+      return (
+        parent.lastChild.textContent ===
+        'The email address is already in use by another account.'
+      );
+    }
+    if (isError && !checkIfErrorIs()) {
+      let html = `<p class="text-danger">The email address is already in use by another account.</p>`;
+      parent.insertAdjacentHTML('beforeend', html);
+    } else if (!isError && checkIfErrorIs()) {
+      parent.removeChild(parent.lastChild);
+    }
   }
+
   reauthenticate() {
     let password = prompt('Please provide your password for reauthentication');
     // eslint-disable-next-line no-undef
@@ -96,7 +124,8 @@ export default class UserProfileComponent extends Component {
         console.log('reauthenticate error', error);
       });
   }
-  updateData(data) {
+
+  async updateData(data) {
     if (data.pswd) {
       this.currentUser
         .updatePassword(data.pswd)
@@ -110,9 +139,19 @@ export default class UserProfileComponent extends Component {
         })
         .catch(function (error) {
           console.log('pswd error', error);
-          debugger;
+          switch (error.code) {
+            case 'auth/user-token-expired':
+              debugger;
+              this.reauthenticate();
+              break;
+
+            case 'auth/requires-recent-login':
+              this.reauthenticate();
+              break;
+          }
         });
     }
+
     if (data.name) {
       this.currentUser
         .updateProfile({
@@ -129,27 +168,50 @@ export default class UserProfileComponent extends Component {
           console.log('name error', error);
         });
     }
+
     if (data.surname) {
       this.store.findRecord('user', this.userData.id).then(function (user) {
         user.surname = data.surname;
         user.save();
       });
     }
+
     if (data.email) {
       this.currentUser
         .updateEmail(data.email)
         .then(() => {
+          console.log('current po update email auth, przed update record', this.currentUser);
+          debugger;
           this.store.findRecord('user', this.userData.id).then(function (user) {
             user.email = data.email;
             user.save();
           });
           console.log('Update email successful');
+          this.toggleEmailExistenceError(false);
+          this.findUserDataTask.perform();
           debugger;
         })
         .catch((error) => {
           console.log('mail error', error);
-          if (error.code === 'auth/user-token-expired') this.reauthenticate();
-          debugger;
+
+          switch (error.code) {
+            case 'auth/user-token-expired':
+              debugger;
+              this.reauthenticate();
+              break;
+
+            case 'auth/email-already-in-use':
+              this.toggleEmailExistenceError(true);
+              break;
+
+            case 'auth/requires-recent-login':
+              this.reauthenticate();
+              break;
+
+            default:
+              this.toggleEmailExistenceError(false);
+              break;
+          }
         });
     }
   }

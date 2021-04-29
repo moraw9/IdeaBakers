@@ -31,7 +31,7 @@
     <label for="pwd">Repeat password</label>
     <input type="password" class="form-control" id="rpwd" name="rpswd" onchange={{fn this.setValue}}>
     {{#if @changeset.error.rpswd}}
-      <p class="text-danger">{{@changeset.error.email.rpswd}}</p>
+      <p class="text-danger">{{@changeset.error.rpswd.validation}}</p>
     {{/if}}
   </div>
   <div class="button-wrapper">
