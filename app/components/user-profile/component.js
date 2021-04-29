@@ -8,12 +8,9 @@ import RegisterValidators from '../../validations/register';
 import { task } from 'ember-concurrency';
 // eslint-disable-next-line ember/no-computed-properties-in-native-classes
 import { alias } from '@ember/object/computed';
-import { later } from '@ember/runloop';
-
 export default class UserProfileComponent extends Component {
   @service store;
   @service session;
-  @service currentUser;
   @alias('findUserDataTask.lastSuccessful.value') userData;
   @tracked currentUser;
   @tracked dbUserRer;

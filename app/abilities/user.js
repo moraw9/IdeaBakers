@@ -4,5 +4,5 @@ import { inject as service } from '@ember/service';
 
 export default class UserAbility extends Ability {
   @service session;
-  @readOnly('session.currentUser') canViewProfile;
+  @readOnly('session.data.authenticated.user') canViewProfile;
 }

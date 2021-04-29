@@ -20,7 +20,7 @@ export default class NavBarComponent extends Component {
   async load() {
     if (this.session.isAuthenticated) {
       // eslint-disable-next-line no-undef
-      this.userName = await firebase.auth().currentUser.displayName;
+      this.userName = firebase.auth().currentUser.displayName;
       if (this.userName.includes(' ')) {
         const index = this.userName.indexOf(' ');
         this.userName = this.userName.slice(0, index);
