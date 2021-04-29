@@ -80,37 +80,57 @@ export default class UserProfileComponent extends Component {
   checkIfErrorIs(parent) {
     return parent.lastChild.textContent == 'This email is arleady exists!';
   }
+  reauthenticate() {
+    let password = prompt('Please provide your password for reauthentication');
+    // eslint-disable-next-line no-undef
+    let credential = firebase.auth.EmailAuthProvider.credential(
+      this.currentUser.email,
+      password
+    );
+    // eslint-disable-next-line no-undef
+    firebase
+      .auth()
+      .currentUser.reauthenticateWithCredential(credential)
+      .then(() => {
+        alert('Re authenticate finished successed, enert data one more time');
+      })
+      .catch((error) => {
+        // An error occurred.
+        console.log('reauthenticate error', error);
+      });
+  }
   updateData(data) {
     if (data.pswd) {
       this.currentUser
         .updatePassword(data.pswd)
-        .then(function () {
-          console.log('Update pswd successful');
+        .then(() => {
+          this.store.findRecord('user', this.userData.id).then(function (user) {
+            user.pswd = user.rpswd = data.pswd;
+            user.save();
+            console.log('Update pswd successful');
+            debugger;
+          });
         })
         .catch(function (error) {
           console.log('pswd error', error);
+          debugger;
         });
-      this.store.findRecord('user', this.userData.id).then(function (user) {
-        user.pswd = user.rpswd = data.pswd;
-        user.save();
-      });
     }
     if (data.name) {
       this.currentUser
         .updateProfile({
           displayName: data.name,
         })
-        .then(function () {
+        .then(() => {
+          this.store.findRecord('user', this.userData.id).then(function (user) {
+            user.name = data.name;
+            user.save();
+          });
           console.log('Update name successful');
         })
         .catch(function (error) {
           console.log('name error', error);
         });
-      console.log('email', this.userData.email);
-      this.store.findRecord('user', this.userData.id).then(function (user) {
-        user.name = data.name;
-        user.save();
-      });
     }
     if (data.surname) {
       this.store.findRecord('user', this.userData.id).then(function (user) {
@@ -121,22 +141,19 @@ export default class UserProfileComponent extends Component {
     if (data.email) {
       this.currentUser
         .updateEmail(data.email)
-        .then(function () {
-          console.log('Update email successful');
-        })
         .then(() => {
-          this.findUserDataTask.perform();
-          this.load();
-          // console.log('user data', this.userData.name);
-          // console.log('current', this.currentUser.displayName);
+          this.store.findRecord('user', this.userData.id).then(function (user) {
+            user.email = data.email;
+            user.save();
+          });
+          console.log('Update email successful');
+          debugger;
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log('mail error', error);
+          if (error.code === 'auth/user-token-expired') this.reauthenticate();
+          debugger;
         });
-      this.store.findRecord('user', this.userData.id).then(function (user) {
-        user.email = data.email;
-        user.save();
-      });
     }
   }
 }
