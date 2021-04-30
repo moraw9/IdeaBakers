@@ -26,11 +26,14 @@
             <div class="form-group">
               <label for="description">Description:</label>
               <textarea id="description" class="form-control" name="description" placeholder="Enter description" value={{this.changeset.description}} onchange={{fn this.setValue}} rows="20" cols="50"></textarea>
+              {{#if this.changeset.error.description}}
+                <p class="text-danger">{{this.changeset.error.description.validation}}</p>
+              {{/if}}
             </div>
             <div class="form-group">
               <label for="imageURL">Image in Base64 String:</label>
               <input type="text" class="form-control" id="imageURL" placeholder="Enter image" name="imageURL" value={{this.changeset.imageURL}} onchange={{fn this.setValue}} >
-                {{#if this.changeset.error.imageURL}}
+              {{#if this.changeset.error.imageURL}}
                 <p class="text-danger">{{this.changeset.error.imageURL.validation}}</p>
               {{/if}}
             </div>
