@@ -33,7 +33,7 @@ export default class RegisterFormComponent extends Component {
         const [email] = emails.filter((email) => email === changeset.email);
         if (email) {
           if (!checkIfErrorIs()) {
-            let html=`<p class="text-danger">This email is arleady exists!</p>`;
+            let html = `<p class="text-danger">This email is arleady exists!</p>`;
             parent.insertAdjacentHTML('beforeend', html);
           }
           return;
