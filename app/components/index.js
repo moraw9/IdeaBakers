@@ -4,9 +4,12 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 export default class IndexComponent extends Component {
   @service store;
+  @service session;
   constructor() {
     super(...arguments);
     this.model = this.store.findAll('idea');
+    // eslint-disable-next-line no-undef
+    this.currentUser = firebase.auth().currentUser;
   }
   @tracked query = '';
 

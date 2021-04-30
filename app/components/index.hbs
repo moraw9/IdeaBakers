@@ -1,5 +1,8 @@
 <NavBar @setSearchQuery={{fn this.setSearchQuery}} @query={{this.query}} @isHomePage={{true}} />
 <div class="body">
   <Header />
+  {{#if this.session.isAuthenticated}}
+    <AddingNewIdea @currentUser={{this.currentUser}} />
+  {{/if}}
   <Ideas @ideas={{this.results}} /> 
 </div>
