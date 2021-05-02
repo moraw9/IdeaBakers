@@ -31,19 +31,24 @@ export default class AddingNewIdeaComponent extends Component {
       if (this.changeset.get('isValid')) {
         this.changeset.imageURL =
           'data:image/png;base64,' + this.changeset.imageURL;
-        this.changeset.save();
-        alert('Congratulations! The idea has been added successfully!');
-        this.changeset.rollback();
-        this.clear();
+        this.changeset.save().then(() => {
+          document.getElementById('closeModalButton').click();
+          alert('Congratulations! The idea has been added successfully!');
+        });
       }
     });
   }
+
   @action
-  rollback() {
-    return this.changeset.rollback();
-  }
   clear() {
     document.querySelectorAll('input').forEach((input) => (input.value = ''));
     document.querySelector('textarea').value = '';
+  }
+
+  @action
+  rollback() {
+    document.querySelectorAll('input').forEach((input) => (input.value = ''));
+    document.querySelector('textarea').value = '';
+    this.changeset.rollback();
   }
 }
