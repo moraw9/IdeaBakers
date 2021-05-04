@@ -10,8 +10,10 @@ export default class AddingNewIdeaComponent extends Component {
 
   constructor() {
     super(...arguments);
+    this.createChangeset();
+  }
+  createChangeset() {
     this.ideaModel = this.store.createRecord('idea');
-    console.log(this.ideaModel);
     this.changeset = new Changeset(
       this.ideaModel,
       lookupValidator(IdeaValidators),
@@ -31,9 +33,13 @@ export default class AddingNewIdeaComponent extends Component {
       if (this.changeset.get('isValid')) {
         this.changeset.imageURL =
           'data:image/png;base64,' + this.changeset.imageURL;
+
         this.changeset.save().then(() => {
           document.getElementById('closeModalButton').click();
           alert('Congratulations! The idea has been added successfully!');
+          this.createChangeset();
+          this.rollback();
+          debugger;
         });
       }
     });
