@@ -134,14 +134,12 @@ export default class UserProfileComponent extends Component {
             user.pswd = user.rpswd = data.pswd;
             user.save();
             console.log('Update pswd successful');
-            debugger;
           });
         })
         .catch(function (error) {
           console.log('pswd error', error);
           switch (error.code) {
             case 'auth/user-token-expired':
-              debugger;
               this.reauthenticate();
               break;
 
@@ -180,8 +178,7 @@ export default class UserProfileComponent extends Component {
       this.currentUser
         .updateEmail(data.email)
         .then(() => {
-          console.log('current po update email auth, przed update record', this.currentUser);
-          debugger;
+          console.log('current po update email auth, przed update record', this.currentUser);;
           this.store.findRecord('user', this.userData.id).then(function (user) {
             user.email = data.email;
             user.save();
@@ -189,14 +186,12 @@ export default class UserProfileComponent extends Component {
           console.log('Update email successful');
           this.toggleEmailExistenceError(false);
           this.findUserDataTask.perform();
-          debugger;
         })
         .catch((error) => {
           console.log('mail error', error);
 
           switch (error.code) {
             case 'auth/user-token-expired':
-              debugger;
               this.reauthenticate();
               break;
 

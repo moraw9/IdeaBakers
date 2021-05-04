@@ -2,6 +2,9 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import RegisterValidators from '../../validations/register';
+import { Changeset } from 'ember-changeset';
+import lookupValidator from 'ember-changeset-validations';
 
 export default class LogInComponent extends Component {
   @service store;
@@ -16,6 +19,18 @@ export default class LogInComponent extends Component {
       .fetch()
       .catch(() => {});
   }
+  constructor() {
+    super(...arguments);
+    this.createChangeset();
+  }
+  createChangeset() {
+    this.userModel = this.store.createRecord('user');
+    this.changeset = new Changeset(
+      this.userModel,
+      lookupValidator(RegisterValidators),
+      RegisterValidators
+    );
+  }
 
   @action
   toggleForm() {
@@ -28,6 +43,7 @@ export default class LogInComponent extends Component {
     }
     this.isLogInForm = !this.isLogInForm;
   }
+
   @action
   googleLogin() {
     // eslint-disable-next-line no-undef
@@ -39,5 +55,63 @@ export default class LogInComponent extends Component {
     } catch (error) {
       this.errorMessage = error.error || error;
     }
+  }
+
+  prepareChangesetToValidate(data) {
+    this.changeset.name = data.name;
+    this.changeset.surname = data.surname;
+    this.changeset.email = data.email;
+    this.changeset.pswd = data.pswd;
+    this.changeset.rpswd = data.rpswd;
+  }
+
+  toggleEmailExistenceError(isError) {
+    const parent = document.getElementById('email').closest('.form-group');
+
+    function checkIfErrorIs() {
+      return (
+        parent.lastChild.textContent ===
+        'The email address is already in use by another account.'
+      );
+    }
+    if (isError && !checkIfErrorIs()) {
+      let html = `<p class="text-danger">The email address is already in use by another account.</p>`;
+      parent.insertAdjacentHTML('beforeend', html);
+    } else if (!isError && checkIfErrorIs()) {
+      parent.removeChild(parent.lastChild);
+    }
+  }
+
+  async register(changeset) {
+    // eslint-disable-next-line no-undef
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(changeset.email, changeset.pswd)
+      .then((result) => {
+        this.toggleEmailExistenceError(false);
+        changeset.save();
+        this.createChangeset();
+        alert('Congratulations! You have successfully joined us,log in!');
+        this.toggleForm();
+        return result.user.updateProfile({
+          displayName: changeset.name,
+        });
+      })
+      .catch((error) => {
+        console.log('mail error', error);
+        if (error.code === 'auth/email-already-in-use') {
+          this.toggleEmailExistenceError(true);
+        }
+      });
+  }
+
+  @action
+  setDataToUpdate(data) {
+    this.prepareChangesetToValidate(data);
+    this.changeset.validate().then(() => {
+      if (this.changeset.get('isValid')) {
+        this.register(this.changeset);
+      }
+    });
   }
 }

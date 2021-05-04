@@ -37,7 +37,7 @@
                 </div>
               {{/if}}              
             {{else}}
-            <UserProfile::UserForm @userData={{this.userData}} @toggleUpdate={{this.toggleUpdate}} @setDataToUpdate={{fn this.setDataToUpdate}} @changeset={{this.changeset}}/>
+            <UserForm @userData={{this.userData}} @toggleState={{this.toggleUpdate}} @setDataToUpdate={{fn this.setDataToUpdate}} @changeset={{this.changeset}}/>
             {{/if}}
           {{/if}} 
         </div>

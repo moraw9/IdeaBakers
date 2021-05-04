@@ -20,7 +20,10 @@
           {{#if this.isLogInForm}}
             <LogIn::logInForm />
           {{else}}
-              <LogIn::registerForm @model={{this.model}}/>
+              <div class="header content-frame bottom">
+                <h1>Sign up</h1>
+              </div>
+              <UserForm @setDataToUpdate={{fn this.setDataToUpdate}} @changeset={{this.changeset}}/>
           {{/if}}
           <div class="change-state content-frame top">
             {{this.stateText}} <button type="button" onclick={{fn this.toggleForm}} class="btn btn-primary">{{this.buttonName}}</button>

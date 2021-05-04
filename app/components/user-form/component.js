@@ -1,5 +1,6 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
+import { typeOf } from '@ember/utils';
 
 export default class UserFormComponent extends Component {
   constructor() {
@@ -17,7 +18,9 @@ export default class UserFormComponent extends Component {
   cancel() {
     let inputs = document.querySelectorAll('input');
     inputs.forEach((input) => (input.value = ''));
-    this.args.toggleUpdate();
+    if (typeOf(this.args.toggleState) === 'function') {
+      this.args.toggleState();
+    }
   }
   @action
   setValue({ target: { name, value } }) {
@@ -26,7 +29,6 @@ export default class UserFormComponent extends Component {
   }
   @action
   sendData() {
-    console.log('weszło');
     this.args.setDataToUpdate(this.data);
   }
 }
