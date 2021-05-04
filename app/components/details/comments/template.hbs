@@ -1,0 +1,20 @@
+<div class="comments-section-wrapper">
+  <header><h4>Comments</h4></header>
+  {{#if this.session.isAuthenticated}}
+    <div class="add-new-comment-wrapper">
+      add new...
+    </div>
+  {{/if}}
+  <div class="comments container mt-3">
+    {{#if this.findCommentTask.isRunning}}
+      <div class="spinner-wrapper">
+        <div class="spinner-border"></div>
+      </div>
+      {{/if}}
+    {{#if this.hasComments}}
+      {{#each this.comments as |com|}}
+        <Details::Comments::Comment @comment={{com}} />
+      {{/each}}
+    {{/if}}
+  </div>
+</div>
