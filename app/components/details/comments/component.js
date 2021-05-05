@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
-import Firebase from 'firebase';
+import firebase from 'firebase';
 // eslint-disable-next-line ember/no-computed-properties-in-native-classes
 
 export default class CommentsComponent extends Component {
@@ -15,6 +15,7 @@ export default class CommentsComponent extends Component {
   constructor() {
     super(...arguments);
     this.findCommentsTask.perform();
+    this.currentUser = firebase.auth().currentUser;
   }
   @task({ restartable: true }) *findCommentsTask() {
     const comments = yield this.store.findAll('comment');
@@ -30,11 +31,11 @@ export default class CommentsComponent extends Component {
   @action
   submitComment() {
     const newComment = this.store.createRecord('comment');
-
     // eslint-disable-next-line no-undef
-    newComment.username = firebase.auth().currentUser.displayName;
+    newComment.username = this.currentUser.displayName;
     newComment.content = document.querySelector('textarea').value;
     newComment.postID = this.args.postID;
+    newComment.userUID = this.currentUser.uid;
     newComment.save();
   }
 
@@ -47,5 +48,11 @@ export default class CommentsComponent extends Component {
   toggleDisable() {
     document.getElementById('submitButton').disabled =
       document.querySelector('textarea').value !== '' ? false : true;
+  }
+  @action
+  removeComment(commentId) {
+    const comToDelete = this.store.peekRecord('comment', commentId);
+    //alert is to remove, but I have to find solution to remove it from page in real time (without page reload)
+    comToDelete.destroyRecord().then(() => alert('Deleted'));
   }
 }

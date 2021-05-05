@@ -9,4 +9,5 @@ export default class CommentModel extends Model {
   date;
   @attr('string') content;
   @attr('string') postID;
+  @attr('string') userUID;
 }
