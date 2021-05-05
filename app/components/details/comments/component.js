@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
+import Firebase from 'firebase';
 // eslint-disable-next-line ember/no-computed-properties-in-native-classes
 
 export default class CommentsComponent extends Component {
@@ -27,5 +28,24 @@ export default class CommentsComponent extends Component {
   }
 
   @action
-  addComment() {}
+  submitComment() {
+    const newComment = this.store.createRecord('comment');
+
+    // eslint-disable-next-line no-undef
+    newComment.username = firebase.auth().currentUser.displayName;
+    newComment.content = document.querySelector('textarea').value;
+    newComment.postID = this.args.postID;
+    newComment.save();
+  }
+
+  @action
+  cancel() {
+    document.querySelector('textarea').value = '';
+  }
+
+  @action
+  toggleDisable() {
+    document.getElementById('submitButton').disabled =
+      document.querySelector('textarea').value !== '' ? false : true;
+  }
 }

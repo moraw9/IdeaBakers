@@ -1,8 +1,15 @@
 <div class="comments-section-wrapper">
-  <header><h4>Comments</h4></header>
+  <header><h3>Comments</h3></header>
   {{#if this.session.isAuthenticated}}
     <div class="add-new-comment-wrapper">
-      add new...
+      <form class="p-3">
+        <label for="commentArea">Add public comment:</label>
+        <textarea id="commentArea" name="commentArea" placeholder="Write comment..." onchange={{this.toggleDisable}}/>
+        <div class="button-wrapper">
+          <button type="button" id="submitButton" onclick={{this.submitComment}} class="btn btn-primary" disabled >Comment</button>
+          <button type="button" onclick={{this.cancel}} class="btn btn-dark">cancel</button>
+        </div>
+      </form>
     </div>
   {{/if}}
   <div class="comments container mt-3">
@@ -15,6 +22,8 @@
       {{#each this.comments as |com|}}
         <Details::Comments::Comment @comment={{com}} />
       {{/each}}
+    {{else}}
+    <h4>There are no comments yet :(</h4>
     {{/if}}
   </div>
 </div>
