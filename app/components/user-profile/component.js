@@ -88,17 +88,13 @@ export default class UserProfileComponent extends Component {
     this.changeset.rpswd = data.rpswd ? data.rpswd : this.userData.rpswd;
   }
 
-  toggleEmailExistenceError(isError) {
-    const parent = document.getElementById('email').closest('.form-group');
-
+  toggleEmailExistenceError(isError, parent, message) {
+    console.log('weszło do funkcji');
     function checkIfErrorIs() {
-      return (
-        parent.lastChild.textContent ===
-        'The email address is already in use by another account.'
-      );
+      return parent.lastChild.textContent === message;
     }
     if (isError && !checkIfErrorIs()) {
-      let html = `<p class="text-danger">The email address is already in use by another account.</p>`;
+      let html = `<p class="text-danger">${message}</p>`;
       parent.insertAdjacentHTML('beforeend', html);
     } else if (!isError && checkIfErrorIs()) {
       parent.removeChild(parent.lastChild);
@@ -175,6 +171,7 @@ export default class UserProfileComponent extends Component {
     }
 
     if (data.email) {
+      const parent = document.getElementById('email').closest('.form-group');
       this.currentUser
         .updateEmail(data.email)
         .then(() => {
@@ -184,7 +181,11 @@ export default class UserProfileComponent extends Component {
             user.save();
           });
           // console.log('Update email successful');
-          this.toggleEmailExistenceError(false);
+          this.toggleEmailExistenceError(
+            false,
+            parent,
+            'The email address is already in use by another account.'
+          );
           this.findUserDataTask.perform();
         })
         .catch((error) => {
@@ -196,7 +197,11 @@ export default class UserProfileComponent extends Component {
               break;
 
             case 'auth/email-already-in-use':
-              this.toggleEmailExistenceError(true);
+              this.toggleEmailExistenceError(
+                true,
+                parent,
+                'The email address is already in use by another account.'
+              );
               break;
 
             case 'auth/requires-recent-login':
@@ -204,12 +209,38 @@ export default class UserProfileComponent extends Component {
               break;
 
             default:
-              this.toggleEmailExistenceError(false);
+              this.toggleEmailExistenceError(
+                false,
+                parent,
+                'The email address is already in use by another account.'
+              );
               break;
           }
         });
     }
 
-    if (data.avatar && data.avatar.length > 0) { }
+    if (data.avatar && data.avatar.length > 0) {
+      const parent = document.getElementById('avatar').closest('.form-group');
+      this.currentUser
+        .updateProfile({
+          photoURL: data.avatar,
+        })
+        .then(() => {
+          this.toggleEmailExistenceError(
+            false,
+            parent,
+            'Photo size is too big'
+          );
+          this.store.findRecord('user', this.userData.id).then(function (user) {
+            user.avatar = data.avatar;
+            user.save();
+          });
+          alert('photo updated');
+        })
+        .catch((error) => {
+          console.log('Złapany error', error);
+          this.toggleEmailExistenceError(true, parent, 'Photo size is too big');
+        });
+    }
   }
 }

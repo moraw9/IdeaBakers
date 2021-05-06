@@ -6,8 +6,8 @@
         <div class="card-image-wrapper">
           <img src="assets/images/red-background.jpg" class="img-fluid" alt="background img">
           <div class="icon-wrapper rounded-circle">
-            {{#if this.currentUser.photoURL}}
-            <img alt='user avatar' src={{this.currentUser.photoURL}} >
+            {{#if this.userData.avatar}}
+            <img alt='user avatar' src={{this.userData.avatar}} >
             {{else}}
             <i class="far fa-user"></i>
             {{/if}}

@@ -37,8 +37,6 @@ export default class UserFormComponent extends Component {
     const reader = new FileReader();
     reader.onloadend = () => {
       this.data.avatar = reader.result;
-      this.data.avatar.name = file.name;
-      debugger;
     };
     reader.readAsDataURL(file);
   }
