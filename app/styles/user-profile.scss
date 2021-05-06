@@ -27,11 +27,17 @@
           align-items: center;
           margin: auto;
           transform: translateY(-50%);
+          overflow: hidden;
 
           i {
             margin: auto;
             font-size: 5rem;
             color: white;
+          }
+          img {
+            width: fit-content;
+            object-fit: cover;
+
           }
         }
       }

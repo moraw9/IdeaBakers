@@ -31,4 +31,15 @@ export default class UserFormComponent extends Component {
   sendData() {
     this.args.setDataToUpdate(this.data);
   }
+  @action
+  encodeImageFileAsURL({ target: { files } }) {
+    const file = files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      this.data.avatar = reader.result;
+      this.data.avatar.name = file.name;
+      debugger;
+    };
+    reader.readAsDataURL(file);
+  }
 }

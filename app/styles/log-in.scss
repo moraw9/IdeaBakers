@@ -146,12 +146,12 @@
             }
           }
 
-        .button-wrapper {
-          display: flex;
-          align-items: center;
+          .button-wrapper {
+            display: flex;
+            align-items: center;
 
-          .button {
-            margin:auto;
+            .button {
+              margin:auto;
             }
           }
 
@@ -177,4 +177,7 @@
       }
     }
   }
+}
+.avatar {
+  display: block;
 }

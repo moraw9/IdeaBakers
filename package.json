@@ -81,5 +81,8 @@
   },
   "ember": {
     "edition": "octane"
+  },
+  "dependencies": {
+    "canvas": "^2.7.0"
   }
 }

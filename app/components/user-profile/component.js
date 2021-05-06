@@ -178,12 +178,12 @@ export default class UserProfileComponent extends Component {
       this.currentUser
         .updateEmail(data.email)
         .then(() => {
-          console.log('current po update email auth, przed update record', this.currentUser);;
+          // console.log('current po update email auth, przed update record', this.currentUser);
           this.store.findRecord('user', this.userData.id).then(function (user) {
             user.email = data.email;
             user.save();
           });
-          console.log('Update email successful');
+          // console.log('Update email successful');
           this.toggleEmailExistenceError(false);
           this.findUserDataTask.perform();
         })
@@ -209,5 +209,7 @@ export default class UserProfileComponent extends Component {
           }
         });
     }
+
+    if (data.avatar && data.avatar.length > 0) { }
   }
 }
