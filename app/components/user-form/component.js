@@ -1,8 +1,11 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { typeOf } from '@ember/utils';
+import { inject as service } from '@ember/service';
 
 export default class UserFormComponent extends Component {
+  @service firebase;
+
   constructor() {
     super(...arguments);
     this.data = {
@@ -34,10 +37,18 @@ export default class UserFormComponent extends Component {
   @action
   encodeImageFileAsURL({ target: { files } }) {
     const file = files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      this.data.avatar = reader.result;
-    };
-    reader.readAsDataURL(file);
+
+    this.firebase
+      .storage()
+      .ref()
+      .put(file)
+    .then(snapshot => {
+        console.log('Uploaded.');
+    });
+    // const reader = new FileReader();
+    // reader.onloadend = () => {
+    //   this.data.avatar = reader.result;
+    // };
+    // reader.readAsDataURL(file);
   }
 }
