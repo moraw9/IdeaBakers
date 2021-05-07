@@ -31,11 +31,13 @@ export default class CommentsComponent extends Component {
   @action
   submitComment() {
     const newComment = this.store.createRecord('comment');
-    // eslint-disable-next-line no-undef
     newComment.username = this.currentUser.displayName;
     newComment.content = document.querySelector('textarea').value;
     newComment.postID = this.args.postID;
     newComment.userUID = this.currentUser.uid;
+    newComment.userPhoto = this.currentUser.photoURL
+      ? this.currentUser.photoURL
+      : null;
     newComment.save();
   }
 

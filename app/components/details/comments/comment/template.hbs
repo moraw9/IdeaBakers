@@ -1,5 +1,5 @@
 <div class="media border p-3">
-  <img src="/assets/images/user.png" alt="user" class="mr-3 mt-3 rounded-circle" width="60px">
+  <img src={{if @comment.userPhoto @comment.userPhoto '/assets/images/user.png'}} alt="user" class="mr-3 mt-3 rounded-circle">
   <div class="media-body">
     <h4>{{@comment.username}} <small><i>Posted on {{this.date}}</i></small></h4>
     <p>{{@comment.content}}</p>      

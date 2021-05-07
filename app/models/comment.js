@@ -10,4 +10,5 @@ export default class CommentModel extends Model {
   @attr('string') content;
   @attr('string') postID;
   @attr('string') userUID;
+  @attr('string') userPhoto;
 }
