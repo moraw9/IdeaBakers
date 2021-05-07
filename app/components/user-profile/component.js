@@ -11,6 +11,7 @@ import { alias } from '@ember/object/computed';
 export default class UserProfileComponent extends Component {
   @service store;
   @service session;
+  @service firebase;
 
   @alias('findUserDataTask.lastSuccessful.value') userData;
   @alias('currentUser.displayName') currentName;
@@ -68,6 +69,7 @@ export default class UserProfileComponent extends Component {
 
   @action
   async setDataToUpdate(data) {
+    console.log('weszło w send data na górze');
     this.prepareChangesetToValidate(data);
     // this.findUserRecordTask.perform();
 
@@ -88,7 +90,7 @@ export default class UserProfileComponent extends Component {
     this.changeset.rpswd = data.rpswd ? data.rpswd : this.userData.rpswd;
   }
 
-  toggleEmailExistenceError(isError, parent, message) {
+  toggleErrorExistence(isError, parent, message) {
     console.log('weszło do funkcji');
     function checkIfErrorIs() {
       return parent.lastChild.textContent === message;
@@ -181,7 +183,7 @@ export default class UserProfileComponent extends Component {
             user.save();
           });
           // console.log('Update email successful');
-          this.toggleEmailExistenceError(
+          this.toggleErrorExistence(
             false,
             parent,
             'The email address is already in use by another account.'
@@ -197,7 +199,7 @@ export default class UserProfileComponent extends Component {
               break;
 
             case 'auth/email-already-in-use':
-              this.toggleEmailExistenceError(
+              this.toggleErrorExistence(
                 true,
                 parent,
                 'The email address is already in use by another account.'
@@ -209,7 +211,7 @@ export default class UserProfileComponent extends Component {
               break;
 
             default:
-              this.toggleEmailExistenceError(
+              this.toggleErrorExistence(
                 false,
                 parent,
                 'The email address is already in use by another account.'
@@ -219,28 +221,30 @@ export default class UserProfileComponent extends Component {
         });
     }
 
-    if (data.avatar && data.avatar.length > 0) {
-      const parent = document.getElementById('avatar').closest('.form-group');
-      this.currentUser
-        .updateProfile({
-          photoURL: data.avatar,
-        })
+    if (data.avatar.size) {
+      const storageRef = this.firebase
+        .storage()
+        .ref('pictures' + this.currentUser.uid);
+
+      storageRef
+        .put(data.avatar)
         .then(() => {
-          this.toggleEmailExistenceError(
-            false,
-            parent,
-            'Photo size is too big'
-          );
-          this.store.findRecord('user', this.userData.id).then(function (user) {
-            user.avatar = data.avatar;
-            user.save();
+          console.log('Uploaded a blob or file!');
+
+          storageRef.getDownloadURL().then((url) => {
+            this.currentUser.updateProfile({
+              photoURL: url,
+            });
+
+            this.store
+              .findRecord('user', this.userData.id)
+              .then(function (user) {
+                user.avatar = url;
+                user.save();
+              });
           });
-          alert('photo updated');
         })
-        .catch((error) => {
-          console.log('Złapany error', error);
-          this.toggleEmailExistenceError(true, parent, 'Photo size is too big');
-        });
+        .catch((error) => console.log(error));
     }
   }
 }

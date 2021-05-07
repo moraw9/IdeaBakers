@@ -36,19 +36,6 @@ export default class UserFormComponent extends Component {
   }
   @action
   encodeImageFileAsURL({ target: { files } }) {
-    const file = files[0];
-
-    this.firebase
-      .storage()
-      .ref()
-      .put(file)
-    .then(snapshot => {
-        console.log('Uploaded.');
-    });
-    // const reader = new FileReader();
-    // reader.onloadend = () => {
-    //   this.data.avatar = reader.result;
-    // };
-    // reader.readAsDataURL(file);
+    this.data.avatar = files[0];
   }
 }
