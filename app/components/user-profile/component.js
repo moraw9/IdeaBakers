@@ -221,7 +221,7 @@ export default class UserProfileComponent extends Component {
         });
     }
 
-    if (data.avatar.size) {
+    if (data.avatar?.size) {
       const storageRef = this.firebase
         .storage()
         .ref('pictures' + this.currentUser.uid);

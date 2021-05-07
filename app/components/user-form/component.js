@@ -19,6 +19,7 @@ export default class UserFormComponent extends Component {
 
   @action
   cancel() {
+    this.args.changeset.rollback();
     let inputs = document.querySelectorAll('input');
     inputs.forEach((input) => (input.value = ''));
     if (typeOf(this.args.toggleState) === 'function') {
