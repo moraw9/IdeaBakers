@@ -19,7 +19,7 @@
       </div>
       {{/if}}
     {{#if this.hasComments}}
-      {{#each this.comments as |com|}}
+      {{#each (sort-by 'date:desc' this.comments) as |com|}}
         <Details::Comments::Comment @comment={{com}} @currentUserUID={{this.currentUser.uid}} @removeComment={{this.removeComment}}/>
       {{/each}}
     {{else}}
