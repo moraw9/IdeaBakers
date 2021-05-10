@@ -1,4 +1,4 @@
-<NavBar @isHomePage={{false}} @userName={{this.currentUser.displayName}}/>
+<NavBar @isHomePage={{false}} @userName={{this.userData.name}}/>
 <div class="container">
   <div class="row no-gutters user-data-row">
     <div class="col-11 col-sm-10 col-md-6 user-data-col">
@@ -46,4 +46,29 @@
       </div> 
     </div>
   </div>
+  {{!-- template-lint-disable no-inline-styles --}}
+  <button type="button" id="openModalButton" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="display:none;" >click</button>
+
+  <div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <div class="modal-header">
+          <h6 class="modal-title">Please provide your password for reauthentication</h6>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+          <input type='password' id='reauthenticatedPasswordInput'>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" id="confirmReauthenticateButton" class="btn btn-success" onclick={{this.reauthenticate}}>Ok</button>
+          <button type="button" id="closeModalButton" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
 </div>

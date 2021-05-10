@@ -33,9 +33,8 @@ export default class UserProfileComponent extends Component {
     );
   }
 
-  async load() {
-    // eslint-disable-next-line no-undef
-    this.currentUser = firebase.auth().currentUser;
+  load() {
+    this.currentUser = this.firebase.auth().currentUser;
   }
 
   @task({ restartable: true }) *findUserDataTask() {
@@ -45,22 +44,14 @@ export default class UserProfileComponent extends Component {
     return res;
   }
 
-  @task({ restartable: true }) *findEmailTask(email) {
-    const users = yield this.store.findAll('user');
-    const [res] = users.filter((user) => user.email == email);
-    return res;
-  }
-
   @action
   toggleUpdate() {
     this.isUpdate = !this.isUpdate;
   }
 
   @action
-  async setDataToUpdate(data) {
-    console.log('weszło w send data na górze');
+  setDataToUpdate(data) {
     this.prepareChangesetToValidate(data);
-    // this.findUserRecordTask.perform();
 
     this.changeset.validate().then(() => {
       if (this.changeset.get('isValid')) {
@@ -75,12 +66,16 @@ export default class UserProfileComponent extends Component {
       ? data.surname
       : this.userData.surname;
     this.changeset.email = data.email ? data.email : this.userData.email;
-    this.changeset.pswd = data.pswd ? data.pswd : this.userData.pswd;
-    this.changeset.rpswd = data.rpswd ? data.rpswd : this.userData.rpswd;
+
+    if (this.isGoogleUser) {
+      this.changeset.pswd = this.changeset.rpswd = '12345678';
+    } else {
+      this.changeset.pswd = data.pswd ? data.pswd : this.userData.pswd;
+      this.changeset.rpswd = data.rpswd ? data.rpswd : this.userData.rpswd;
+    }
   }
 
   toggleErrorExistence(isError, parent, message) {
-    console.log('weszło do funkcji');
     function checkIfErrorIs() {
       return parent.lastChild.textContent === message;
     }
@@ -92,27 +87,33 @@ export default class UserProfileComponent extends Component {
     }
   }
 
+  @action
   reauthenticate() {
-    let password = prompt('Please provide your password for reauthentication');
-    // eslint-disable-next-line no-undef
-    let credential = firebase.auth.EmailAuthProvider.credential(
+    const input = document.getElementById('reauthenticatedPasswordInput');
+    const password = input.value;
+    let credential = this.firebase.auth.EmailAuthProvider.credential(
       this.currentUser.email,
       password
     );
-    // eslint-disable-next-line no-undef
-    firebase
+    this.firebase
       .auth()
       .currentUser.reauthenticateWithCredential(credential)
       .then(() => {
+        input.value = '';
+        document.getElementById('closeModalButton').click();
         alert('Re authenticate finished successed, enert data one more time');
       })
       .catch((error) => {
-        // An error occurred.
-        console.log('reauthenticate error', error);
+        alert(`Error: ${error.message}`);
       });
   }
 
+  openModalForPassword() {
+    document.getElementById('openModalButton').click();
+  }
+
   async updateData(data) {
+    let isOk = true;
     if (data.pswd) {
       this.currentUser
         .updatePassword(data.pswd)
@@ -120,18 +121,14 @@ export default class UserProfileComponent extends Component {
           this.store.findRecord('user', this.userData.id).then(function (user) {
             user.pswd = user.rpswd = data.pswd;
             user.save();
-            console.log('Update pswd successful');
           });
         })
-        .catch(function (error) {
-          console.log('pswd error', error);
+        .catch((error) => {
+          isOk = false;
           switch (error.code) {
             case 'auth/user-token-expired':
-              this.reauthenticate();
-              break;
-
             case 'auth/requires-recent-login':
-              this.reauthenticate();
+              this.openModalForPassword();
               break;
           }
         });
@@ -147,10 +144,6 @@ export default class UserProfileComponent extends Component {
             user.name = data.name;
             user.save();
           });
-          console.log('Update name successful');
-        })
-        .catch(function (error) {
-          console.log('name error', error);
         });
     }
 
@@ -161,79 +154,27 @@ export default class UserProfileComponent extends Component {
       });
     }
 
-    if (data.email) {
-      const parent = document.getElementById('email').closest('.form-group');
-      this.currentUser
-        .updateEmail(data.email)
-        .then(() => {
-          // console.log('current po update email auth, przed update record', this.currentUser);
-          this.store.findRecord('user', this.userData.id).then(function (user) {
-            user.email = data.email;
-            user.save();
-          });
-          // console.log('Update email successful');
-          this.toggleErrorExistence(
-            false,
-            parent,
-            'The email address is already in use by another account.'
-          );
-          this.findUserDataTask.perform();
-        })
-        .catch((error) => {
-          console.log('mail error', error);
-
-          switch (error.code) {
-            case 'auth/user-token-expired':
-              this.reauthenticate();
-              break;
-
-            case 'auth/email-already-in-use':
-              this.toggleErrorExistence(
-                true,
-                parent,
-                'The email address is already in use by another account.'
-              );
-              break;
-
-            case 'auth/requires-recent-login':
-              this.reauthenticate();
-              break;
-
-            default:
-              this.toggleErrorExistence(
-                false,
-                parent,
-                'The email address is already in use by another account.'
-              );
-              break;
-          }
-        });
-    }
-
     if (data.photoURL?.size) {
       const storageRef = this.firebase
         .storage()
         .ref('pictures' + this.currentUser.uid);
 
-      storageRef
-        .put(data.photoURL)
-        .then(() => {
-          console.log('Uploaded a blob or file!');
-
-          storageRef.getDownloadURL().then((url) => {
-            this.currentUser.updateProfile({
-              photoURL: url,
-            });
-
-            this.store
-              .findRecord('user', this.userData.id)
-              .then(function (user) {
-                user.photoURL = url;
-                user.save();
-              });
+      storageRef.put(data.photoURL).then(() => {
+        storageRef.getDownloadURL().then((url) => {
+          this.currentUser.updateProfile({
+            photoURL: url,
           });
-        })
-        .catch((error) => console.log(error));
+
+          this.store.findRecord('user', this.userData.id).then(function (user) {
+            user.photoURL = url;
+            user.save();
+          });
+        });
+      });
+    }
+    if (isOk) {
+      document.getElementById('cancelForm').click();
+      alert('Updated data successfuly');
     }
   }
 }

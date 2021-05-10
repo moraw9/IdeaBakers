@@ -8,7 +8,7 @@
       {{#if this.session.isAuthenticated}}
         <LinkTo @route="user-profile">
           <div class="user-profile-link-wrapper btn btn-outline-danger">
-            <div class="user-profile-link-content">{{this.userName}}<span><i class="far fa-user"></i></span></div>
+            <div class="user-profile-link-content">{{if @userName @userName this.userName}}<span><i class="far fa-user"></i></span></div>
           </div>
         </LinkTo>
         <button type="button" class="log btn btn-outline-danger" {{on "click" this.invalidateSession}}>

@@ -4,6 +4,8 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 export default class NavBarComponent extends Component {
   @service session;
+  @service firebase;
+
   @tracked userName;
 
   constructor() {
@@ -19,8 +21,7 @@ export default class NavBarComponent extends Component {
 
   async load() {
     if (this.session.isAuthenticated) {
-      // eslint-disable-next-line no-undef
-      this.userName = firebase.auth().currentUser.displayName;
+      this.userName = this.firebase.auth().currentUser.displayName;
       if (this.userName.includes(' ')) {
         const index = this.userName.indexOf(' ');
         this.userName = this.userName.slice(0, index);

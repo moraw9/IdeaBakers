@@ -107,8 +107,7 @@ export default class LogInComponent extends Component {
   }
 
   async register(changeset) {
-    // eslint-disable-next-line no-undef
-    firebase
+    this.firebase
       .auth()
       .createUserWithEmailAndPassword(changeset.email, changeset.pswd)
       .then((result) => {
