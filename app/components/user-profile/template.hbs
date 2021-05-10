@@ -39,7 +39,7 @@
                 <button type="button" onclick={{fn this.toggleUpdate}} class="btn edit-button btn-primary">Edit<i class="fas fa-pencil-alt"></i></button>
               </div>           
             {{else}}
-            <UserForm @userData={{this.userData}} @toggleState={{this.toggleUpdate}} @setDataToUpdate={{fn this.setDataToUpdate}} @changeset={{this.changeset}}/>
+            <UserForm @userData={{this.userData}} @toggleState={{this.toggleUpdate}} @setDataToUpdate={{fn this.setDataToUpdate}} @changeset={{this.changeset}} @isGoogleUser={{this.isGoogleUser}} @disableEmail={{true}} />
             {{/if}}
           {{/if}} 
         </div>

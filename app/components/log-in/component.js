@@ -122,7 +122,6 @@ export default class LogInComponent extends Component {
         });
       })
       .catch((error) => {
-        console.log('error', error);
         if (error.code === 'auth/email-already-in-use') {
           this.toggleEmailExistenceError(true);
         }
@@ -131,7 +130,6 @@ export default class LogInComponent extends Component {
 
   @action
   setDataToUpdate(data) {
-    console.log('data z formu', data);
     this.prepareChangesetToValidate(data);
     this.changeset.validate().then(() => {
       if (this.changeset.get('isValid')) {

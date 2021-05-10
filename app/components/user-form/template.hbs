@@ -22,8 +22,10 @@
     @placeholder={{@userData}}
     @onChange={{this.setValue}}
     @changesetError={{@changeset.error}}
+    @disabled={{@disableEmail}}
   />
-  <UserForm::Field
+  {{#unless @isGoogleUser}}
+      <UserForm::Field
     @label='Password'
     @type='password'
     @name='pswd'
@@ -37,6 +39,7 @@
     @onChange={{this.setValue}}
     @changesetError={{@changeset.error}}
   />
+  {{/unless}}
 
   {{#if @userData}}
     <div class="form-group">

@@ -29,7 +29,6 @@ export default class UserFormComponent extends Component {
   @action
   setValue({ target: { name, value } }) {
     this.data[name] = value;
-    console.log(this.data[name]);
   }
   @action
   sendData() {
