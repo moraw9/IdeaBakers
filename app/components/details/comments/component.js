@@ -16,7 +16,7 @@ export default class CommentsComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.currentUser = firebase.auth().currentUser;
+    this.currentUser = this.firebase.auth().currentUser;
     this.findCommentsTask.perform();
   }
   @task({ restartable: true }) *findCommentsTask() {
@@ -41,6 +41,8 @@ export default class CommentsComponent extends Component {
       ? this.currentUser.photoURL
       : null;
     newComment.save();
+    this.cancel();
+    this.findCommentsTask.perform();
   }
 
   @action
@@ -56,7 +58,6 @@ export default class CommentsComponent extends Component {
   @action
   removeComment(commentId) {
     const comToDelete = this.store.peekRecord('comment', commentId);
-    //alert is to remove, but I have to find solution to remove it from page in real time (without page reload)
-    comToDelete.destroyRecord().then(() => alert('Deleted'));
+    comToDelete.destroyRecord().then(() => this.findCommentsTask.perform());
   }
 }
