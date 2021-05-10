@@ -14,9 +14,7 @@ export default class UserProfileComponent extends Component {
   @service firebase;
 
   @alias('findUserDataTask.lastSuccessful.value') userData;
-  @alias('currentUser.displayName') currentName;
 
-  @tracked isNotGoogleUser = true;
   @tracked currentUser;
   @tracked isUpdate = true;
 
@@ -42,17 +40,6 @@ export default class UserProfileComponent extends Component {
   @task({ restartable: true }) *findUserDataTask() {
     const users = yield this.store.findAll('user');
     let [res] = users.filter((user) => user.email == this.currentUser.email);
-    if (!res) {
-      this.isNotGoogleUser = false;
-      res = {};
-      let spaceIndex = this.currentName.indexOf(' ');
-      res.name = this.currentName.slice(0, spaceIndex);
-      res.surname = this.currentName.slice(
-        spaceIndex + 1,
-        this.currentName.length
-      );
-      res.email = this.currentUser.email;
-    }
     return res;
   }
 
@@ -221,13 +208,13 @@ export default class UserProfileComponent extends Component {
         });
     }
 
-    if (data.avatar?.size) {
+    if (data.photoURL?.size) {
       const storageRef = this.firebase
         .storage()
         .ref('pictures' + this.currentUser.uid);
 
       storageRef
-        .put(data.avatar)
+        .put(data.photoURL)
         .then(() => {
           console.log('Uploaded a blob or file!');
 
@@ -239,7 +226,7 @@ export default class UserProfileComponent extends Component {
             this.store
               .findRecord('user', this.userData.id)
               .then(function (user) {
-                user.avatar = url;
+                user.photoURL = url;
                 user.save();
               });
           });

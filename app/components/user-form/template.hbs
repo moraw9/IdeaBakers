@@ -15,13 +15,14 @@
     @changesetError={{@changeset.error}}
     @placeholder={{@userData}}
   />
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input type="email" class="form-control" id="email" placeholder="{{@userData.email}}" name="email" onchange={{fn this.setValue}}>
-    {{#if @changeset.error.email}}
-      <p class="text-danger">{{@changeset.error.email.validation}}</p>
-    {{/if}}
-  </div>
+    <UserForm::Field
+    @label='Email'
+    @type='email'
+    @name='email'
+    @placeholder={{@userData}}
+    @onChange={{this.setValue}}
+    @changesetError={{@changeset.error}}
+  />
   <UserForm::Field
     @label='Password'
     @type='password'

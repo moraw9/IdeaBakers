@@ -35,11 +35,9 @@
                   <div class="user-data">{{this.userData.email}}</div>
                 </div>
               </div>
-              {{#if this.isNotGoogleUser}}
-                <div class="button-wrapper">
-                  <button type="button" onclick={{fn this.toggleUpdate }} class="btn edit-button btn-primary">Edit<i class="fas fa-pencil-alt"></i></button>
-                </div>
-              {{/if}}              
+              <div class="button-wrapper">
+                <button type="button" onclick={{fn this.toggleUpdate}} class="btn edit-button btn-primary">Edit<i class="fas fa-pencil-alt"></i></button>
+              </div>           
             {{else}}
             <UserForm @userData={{this.userData}} @toggleState={{this.toggleUpdate}} @setDataToUpdate={{fn this.setDataToUpdate}} @changeset={{this.changeset}}/>
             {{/if}}

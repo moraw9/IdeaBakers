@@ -37,6 +37,6 @@ export default class UserFormComponent extends Component {
   }
   @action
   encodeImageFileAsURL({ target: { files } }) {
-    this.data.avatar = files[0];
+    this.data.photoURL = files[0];
   }
 }
