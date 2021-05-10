@@ -55,7 +55,6 @@
     "ember-page-title": "^6.2.1",
     "ember-qunit": "^5.1.2",
     "ember-resolver": "^8.0.2",
-    "ember-service-worker": "^9.0.1",
     "ember-simple-auth": "^3.1.0",
     "ember-source": "~3.25.1",
     "ember-template-lint": "^2.21.0",
@@ -71,8 +70,7 @@
     "prettier": "^2.2.1",
     "qunit": "^2.14.0",
     "qunit-dom": "^1.6.0",
-    "sass": "^1.32.8",
-    "torii": "^0.10.1"
+    "sass": "^1.32.8"
   },
   "engines": {
     "node": "10.* || >= 12"

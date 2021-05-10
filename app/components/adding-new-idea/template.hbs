@@ -31,8 +31,8 @@
               {{/if}}
             </div>
             <div class="form-group">
-              <label for="imageURL">Image in Base64 String:</label>
-              <input type="text" class="form-control" id="imageURL" placeholder="Enter image" name="imageURL" value={{this.changeset.imageURL}} onchange={{this.setValue}} >
+              <label for="imageURL">Image:</label>
+              <input type="file" class="imageURL" id="imageURL" name="imageURL" accept="image/png, image/jpeg" onchange={{this.setValue}} >
               {{#if this.changeset.error.imageURL}}
                 <p class="text-danger">{{this.changeset.error.imageURL.validation}}</p>
               {{/if}}
