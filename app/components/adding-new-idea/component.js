@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 import { Changeset } from 'ember-changeset';
 import lookupValidator from 'ember-changeset-validations';
 import IdeaValidators from '../../validations/idea';
@@ -10,11 +11,14 @@ export default class AddingNewIdeaComponent extends Component {
   @service store;
   @service firebase;
 
+  @tracked changeset;
+
   constructor() {
     super(...arguments);
-    this.createChangeset();
   }
-  createChangeset() {
+
+  @action
+  openModal() {
     this.ideaModel = this.store.createRecord('idea');
     this.changeset = new Changeset(
       this.ideaModel,
@@ -24,12 +28,19 @@ export default class AddingNewIdeaComponent extends Component {
   }
 
   @action
+  closeModal() {
+    document.getElementById('imageURL').value = null;
+    this.ideaModel.deleteRecord();
+  }
+
+  @action
   setValue({ target: { name, value, files } }) {
     this.changeset[name] = value;
     if (name === 'imageURL') {
       this.changeset[name] = files[0];
     }
   }
+
   @task({ restartable: true }) *setImageURLTask() {
     if (typeof this.changeset.imageURL === 'undefined') return;
 
@@ -61,23 +72,8 @@ export default class AddingNewIdeaComponent extends Component {
         this.changeset.save().then(() => {
           document.getElementById('closeModalButton').click();
           alert('Congratulations! The idea has been added successfully!');
-          this.createChangeset();
-          this.rollback();
         });
       }
     });
-  }
-
-  @action
-  clear() {
-    document.querySelectorAll('input').forEach((input) => (input.value = ''));
-    document.querySelector('textarea').value = '';
-  }
-
-  @action
-  rollback() {
-    document.querySelectorAll('input').forEach((input) => (input.value = ''));
-    document.querySelector('textarea').value = '';
-    this.changeset.rollback();
   }
 }

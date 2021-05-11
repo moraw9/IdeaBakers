@@ -2,7 +2,7 @@
   <div class="new-idea-content-wrapper">
     <h4>Do you have a brilliant idea? Do you want to share it with a wide group of people who love creativity? You lack funds for its implementation?</h4>
     <h3>Add your own idea and watch your dreams come true every day!</h3>
-    <button type="button" class="btn" data-toggle="modal" data-target="#myModal"><i class="far fa-plus-square"></i>Add your own idea</button>
+    <button type="button" class="btn" data-toggle="modal" data-target="#myModal" onclick={{this.openModal}}><i class="far fa-plus-square"></i>Add your own idea</button>
   </div>
 </div>
   <div class="modal" id="myModal">
@@ -49,7 +49,7 @@
         
         <div class="modal-footer">
           <button type="button" class="btn btn-success button" onclick={{this.addIdea}}>Add!</button>
-          <button type="button" class="btn btn-danger" id="closeModalButton" data-dismiss="modal" onclick={{this.rollback}}>Close</button>
+          <button type="button" class="btn btn-danger" id="closeModalButton" data-dismiss="modal" onclick={{this.closeModal}}>Close</button>
         </div>
         
       </div>
