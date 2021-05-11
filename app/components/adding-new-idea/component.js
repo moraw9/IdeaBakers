@@ -65,6 +65,7 @@ export default class AddingNewIdeaComponent extends Component {
   async addIdea() {
     await this.setImageURLTask.perform();
     this.changeset.user = this.args.currentUser.displayName;
+    this.changeset.userUID = this.args.currentUser.uid;
     this.changeset.imageURL = this.setImageURLTask.lastSuccessful.value;
 
     this.changeset.validate().then(() => {
