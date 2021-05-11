@@ -1,0 +1,20 @@
+<div class="list-wrapper">
+  <header>
+    <h3>List of your added idea</h3>
+  </header>
+  <div class="list-content">
+    {{#if (gt this.userIdeasList.length 1) }}
+      <ul>
+        {{#each this.userIdeasList as |idea|}}
+          <li>
+            <LinkTo @route="idea-details" @model={{idea.id}}>
+              {{idea.title}}
+            </LinkTo>
+          </li>
+        {{/each}}
+      </ul>
+    {{else}}
+      <p>You don't add any idea yet...</p>
+    {{/if}}
+  </div>
+</div>

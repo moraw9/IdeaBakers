@@ -45,6 +45,9 @@
         </div>
       </div> 
     </div>
+    <div class="col-12 user-own-ideas-col">
+      <UserProfile::ListOfOwnIdeas @currentUser={{this.currentUser}} />
+    </div>
   </div>
   {{!-- template-lint-disable no-inline-styles --}}
   <button type="button" id="openModalButton" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="display:none;" >click</button>
