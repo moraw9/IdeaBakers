@@ -7,6 +7,5 @@ export default class Router extends EmberRouter {
 Router.map(function () {
   this.route('idea-details', { path: '/ideas/:id' });
   this.route('log-in', { path: '/LogIn' });
-  // this.route('log-in');
   this.route('user-profile', { path: '/profile' });
 });

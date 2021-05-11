@@ -15,7 +15,7 @@
     @changesetError={{@changeset.error}}
     @placeholder={{@userData}}
   />
-    <UserForm::Field
+  <UserForm::Field
     @label='Email'
     @type='email'
     @name='email'
@@ -25,27 +25,27 @@
     @disabled={{@disableEmail}}
   />
   {{#unless @isGoogleUser}}
-      <UserForm::Field
-    @label='Password'
-    @type='password'
-    @name='pswd'
-    @onChange={{this.setValue}}
-    @changesetError={{@changeset.error}}
-  />
-  <UserForm::Field
-    @label='Repeat password'
-    @type='password'
-    @name='rpswd'
-    @onChange={{this.setValue}}
-    @changesetError={{@changeset.error}}
-  />
+    <UserForm::Field
+      @label='Password'
+      @type='password'
+      @name='pswd'
+      @onChange={{this.setValue}}
+      @changesetError={{@changeset.error}}
+    />
+    <UserForm::Field
+      @label='Repeat password'
+      @type='password'
+      @name='rpswd'
+      @onChange={{this.setValue}}
+      @changesetError={{@changeset.error}}
+    />
   {{/unless}}
 
   {{#if @userData}}
     <div class="form-group">
-    <label for="avatar">Your avatar</label>
-    <input type="file" class="avatar" id="avatar" name="avatar" accept="image/png, image/jpeg" onchange={{fn this.encodeImageFileAsURL}}>
-  </div>
+      <label for="avatar">Your avatar</label>
+      <input type="file" class="avatar" id="avatar" name="avatar" accept="image/png, image/jpeg" onchange={{fn this.encodeImageFileAsURL}}>
+    </div>
   {{/if}}
   <div class="button-wrapper">
     <button type="button" class="btn btn btn-success button" onclick={{fn this.sendData}}>Save</button>

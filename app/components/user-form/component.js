@@ -22,18 +22,22 @@ export default class UserFormComponent extends Component {
     this.args.changeset.rollback();
     let inputs = document.querySelectorAll('input');
     inputs.forEach((input) => (input.value = ''));
+
     if (typeOf(this.args.toggleState) === 'function') {
       this.args.toggleState();
     }
   }
+
   @action
   setValue({ target: { name, value } }) {
     this.data[name] = value;
   }
+
   @action
   sendData() {
     this.args.setDataToUpdate(this.data);
   }
+
   @action
   encodeImageFileAsURL({ target: { files } }) {
     this.data.photoURL = files[0];
