@@ -18,6 +18,7 @@ module.exports = function (defaults) {
 
   app.import('vendor/ember-firebase-service/firebase/firebase-auth.js');
   app.import('vendor/ember-firebase-service/firebase/firebase-firestore.js');
+  app.import('vendor/ember-firebase-service/firebase/firebase-storage.js');
 
   return app.toTree();
 };

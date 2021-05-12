@@ -1,0 +1,77 @@
+<NavBar @isHomePage={{false}} @userName={{this.userData.name}}/>
+<div class="container">
+  <div class="row no-gutters user-data-row">
+    <div class="col-11 col-sm-10 col-md-6 user-data-col">
+      <div class="card user-card">
+        <div class="card-image-wrapper">
+          <img src="assets/images/red-background.jpg" class="img-fluid" alt="background img">
+          <div class="icon-wrapper rounded-circle">
+            {{#if this.currentUser.photoURL}}
+            <img alt='user avatar' src={{this.currentUser.photoURL}} >
+            {{else}}
+            <i class="far fa-user"></i>
+            {{/if}}
+          </div>
+        </div>      
+        <div class="container user-data-content">
+          {{#if this.findUserDataTask.isRunning}}
+          <div class="spinner-wrapper">
+            <div class="spinner-border"></div>
+          </div>
+          {{/if}}
+          {{#if this.userData.name}}
+            {{#if this.isUpdate}}
+              <div class="user-information-wrapper">
+                <div class="data-group">
+                  <div class="label">Name</div>
+                  <div class="user-data">{{this.userData.name}}</div>
+                </div>
+                <div class="data-group">
+                  <div class="label">Surname</div>
+                  <div class="user-data">{{this.userData.surname}}</div>
+                </div>
+                <div class="data-group">
+                  <div class="label">Email</div>
+                  <div class="user-data">{{this.userData.email}}</div>
+                </div>
+              </div>
+              <div class="button-wrapper">
+                <button type="button" onclick={{fn this.toggleUpdate}} class="btn edit-button btn-primary">Edit<i class="fas fa-pencil-alt"></i></button>
+              </div>           
+            {{else}}
+            <UserForm @userData={{this.userData}} @toggleState={{this.toggleUpdate}} @setDataToUpdate={{fn this.setDataToUpdate}} @changeset={{this.changeset}} @isGoogleUser={{this.isGoogleUser}} @disableEmail={{true}} />
+            {{/if}}
+          {{/if}} 
+        </div>
+      </div> 
+    </div>
+    <div class="col-12 user-own-ideas-col">
+      <UserProfile::ListOfOwnIdeas @currentUser={{this.currentUser}} />
+    </div>
+  </div>
+  {{!-- template-lint-disable no-inline-styles --}}
+  <button type="button" id="openModalButton" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="display:none;" >click</button>
+
+  <div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <div class="modal-header">
+          <h6 class="modal-title">Please provide your password for reauthentication</h6>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+          <input type='password' id='reauthenticatedPasswordInput'>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" id="confirmReauthenticateButton" class="btn btn-success" onclick={{this.reauthenticate}}>Ok</button>
+          <button type="button" id="closeModalButton" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+</div>
