@@ -24,17 +24,18 @@ export default class UserProfileComponent extends Component {
 
     this.load();
     this.findUserDataTask.perform();
+  }
 
+  load() {
+    this.currentUser = this.firebase.auth().currentUser;
+  }
+  createChangeset() {
     this.userModel = this.store.createRecord('user');
     this.changeset = new Changeset(
       this.userModel,
       lookupValidator(RegisterValidators),
       RegisterValidators
     );
-  }
-
-  load() {
-    this.currentUser = this.firebase.auth().currentUser;
   }
 
   @task({ restartable: true }) *findUserDataTask() {
@@ -46,7 +47,14 @@ export default class UserProfileComponent extends Component {
 
   @action
   toggleUpdate() {
+    if (this.isUpdate) {
+      this.createChangeset();
+    }
     this.isUpdate = !this.isUpdate;
+  }
+  @action
+  deleteModel() {
+    this.userModel.destroyRecord();
   }
 
   @action
