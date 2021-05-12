@@ -18,7 +18,7 @@
         </form>
       {{/if}}
       {{#if (and (not this.isOpen) (not this.isMine) this.session.isAuthenticated)}}
-        <button type="button" class="btn btn-primary" onclick={{this.openVoteForm}}>Add vote!</button>
+        <button type="button" class="btn btn-primary" id="addVoteButton" onclick={{this.openVoteForm}}>Add vote!</button>
       {{/if}}
     </div>
   </div>
