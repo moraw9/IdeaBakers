@@ -1,0 +1,110 @@
+.user-data-row {
+  margin: auto;
+  margin-top: 30px;
+  
+  .user-data-col {
+    margin: auto;
+
+    .card.user-card {
+      width: 100%;
+      margin-bottom: 30px;
+
+      .card-image-wrapper {
+
+        img {
+          max-height: 150px;
+          width: 100%;
+          object-fit: cover;
+          position: relative;
+        }
+  
+        .icon-wrapper {
+          width: 10rem;
+          height: 10rem;
+          position: relative;
+          background-color: #4e1e1e;
+          display: flex;
+          align-items: center;
+          margin: auto;
+          transform: translateY(-50%);
+          overflow: hidden;
+
+          i {
+            margin: auto;
+            font-size: 5rem;
+            color: white;
+          }
+
+          img {
+            width: 100%;
+            object-fit: cover;
+
+          }
+        }
+      }
+
+      .user-data-content {
+        transform: translateY(-4rem);
+        width: 100%;
+
+        .spinner-wrapper {
+          display: flex;
+          align-items: center;
+          .spinner-border {
+            margin: auto;
+          }
+        }
+
+        .user-information-wrapper {
+
+          .data-group {
+            margin-bottom: 20px;
+            background-color: whitesmoke;
+            border-radius: 5px;
+
+            .label {
+              border-left: 5px solid #4e1e1e;
+              padding: 3px 0px 3px 15px;
+              font-size: 1.1rem;
+              font-weight: 500;
+              border-bottom: 2px solid #80808026;
+            }
+
+            .user-data {
+              border-right: 5px solid #081bff;
+              text-align: center;
+              padding: 3px 0;
+              font-size: 1.3rem;
+              box-shadow: 2px 3px 3px #928585f2;
+            }
+          }
+        }
+        
+        .button-wrapper {
+          display: flex;
+          align-items: center;
+          flex-direction: row;
+
+          .btn {
+            margin: auto;
+          }
+
+          .edit-button {
+            background-color: #081bffd9;
+            border-color: #081bff;
+            color: white;
+            margin: auto;
+            
+            i {
+              padding-left: 5px;
+            }
+
+            &:hover {
+              background-color: #1929f1b5;
+            }
+          }
+        }
+      }
+    }
+  } 
+}
