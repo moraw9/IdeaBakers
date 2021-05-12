@@ -16,6 +16,7 @@ export default class KudosComponent extends Component {
   @tracked numberOfVotes;
   @tracked isOpen = false;
   @tracked changeset = false;
+  @tracked isMine;
 
   constructor() {
     super(...arguments);
@@ -26,19 +27,27 @@ export default class KudosComponent extends Component {
 
   @task({ restartable: true }) *findVotesTask() {
     const votes = yield this.store.findAll('kudo');
-    this.votes = votes.filter((vote) => vote.projectID === this.ideaID);
+    this.votes = votes.filter(
+      (vote) => vote.ideaID == this.args.idea.get('id')
+    );
+
     this.sumVotes();
   }
 
   @task({ restartable: true }) *findUsersTask() {
     this.users = yield this.store.findAll('user');
     this.findUserRecord();
+    this.isMine = this.checkIfMine();
   }
 
   findUserRecord() {
     [this.userRecord] = this.users.filter(
       (user) => user.email == this.currentUser.email
     );
+  }
+
+  checkIfMine() {
+    return this.args.idea.get('userUID') === this.currentUser.uid;
   }
 
   sumVotes() {
@@ -78,14 +87,14 @@ export default class KudosComponent extends Component {
 
   @action
   vote() {
-    this.changeset.ideaID = this.args.ideaID;
+    this.changeset.ideaID = this.args.idea.get('id');
     this.changeset.userRecordID = this.userRecord.id;
     this.changeset.date = new Date().getTime();
     this.changeset.validate().then(() => {
       if (this.changeset.get('isValid')) {
         this.changeset.save().then(() => {
           this.clearForm();
-          alert(`${this.args.author} Thank you for voiting!`);
+          alert(`${this.args.idea.get('user')} Thank you for voiting!`);
           this.findVotesTask.perform();
         });
       }

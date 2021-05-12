@@ -1,6 +1,6 @@
 <div class="kudos-wrapper row no-gutters">
   <div class="information-about-kudos-col col-12 col-md-5">
-    <h4>Votes for this project:<span>{{this.numberOfVotes}}/{{@projectNumberOfKudos}}</span></h4>
+    <h4>Votes for this project:<span>{{this.numberOfVotes}}/{{@idea.numberOfKudos}}</span></h4>
     <div class="vote-wrapper">
       {{#if this.isOpen}}
         <form>
@@ -17,7 +17,7 @@
           </div>
         </form>
       {{/if}}
-      {{#if (and (not this.isOpen) this.session.isAuthenticated)}}
+      {{#if (and (not this.isOpen) (not this.isMine) this.session.isAuthenticated)}}
         <button type="button" class="btn btn-primary" onclick={{this.openVoteForm}}>Add vote!</button>
       {{/if}}
     </div>
