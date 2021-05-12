@@ -1,6 +1,7 @@
 <NavBar />
 <div class="body">
   <Header />
+  <Details::Kudos @ideaID={{this.model.id}} @projectNumberOfKudos={{this.model.numberOfKudos}} @author={{this.model.user}} @idea={{this.model}} />
   <div class="details-wrapper">
     <div class="card">
       <h1 class="flexible">{{this.model.title}}</h1>

@@ -6,7 +6,7 @@ import {
 } from 'ember-changeset-validations/validators';
 
 export default {
-  name: [validatePresence(true), validateLength({ min: 3 }, { max: 15 })],
+  name: [validatePresence(true), validateLength({ min: 3, max: 15 })],
   surname: validatePresence(true),
   email: [validatePresence(true), validateFormat({ type: 'email' })],
   pswd: [
