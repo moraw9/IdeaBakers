@@ -22,6 +22,5 @@ export default class VoteComponent extends Component {
       (user) => user.id === this.args.vote.userRecordID
     );
     this.user = res;
-    console.log('this.user', this.user);
   }
 }

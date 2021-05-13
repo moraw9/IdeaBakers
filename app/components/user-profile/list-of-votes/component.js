@@ -22,7 +22,6 @@ export default class ListOfVotesComponent extends Component {
       (user) => user.email == this.args.currentUser.email
     );
     this.userRecord = res;
-    console.log(' this.userRecord in firning task', this.userRecord);
   }
 
   @task({ restartable: true }) *findUserVotesTask() {

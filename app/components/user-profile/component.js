@@ -122,6 +122,7 @@ export default class UserProfileComponent extends Component {
 
   async updateData(data) {
     let isOk = true;
+
     if (data.pswd) {
       this.currentUser
         .updatePassword(data.pswd)

@@ -18,6 +18,7 @@ export default class KudosComponent extends Component {
   @tracked changeset = false;
   @tracked isMine;
   @tracked sumYourVotes;
+  @tracked percent;
 
   constructor() {
     super(...arguments);
@@ -41,9 +42,10 @@ export default class KudosComponent extends Component {
   }
 
   findUserRecord() {
-    [this.userRecord] = this.users.filter(
+    const [res] = this.users.filter(
       (user) => user.email == this.currentUser.email
     );
+    this.userRecord = res;
   }
 
   checkIfMine() {
@@ -65,8 +67,22 @@ export default class KudosComponent extends Component {
     this.sumYourVotes = sumYourVotes;
     this.difference = 5 - this.sumYourVotes;
 
-    if (this.difference == 0) {
+    if (this.userRecord.userKudos === 0 || this.difference === 0) {
       document.getElementById('addVoteButton').disabled = true;
+    }
+
+    this.setValueToBar();
+  }
+
+  setValueToBar() {
+    this.percent = Math.round(
+      (this.numberOfVotes * 100) / this.args.idea.get('numberOfKudos')
+    );
+    document.querySelector('.value').textContent = `${this.percent}%`;
+    if (this.percent > 100) {
+      document.querySelector('.progress-bar').style.width = `100%`;
+    } else {
+      document.querySelector('.progress-bar').style.width = `${this.percent}%`;
     }
   }
 
@@ -97,21 +113,34 @@ export default class KudosComponent extends Component {
     this.isOpen = false;
   }
 
+  updateUserKudos() {
+    this.store.findRecord('user', this.userRecord.id).then((user) => {
+      user.userKudos = this.userRecord.userKudos - this.changeset.numberOfVotes;
+      user.save();
+    });
+  }
+
   @action
   vote() {
-    if (this.difference >= this.changeset.numberOfVotes) {
+    if (
+      this.userRecord.userKudos >= this.changeset.numberOfVotes &&
+      this.difference >= this.changeset.numberOfVotes
+    ) {
       this.changeset.ideaID = this.args.idea.get('id');
       this.changeset.userRecordID = this.userRecord.id;
       this.changeset.date = new Date().getTime();
       this.changeset.validate().then(() => {
         if (this.changeset.get('isValid')) {
           this.changeset.save().then(() => {
-            this.clearForm();
-            alert(`${this.args.idea.get('user')} Thank you for voiting!`);
+            alert(`${this.args.idea.get('user')} thanks you for voiting!`);
+            this.updateUserKudos();
             this.findVotesTask.perform();
           });
+          this.clearForm();
         }
       });
+    } else if (this.userRecord.userKudos < this.changeset.numberOfVotes) {
+      alert(`You have only ${this.userRecord.userKudos} kudos to give`);
     } else {
       alert(`You can give max ${this.difference} kudos!`);
     }
