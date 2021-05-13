@@ -19,7 +19,10 @@ export default class UserFormComponent extends Component {
 
   @action
   cancel() {
-    this.args.changeset.rollback();
+    if (typeOf(this.args.deleteModel) === 'function') {
+      this.args.deleteModel();
+    }
+
     let inputs = document.querySelectorAll('input');
     inputs.forEach((input) => (input.value = ''));
 

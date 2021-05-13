@@ -1,0 +1,125 @@
+.kudos-wrapper {
+  margin: 15px 0;
+  border-left: 5px solid #841919;
+  background-color: #9c646442;
+
+  .information-about-kudos-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px auto;
+    width: 95%;
+    border-radius: 4px;
+    background-color:white;
+    border: 2px solid #bdb6b6;
+
+    .content-wrapper {
+      width: 100%;
+
+      header {
+        background-color: #cc9999;
+        h4 {
+          text-align: center;
+          font-weight: 900;
+          padding: 10px 15px;
+          color: white;
+        }
+      }
+      
+      .progress-wrapper {
+        padding: 0 5px;
+
+        .progress {
+          display: block;
+
+          .progress-bar {
+            height: 100%;
+          }
+          .value {
+            position: relative;
+            bottom: 50%;
+            left: 50%;
+            font-weight: 700;
+          }
+        }
+      }
+
+     
+      .vote-wrapper {
+        display: flex;
+        margin-top: 20px;
+        align-items: center;
+
+        form {
+          padding: 10px;
+          background-color: #ece7e7;;
+          border-radius: 4px;
+          margin: 15px auto;
+  
+          label {
+            font-size: 1rem;
+            border-left: 2px solid #070731;
+            background-color: #fbf9f9;
+            padding: 5px;
+            color: #070731;
+          }
+          .button-wrapper {
+            display: flex;
+  
+            .btn {
+              margin: auto;
+            }
+          }
+        }
+
+        #addVoteButton {
+          margin: 10px auto;
+        }
+      }
+    }
+  }
+
+  .user-list-wrapper {
+    width: 70%;
+    margin: 20px auto;
+    background-color: white;
+    border: 2px solid #bdb6b6;
+
+    @media(max-width: 900px) {
+      width: 80%;
+    }
+
+    header {
+      background-color: #a23232;
+
+      h5 {
+        font-weight: 900;
+        padding: 10px 15px;
+        color: white;
+        text-align: center;
+  
+      }
+    }
+
+    .list-content {
+      width: 100%;
+      max-height: 200px;
+      overflow: auto;
+
+      .vote {
+        background-color: whitesmoke;
+        padding: 5px 10px;
+
+        img {
+          width: 40px;
+          height: 40px;
+          object-fit: cover;
+        }
+      }
+
+      p {
+        padding-left: 10px;
+      }
+    }
+  }
+}

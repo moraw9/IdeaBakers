@@ -12,10 +12,10 @@ export default class ListOfOwnIdeasComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.findUserIdeasaTask.perform();
+    this.findUserIdeasTask.perform();
   }
 
-  @task({ restartable: true }) *findUserIdeasaTask() {
+  @task({ restartable: true }) *findUserIdeasTask() {
     const ideas = yield this.store.findAll('idea');
     this.userIdeasList = ideas.filter(
       (idea) => idea.userUID == this.args.currentUser.uid

@@ -1,3 +1,20 @@
+.kudos-information-wrapper {
+  margin: 20px auto;
+
+  h3 {
+    text-align: center;
+
+    span {
+      margin: .3rem;
+      background: linear-gradient( 55deg, red 0%, #b41414 28%, #7c0e0e 65%, #410a0a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+      font-weight: 900;
+    }
+  }
+}
+
 .user-data-row {
   margin: auto;
   margin-top: 30px;

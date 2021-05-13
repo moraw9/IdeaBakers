@@ -1,5 +1,9 @@
 <nav class="menu">
-  <div class=" logo">IdeaBakers</div>
+  <div class="logo">
+    <LinkTo @route="index">
+      IdeaBakers
+    </LinkTo>
+  </div>
   <div class="main-menu">
     <div class="items-wrapper">
       {{#if @isHomePage}}

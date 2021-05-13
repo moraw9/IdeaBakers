@@ -6,4 +6,5 @@ export default class UserModel extends Model {
   @attr('string', { defaultValue: null }) photoURL;
   @attr('string') pswd;
   @attr('string') rpswd;
+  @attr('number', { defaultValue: 35 }) userKudos;
 }

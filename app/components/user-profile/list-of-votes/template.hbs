@@ -1,0 +1,16 @@
+<div class="list-wrapper">
+  <header>
+    <h3>List of your votes</h3>
+  </header>
+  <div class="list-content">
+    {{#if (gt this.userVotesList.length 1) }}
+      {{#each (sort-by 'date:desc' this.userVotesList) as |vote|}}
+        <div class="item-wrapper">
+          <UserProfile::ListOfVotes::Vote @vote={{vote}} />
+        </div>
+      {{/each}}
+    {{else}}
+      <p>You don't give any kudos yet...</p>
+    {{/if}}
+  </div>
+</div>
