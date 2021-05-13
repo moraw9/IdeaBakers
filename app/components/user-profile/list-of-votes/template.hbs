@@ -4,7 +4,7 @@
   </header>
   <div class="list-content">
     {{#if (gt this.userVotesList.length 1) }}
-      {{#each this.userVotesList as |vote|}}
+      {{#each (sort-by 'date:desc' this.userVotesList) as |vote|}}
         <div class="item-wrapper">
           <UserProfile::ListOfVotes::Vote @vote={{vote}} />
         </div>

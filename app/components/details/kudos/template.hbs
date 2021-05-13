@@ -1,26 +1,43 @@
 <div class="kudos-wrapper row no-gutters">
-  <div class="information-about-kudos-col col-12 col-md-5">
-    <h4>Votes for this project:<span>{{this.numberOfVotes}}/{{@idea.numberOfKudos}}</span></h4>
-    <div class="vote-wrapper">
-      {{#if this.isOpen}}
-        <form>
-          <div class="form-group">
-            <label for="numberOfVotes">Number of votes (between 1 and 5):</label>
-            <input type="number" class="form-control" id="numberOfVotes" name="numberOfVotes"  min="1" max="5" onchange={{this.setValue}} >
-            {{#if this.changeset.error.numberOfVotes}}
-              <p class="text-danger">{{this.changeset.error.numberOfVotes.validation}}</p>
-            {{/if}}
-          </div>
-          <div class="button-wrapper">
-            <button type="button" class="btn btn btn-success button" onclick={{this.vote}}>Vote</button>
-            <button type="button" id="cancelForm" class="btn btn-danger button" onclick={{this.closeVoteForm}} >Cancel</button>
-          </div>
-        </form>
-      {{/if}}
-      {{#if (and (not this.isOpen) (not this.isMine) this.session.isAuthenticated)}}
-        <button type="button" class="btn btn-primary" id="addVoteButton" onclick={{this.openVoteForm}}>Add vote!</button>
-      {{/if}}
+  <div class="information-about-kudos-col col-sm-12 col-md-5">
+    <div class="information-about-kudos-wrapper">
+      <h4>Votes for this project:<span>{{this.numberOfVotes}}/{{@idea.numberOfKudos}}</span></h4>
+      <div class="vote-wrapper">
+        {{#if this.isOpen}}
+          <form>
+            <div class="form-group">
+              <label for="numberOfVotes">Number of votes (between 1 and 5):</label>
+              <input type="number" class="form-control" id="numberOfVotes" name="numberOfVotes"  min="1" max="5" onchange={{this.setValue}} >
+              {{#if this.changeset.error.numberOfVotes}}
+                <p class="text-danger">{{this.changeset.error.numberOfVotes.validation}}</p>
+              {{/if}}
+            </div>
+            <div class="button-wrapper">
+              <button type="button" class="btn btn btn-success button" onclick={{this.vote}}>Vote</button>
+              <button type="button" id="cancelForm" class="btn btn-danger button" onclick={{this.closeVoteForm}} >Cancel</button>
+            </div>
+          </form>
+        {{/if}}
+        {{#if (and (not this.isOpen) (not this.isMine) this.session.isAuthenticated) }}
+          <button type="button" class="btn btn-primary" id="addVoteButton" onclick={{this.openVoteForm}}>Add vote!</button>
+        {{/if}}
+      </div>
     </div>
   </div>
-  <div class="information-about-users-col col-12 col-md-7"></div>
+  <div class="information-about-users-col col-sm-12 col-md-7">
+    <div class="user-list-wrapper">
+      <header>
+        <h5>list of votes cast</h5>
+      </header>
+      <div class="list-content">
+        {{#if (gt this.votes.length 1) }}
+          {{#each (sort-by 'date:desc' this.votes) as |vote|}}
+          <Details::Kudos::Vote @vote={{vote}} />
+          {{/each}}
+        {{else}}
+          <p>This idea doesn't have any votes :(</p>
+        {{/if}}
+      </div>
+    </div>
+  </div>
 </div>
