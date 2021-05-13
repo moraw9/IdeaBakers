@@ -1,6 +1,7 @@
 import { helper } from '@ember/component/helper';
 
 function getExcerpt([string]) {
+  if (!string) return '';
   return string
     .slice(0, string.length >= 300 ? 300 : string.length)
     .concat('...');

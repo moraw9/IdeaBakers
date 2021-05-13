@@ -1,0 +1,57 @@
+<div class="new-idea-button-wraper" >
+  <div class="new-idea-content-wrapper">
+    <h4>Do you have a brilliant idea? Do you want to share it with a wide group of people who love creativity? You lack funds for its implementation?</h4>
+    <h3>Add your own idea and watch your dreams come true every day!</h3>
+    <button type="button" class="btn" data-toggle="modal" data-target="#myModal" onclick={{this.openModal}}><i class="far fa-plus-square"></i>Add your own idea</button>
+  </div>
+</div>
+  <div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <div class="modal-header">
+          <h4 class="modal-title">Enter your project information</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="name">Project title:</label>
+              <input type="text" class="form-control" id="title" placeholder="Enter project title" name="title" value={{this.changeset.title}} onchange={{this.setValue}} >
+              {{#if this.changeset.error.title}}
+                <p class="text-danger">{{this.changeset.error.title.validation}}</p>
+              {{/if}}
+            </div>
+            <div class="form-group">
+              <label for="description">Description:</label>
+              <textarea id="description" class="form-control" name="description" placeholder="Enter description" value={{this.changeset.description}} onchange={{this.setValue}} rows="20" cols="50"></textarea>
+              {{#if this.changeset.error.description}}
+                <p class="text-danger">{{this.changeset.error.description.validation}}</p>
+              {{/if}}
+            </div>
+            <div class="form-group">
+              <label for="imageURL">Image:</label>
+              <input type="file" class="imageURL" id="imageURL" name="imageURL" accept="image/png, image/jpeg" onchange={{this.setValue}} >
+              {{#if this.changeset.error.imageURL}}
+                <p class="text-danger">{{this.changeset.error.imageURL.validation}}</p>
+              {{/if}}
+            </div>
+            <div class="form-group">
+              <label for="numberOfKudos">Number of kudos:</label>
+              <input type="number" class="form-control" id="numberOfKudos" placeholder="Enter number of kudos" name="numberOfKudos" value={{this.changeset.numberOfKudos}} onchange={{this.setValue}} >
+              {{#if this.changeset.error.numberOfKudos}}
+                <p class="text-danger">{{this.changeset.error.numberOfKudos.validation}}</p>
+              {{/if}}
+            </div>
+          </form>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success button" onclick={{this.addIdea}}>Add!</button>
+          <button type="button" class="btn btn-danger" id="closeModalButton" data-dismiss="modal" onclick={{this.closeModal}}>Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>

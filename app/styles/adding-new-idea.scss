@@ -1,0 +1,39 @@
+.new-idea-button-wraper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 20px auto;
+  padding: 20px 15px;
+  text-align: center;
+  background-color: #54181869;
+
+  .new-idea-content-wrapper {
+    border-left: 5px solid #841919;
+    background-color: #20020214;
+    padding: 10px 5px;
+
+    h3 {
+      font-weight: 700;
+      color: #4e0909;
+    }
+
+    h4 {
+    color: mintcream;
+    }
+
+    button {
+      background-color: white;
+      border: 2px solid #841919;
+      font-size: 1.3rem;
+      font-weight: 700;
+
+      &:hover {
+        background-color:#d1c8c8;
+      }
+      i {
+      padding-right: 10px;
+      }
+
+    }
+  }
+}
