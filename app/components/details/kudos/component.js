@@ -42,6 +42,8 @@ export default class KudosComponent extends Component {
   }
 
   findUserRecord() {
+    if (!this.currentUser) return;
+
     const [res] = this.users.filter(
       (user) => user.email == this.currentUser.email
     );
@@ -49,6 +51,7 @@ export default class KudosComponent extends Component {
   }
 
   checkIfMine() {
+    if (!this.currentUser) return;
     return this.args.idea.get('userUID') === this.currentUser.uid;
   }
 
@@ -58,7 +61,7 @@ export default class KudosComponent extends Component {
 
     this.votes.forEach((vote) => {
       sum += vote.numberOfVotes;
-      if (vote.userRecordID === this.userRecord.id) {
+      if (this.userRecord && vote.userRecordID === this.userRecord.id) {
         sumYourVotes += vote.numberOfVotes;
       }
     });
@@ -67,11 +70,12 @@ export default class KudosComponent extends Component {
     this.sumYourVotes = sumYourVotes;
     this.difference = 5 - this.sumYourVotes;
 
+    this.setValueToBar();
+
+    if (!this.currentUser) return;
     if (this.userRecord.userKudos === 0 || this.difference === 0) {
       document.getElementById('addVoteButton').disabled = true;
     }
-
-    this.setValueToBar();
   }
 
   setValueToBar() {

@@ -1,6 +1,9 @@
 .menu {
   padding: 20px 5px;
   border: 2px solid #dedada;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 
   .logo {
     text-align: center;
@@ -17,7 +20,7 @@
 
   .main-menu {
     float: right;
-    width: fit-content;
+    width: auto;
 
     .items-wrapper {
       float: right;
