@@ -1,0 +1,10 @@
+<div class="media border p-3">
+  <img src={{if @comment.userPhoto @comment.userPhoto '/assets/images/user.png'}} alt="user" class="mr-3 mt-3 rounded-circle">
+  <div class="media-body">
+    <h4>{{@comment.username}} <small><i>Posted on {{this.date}}</i></small></h4>
+    <p>{{@comment.content}}</p>      
+  </div>
+  {{#if (and @currentUserUID (eq @comment.userUID @currentUserUID)) }}
+    <button type="button" class="btn btn-danger" onclick={{this.removeComment}}><i class="far fa-trash-alt"></i></button>
+  {{/if}}
+</div>

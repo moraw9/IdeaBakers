@@ -14,6 +14,9 @@ module.exports = function (defaults) {
     'ember-cli-string-helpers': {
       only: ['html-safe'],
     },
+    'ember-composable-helpers': {
+      only: ['sort-by'],
+    },
   });
 
   app.import('vendor/ember-firebase-service/firebase/firebase-auth.js');
