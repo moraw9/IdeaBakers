@@ -1,0 +1,17 @@
+<div class="vote-wrapper">
+  <div class="information-wrapper">
+    <h6>Idea title:
+      <span>
+        <LinkTo @route="idea-details" @model={{this.idea.id}}>
+          {{this.idea.title}}
+        </LinkTo>
+      </span>
+    </h6>
+  </div>
+  <div class="information-wrapper">
+    <h6>Date:<span>{{this.voteDate}}</span></h6>
+  </div>
+  <div class="information-wrapper">
+    <h6>Number of kudos:<span>{{@vote.numberOfVotes}}</span></h6>
+  </div>
+</div>

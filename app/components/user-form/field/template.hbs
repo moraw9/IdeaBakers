@@ -1,0 +1,7 @@
+  <div class="form-group">
+    <label for={{@name}} class="label">{{@label}}</label>
+    <input type={{@type}} class="form-control" placeholder={{get @placeholder @name}} id={{@name}} name={{@name}} onchange={{@onChange}} disabled={{@disabled}} >
+    {{#if  (get @changesetError @name) }}
+      <p class="text-danger">{{get @changesetError (concat @name ".validation") }}</p>
+    {{/if}}
+  </div>

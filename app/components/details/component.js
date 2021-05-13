@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 export default class IndexComponent extends Component {
   @service store;
+  @service session;
 
   constructor() {
     super(...arguments);

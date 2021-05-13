@@ -4,4 +4,19 @@ $darkRed: #7c0e0e;
 .page-container {
   max-width: 1920px;
   width: 100%;
+  
+  .body {
+    margin: 0 20px;
+  }
+  
+  .btn-outline-danger {
+    color: $red;
+    border-color: $red;
+  
+    &:hover {
+      color: #fff;
+      background-color: $red;
+      border-color: $red;
+    }
+  }
 }

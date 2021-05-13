@@ -1,0 +1,7 @@
+<div class="vote media border">
+  <img src={{if this.user.photoURL this.user.photoURL '/assets/images/user.png'}} alt="user" class="mr-3 mt-3 rounded-circle" >
+  <div class="media-body">
+    <h5>{{this.user.name}} <small><i>Voted on {{this.voteDate}}</i></small></h5>
+    <p>Gave {{@vote.numberOfVotes}} kudos</p>
+  </div>
+</div>
