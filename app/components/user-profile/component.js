@@ -18,6 +18,7 @@ export default class UserProfileComponent extends Component {
   @tracked currentUser;
   @tracked isUpdate = true;
   @tracked isGoogleUser = false;
+  @tracked changeset;
 
   constructor() {
     super(...arguments);
@@ -189,6 +190,7 @@ export default class UserProfileComponent extends Component {
         });
       });
     }
+
     if (isOk) {
       document.getElementById('cancelForm').click();
       alert('Updated data successfuly');

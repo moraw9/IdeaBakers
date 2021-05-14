@@ -9,9 +9,9 @@
       {{#if @isHomePage}}
         <NavBar::SearchBar @value={{@query}} @onChange={{@setSearchQuery}} />
       {{/if}}
-      {{#if (and this.session.isAuthenticated this.user)}}
+      {{#if (and this.session.isAuthenticated this.userID)}}
       {{this.user.id}}
-        <LinkTo @route="user-profile" @model={{this.user.id}}>
+        <LinkTo @route="user-profile" @model={{this.userID}}>
           <div class="user-profile-link-wrapper btn btn-outline-danger">
             <div class="user-profile-link-content">{{if @userName @userName.displayName this.userName}}<span><i class="far fa-user"></i></span></div>
           </div>

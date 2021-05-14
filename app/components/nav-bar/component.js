@@ -9,7 +9,7 @@ export default class NavBarComponent extends Component {
   @service store;
 
   @tracked userName;
-  @tracked user;
+  @tracked userID;
 
   constructor() {
     super(...arguments);
@@ -22,9 +22,12 @@ export default class NavBarComponent extends Component {
   @task({ restartable: true }) *findUserTask() {
     if (this.session.isAuthenticated) {
       const users = yield this.store.findAll('user');
-      this.user = users.filter((user) => user.email === this.currentUser.email);
+      users.forEach((user) => {
+        if (user.email === this.currentUser.email) {
+          this.userID = user.id;
+        }
+      });
     }
-    console.log(' this.user', this.user);
   }
 
   @action
