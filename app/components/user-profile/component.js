@@ -21,6 +21,7 @@ export default class UserProfileComponent extends Component {
 
   constructor() {
     super(...arguments);
+    this.model = this.store.findRecord('user', this.args.model.id);
 
     this.load();
     this.findUserDataTask.perform();
@@ -40,7 +41,6 @@ export default class UserProfileComponent extends Component {
 
   @task({ restartable: true }) *findUserDataTask() {
     let res;
-
     if (this.args.model) {
       res = this.args.model;
       return res;
@@ -192,6 +192,7 @@ export default class UserProfileComponent extends Component {
     if (isOk) {
       document.getElementById('cancelForm').click();
       alert('Updated data successfuly');
+      this.load();
     }
   }
 }

@@ -13,9 +13,13 @@
   <div class="idea-author">
     <span>Created by: </span>
     <i>
-    <LinkTo @route="user-profile" @otherUser={{this.otherUser}}>
+    {{#if this.session.isAuthenticated}}
+      <LinkTo @route="user-profile" @model={{this.otherUser.id}}>
+        {{this.otherUser.name}}
+      </LinkTo>
+    {{else}}
       {{this.otherUser.name}}
-    </LinkTo>
+    {{/if}}
     </i>
   </div>
 </div>
