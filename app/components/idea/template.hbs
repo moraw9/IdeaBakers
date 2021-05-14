@@ -11,6 +11,11 @@
     {{ getExcerpt @idea.description}}
   </div>
   <div class="idea-author">
-    <span>Created by: </span><i>{{@idea.user}}</i>
+    <span>Created by: </span>
+    <i>
+    <LinkTo @route="user-profile" @otherUser={{this.otherUser}}>
+      {{this.otherUser.name}}
+    </LinkTo>
+    </i>
   </div>
 </div>

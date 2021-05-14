@@ -1,3 +1,4 @@
 {{#if (can "view profile for user" )}}
-  <UserProfile />
+  {{!-- <UserProfile /> --}}
+  <UserProfile  @model={{@otherUser}} />
 {{/if}}

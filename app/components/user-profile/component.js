@@ -39,8 +39,16 @@ export default class UserProfileComponent extends Component {
   }
 
   @task({ restartable: true }) *findUserDataTask() {
+    let res;
+
+    if (this.args.model) {
+      res = this.args.model;
+      return res;
+    }
+
     const users = yield this.store.findAll('user');
-    let [res] = users.filter((user) => user.email == this.currentUser.email);
+    [res] = users.filter((user) => user.email === this.currentUser.email);
+
     if (!res.pswd) this.isGoogleUser = true;
     return res;
   }

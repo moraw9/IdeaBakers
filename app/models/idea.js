@@ -6,4 +6,5 @@ export default class IdeaModel extends Model {
   @attr('string') user;
   @attr('number') numberOfKudos;
   @attr('string') userUID;
+  @attr('string') userRecordID;
 }
