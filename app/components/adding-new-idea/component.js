@@ -12,9 +12,19 @@ export default class AddingNewIdeaComponent extends Component {
   @service firebase;
 
   @tracked changeset;
+  @tracked userRecord;
 
   constructor() {
     super(...arguments);
+    this.findUserRecordTask.perform();
+  }
+
+  @task({ restartable: true }) *findUserRecordTask() {
+    const users = yield this.store.findAll('user');
+    const [res] = users.filter(
+      (user) => user.email === this.args.currentUser.email
+    );
+    this.userRecord = res;
   }
 
   @action
@@ -64,7 +74,7 @@ export default class AddingNewIdeaComponent extends Component {
   @action
   async addIdea() {
     await this.setImageURLTask.perform();
-    this.changeset.user = this.args.currentUser.displayName;
+    this.changeset.userRecordID = this.userRecord.id;
     this.changeset.userUID = this.args.currentUser.uid;
     this.changeset.imageURL = this.setImageURLTask.lastSuccessful.value;
 
