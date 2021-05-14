@@ -20,6 +20,7 @@ export default class IndexComponent extends Component {
 
   get results() {
     let { model, query } = this;
+    model = model.filter((idea) => typeof idea.title !== 'undefined');
     if (query) {
       return model.filter((idea) => idea.title.includes(query));
     }

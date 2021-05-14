@@ -13,6 +13,7 @@ export default class AddingNewIdeaComponent extends Component {
 
   @tracked changeset;
   @tracked userRecord;
+  @tracked ideaModel;
 
   constructor() {
     super(...arguments);
@@ -40,7 +41,7 @@ export default class AddingNewIdeaComponent extends Component {
   @action
   closeModal() {
     document.getElementById('imageURL').value = null;
-    this.ideaModel.deleteRecord();
+    this.ideaModel.destroyRecord();
   }
 
   @action
