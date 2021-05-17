@@ -12,17 +12,17 @@ export default class KudosComponent extends Component {
   @service firebase;
 
   @tracked votes;
-  @tracked users;
   @tracked numberOfVotes;
   @tracked isOpen = false;
   @tracked changeset = false;
   @tracked isMine;
   @tracked sumYourVotes;
   @tracked percent;
+  @tracked userRecord;
 
   constructor() {
     super(...arguments);
-    this.currentUser = this.firebase.auth().currentUser;
+
     this.findUsersTask.perform();
     this.findVotesTask.perform();
   }
@@ -36,15 +36,14 @@ export default class KudosComponent extends Component {
   }
 
   @task({ restartable: true }) *findUsersTask() {
-    this.users = yield this.store.findAll('user');
+    this.currentUser = yield this.firebase.auth().currentUser;;
     this.findUserRecord();
     this.isMine = this.checkIfMine();
   }
 
   findUserRecord() {
     if (!this.currentUser) return;
-
-    const [res] = this.users.filter(
+    const [res] = this.args.users.filter(
       (user) => user.email == this.currentUser.email
     );
     this.userRecord = res;

@@ -9,23 +9,25 @@
       {{#if @isHomePage}}
         <NavBar::SearchBar @value={{@query}} @onChange={{@setSearchQuery}} />
       {{/if}}
-      {{#if (and this.session.isAuthenticated this.userRecord)}}
-      {{this.user.id}}
-        <LinkTo @route="user-profile" @model={{this.userRecord.id}}>
-          <div class="user-profile-link-wrapper btn btn-outline-danger">
-            <div class="user-profile-link-content">{{if @userName @userName.displayName this.userName}}<span><i class="far fa-user"></i></span></div>
-          </div>
-        </LinkTo>
-        <button type="button" class="log btn btn-outline-danger" {{on "click" this.invalidateSession}}>
-          <div class="login">Logout  <span class="login-icon"><i class="fas fa-sign-out-alt"></i></span></div>
-        </button>
-      {{else}}
-        <LinkTo @route="log-in">
-          <div class="log btn btn-outline-danger" >
-            <div class="login">Log in  <span class="login-icon"><i class="fas fa-sign-in-alt"></i></span></div>
-          </div>
-        </LinkTo>
-      {{/if}}
+      <div class="button-wrapper">
+        {{#if (and this.session.isAuthenticated this.userRecord)}}
+        {{this.user.id}}
+          <LinkTo @route="user-profile" @model={{this.userRecord.id}}>
+            <div class="user-profile-link-wrapper btn btn-outline-danger">
+              <div class="user-profile-link-content">{{if @userName @userName.displayName this.userName}}<span><i class="far fa-user"></i></span></div>
+            </div>
+          </LinkTo>
+          <button type="button" class="log btn btn-outline-danger" {{on "click" this.invalidateSession}}>
+            <div class="login">Logout  <span class="login-icon"><i class="fas fa-sign-out-alt"></i></span></div>
+          </button>
+        {{else}}
+          <LinkTo @route="log-in">
+            <div class="log btn btn-outline-danger" >
+              <div class="login">Log in  <span class="login-icon"><i class="fas fa-sign-in-alt"></i></span></div>
+            </div>
+          </LinkTo>
+        {{/if}}
+      </div>
     </div>
   </div>
 </nav>
