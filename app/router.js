@@ -8,5 +8,5 @@ Router.map(function () {
   this.route('index', { path: '/' });
   this.route('idea-details', { path: '/ideas/:id' });
   this.route('log-in', { path: '/LogIn' });
-  this.route('user-profile', { path: '/profile' });
+  this.route('user-profile', { path: '/profile/:user_id' });
 });

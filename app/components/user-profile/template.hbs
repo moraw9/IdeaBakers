@@ -1,16 +1,16 @@
-<NavBar @isHomePage={{false}} @userName={{this.userData.name}}/>
+<NavBar @isHomePage={{false}} @userName={{this.currentUser}}/>
 <div class="container">
   <div class="kudos-information-wrapper">
-    <h3>You have<span>{{this.userData.userKudos}}</span>kudos</h3>
+    <h3>{{this.userData.name}} has<span>{{this.userData.userKudos}}</span>kudos</h3>
   </div>
   <div class="row no-gutters user-data-row">
     <div class="col-11 col-sm-10 col-md-6 user-data-col">
       <div class="card user-card">
         <div class="card-image-wrapper">
-          <img src="assets/images/red-background.jpg" class="img-fluid" alt="background img">
+          <img src="../assets/images/red-background.jpg" class="img-fluid" alt="background img">
           <div class="icon-wrapper rounded-circle">
-            {{#if this.currentUser.photoURL}}
-            <img alt='user avatar' src={{this.currentUser.photoURL}} >
+            {{#if this.userData.photoURL}}
+            <img alt='user avatar' src={{this.userData.photoURL}} >
             {{else}}
             <i class="far fa-user"></i>
             {{/if}}
@@ -38,9 +38,11 @@
                   <div class="user-data">{{this.userData.email}}</div>
                 </div>
               </div>
-              <div class="button-wrapper">
-                <button type="button" onclick={{fn this.toggleUpdate}} class="btn edit-button btn-primary">Edit<i class="fas fa-pencil-alt"></i></button>
-              </div>           
+              {{#if (eq this.currentUser.email this.userData.email) }}
+                <div class="button-wrapper">
+                  <button type="button" onclick={{fn this.toggleUpdate}} class="btn edit-button btn-primary">Edit<i class="fas fa-pencil-alt"></i></button>
+                </div>
+              {{/if}}        
             {{else}}
             <UserForm @userData={{this.userData}} @toggleState={{this.toggleUpdate}} @setDataToUpdate={{fn this.setDataToUpdate}} @changeset={{this.changeset}} @isGoogleUser={{this.isGoogleUser}} @disableEmail={{true}} @deleteModel={{this.deleteModel}}/>
             {{/if}}
@@ -49,10 +51,10 @@
       </div> 
     </div>
     <div class="col-12 user-own-ideas-col">
-      <UserProfile::ListOfOwnIdeas @currentUser={{this.currentUser}} />
+      <UserProfile::ListOfOwnIdeas @userData={{this.userData}} />
     </div>
     <div class="col-12 user-votes-col">
-      <UserProfile::ListOfVotes @currentUser={{this.currentUser}} />
+      <UserProfile::ListOfVotes @userData={{this.userData}} />
     </div>
   </div>
   {{!-- template-lint-disable no-inline-styles --}}

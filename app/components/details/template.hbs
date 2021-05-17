@@ -1,7 +1,9 @@
 <NavBar />
 <div class="body">
   <Header />
-  <Details::Kudos @idea={{this.model}} />
+  {{#if (and this.model this.users) }}
+    <Details::Kudos @idea={{this.model}} @users={{this.users}} />
+  {{/if}}
   <div class="details-wrapper">
     <div class="card">
       <h1 class="flexible">{{this.model.title}}</h1>
@@ -13,7 +15,15 @@
         Number of kudos: <span>{{this.model.numberOfKudos}}</span>
       </div>
       <div class="details">
-        Author: <span>{{this.model.user}}</span> 
+        Author: <span>
+          {{#if (and this.session.isAuthenticated this.otherUser) }}
+            <LinkTo @route="user-profile" @model={{this.otherUser.id}}>
+              {{this.otherUser.name}}
+            </LinkTo>
+          {{else}}
+            {{this.otherUser.name}}
+          {{/if}}
+        </span> 
       </div>
     </div>
   </div>

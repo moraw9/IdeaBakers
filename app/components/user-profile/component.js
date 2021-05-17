@@ -18,9 +18,11 @@ export default class UserProfileComponent extends Component {
   @tracked currentUser;
   @tracked isUpdate = true;
   @tracked isGoogleUser = false;
+  @tracked changeset;
 
   constructor() {
     super(...arguments);
+    this.model = this.store.findRecord('user', this.args.model.id);
 
     this.load();
     this.findUserDataTask.perform();
@@ -39,8 +41,15 @@ export default class UserProfileComponent extends Component {
   }
 
   @task({ restartable: true }) *findUserDataTask() {
+    let res;
+    if (this.args.model) {
+      res = this.args.model;
+      return res;
+    }
+
     const users = yield this.store.findAll('user');
-    let [res] = users.filter((user) => user.email == this.currentUser.email);
+    [res] = users.filter((user) => user.email === this.currentUser.email);
+
     if (!res.pswd) this.isGoogleUser = true;
     return res;
   }
@@ -181,9 +190,11 @@ export default class UserProfileComponent extends Component {
         });
       });
     }
+
     if (isOk) {
       document.getElementById('cancelForm').click();
       alert('Updated data successfuly');
+      this.load();
     }
   }
 }
