@@ -131,10 +131,9 @@ export default class LogInComponent extends Component {
     this.firebase
       .auth()
       .createUserWithEmailAndPassword(changeset.email, changeset.pswd)
-      .then((result) => {
+      .then(async (result) => {
         this.toggleEmailExistenceError(false);
-        changeset.save().then(() => changeset.transitionTo('loaded.saved'));
-        // this.createChangeset();
+        await changeset.save();
         this.toggleForm();
         this.setMessage();
         return result.user.updateProfile({
