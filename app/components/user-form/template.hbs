@@ -44,11 +44,11 @@
   {{#if @userData}}
     <div class="form-group">
       <label for="avatar">Your avatar</label>
-      <input type="file" class="avatar" id="avatar" name="avatar" accept="image/png, image/jpeg" onchange={{fn this.encodeImageFileAsURL}}>
+      <input type="file" class="avatar" id="avatar" name="avatar" accept="image/png, image/jpeg" onchange={{fn this.encodeImageFileAsURL}} data-test-input="file">
     </div>
   {{/if}}
   <div class="button-wrapper">
-    <button type="button" class="btn btn btn-success button" onclick={{fn this.sendData}}>Save</button>
+    <button type="button" class="btn btn btn-success button" onclick={{fn this.sendData}} data-test-button-save-form >Save</button>
     <button type="button" id="cancelForm" class="btn btn-danger button" onclick={{fn this.cancel}} >Cancel</button>
   </div>
 </form>

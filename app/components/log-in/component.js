@@ -9,6 +9,7 @@ export default class LogInComponent extends Component {
   @service store;
   @service session;
   @service firebase;
+  @service notify;
 
   @tracked isLogInForm = true;
   @tracked stateText = 'New to IdeaBakers?';
@@ -19,10 +20,10 @@ export default class LogInComponent extends Component {
       .fetch()
       .catch(() => {});
   }
+
   constructor() {
     super(...arguments);
     this.users = this.store.findAll('user');
-    this.createChangeset();
   }
 
   createChangeset() {
@@ -45,6 +46,7 @@ export default class LogInComponent extends Component {
     }
     this.isLogInForm = !this.isLogInForm;
   }
+
   async createGoogleRecord() {
     const currentGoogleUser = this.firebase.auth().currentUser;
 
@@ -81,6 +83,25 @@ export default class LogInComponent extends Component {
     }
   }
 
+  // setMessage() {
+  //   this.notify.alert(
+  //     'Congratulations! You have successfully joined us, log in!',
+  //     {
+  //       closeAfter: 5000,
+  //     }
+  //   );
+  // }
+  setMessage() {
+    const html =
+      '<div class="alert" data-test-alert >Congratulations! You have successfully joined us, log in!</div>';
+    const element = document.querySelector('.log-in-box');
+    element.insertAdjacentHTML('beforeend', html);
+
+    setTimeout(() => {
+      element.removeChild(element.lastChild);
+    }, 5000);
+  }
+
   prepareChangesetToValidate(data) {
     this.changeset.name = data.name;
     this.changeset.surname = data.surname;
@@ -112,10 +133,10 @@ export default class LogInComponent extends Component {
       .createUserWithEmailAndPassword(changeset.email, changeset.pswd)
       .then((result) => {
         this.toggleEmailExistenceError(false);
-        changeset.save();
-        this.createChangeset();
-        alert('Congratulations! You have successfully joined us, log in!');
+        changeset.save().then(() => changeset.transitionTo('loaded.saved'));
+        // this.createChangeset();
         this.toggleForm();
+        this.setMessage();
         return result.user.updateProfile({
           displayName: changeset.name,
         });
@@ -129,6 +150,7 @@ export default class LogInComponent extends Component {
 
   @action
   setDataToUpdate(data) {
+    this.createChangeset();
     this.prepareChangesetToValidate(data);
     this.changeset.validate().then(() => {
       if (this.changeset.get('isValid')) {

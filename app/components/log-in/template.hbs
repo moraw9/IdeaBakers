@@ -25,8 +25,9 @@
             </div>
             <UserForm @setDataToUpdate={{fn this.setDataToUpdate}} @changeset={{this.changeset}}/>
           {{/if}}
-          <div class="change-state content-frame top">
-            {{this.stateText}} <button type="button" onclick={{fn this.toggleForm}} class="btn btn-primary">{{this.buttonName}}</button>
+          <EmberNotify />
+          <div class="change-state content-frame top" data-test-state-text>
+            {{this.stateText}} <button type="button" onclick={{fn this.toggleForm}} class="btn btn-primary" data-test-sign-up-button >{{this.buttonName}}</button>
             <button type="button" class="googleButton" onclick={{ fn this.googleLogin }}><span><img alt='goggle' src="assets/icons/google.png"/></span>Sign in with Google</button>
           </div>
         </div>

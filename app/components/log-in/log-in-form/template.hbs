@@ -11,7 +11,7 @@
       <input type="password" class="form-control" id="pswd" placeholder="Enter password" name="pswd" value={{this.password}} onchange={{fn this.updatePassword}}>
     </div>
     <div class="button-wrapper">
-      <button type="submit" class="btn btn-success button">Log in</button>
+      <button type="submit" class="btn btn-success button" data-test-log-in >Log in</button>
     </div>
     {{#if this.errorMessage}}
       <p>{{this.errorMessage}}</p>
