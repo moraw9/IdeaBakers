@@ -14,6 +14,7 @@ export default class LogInComponent extends Component {
   @tracked isLogInForm = true;
   @tracked stateText = 'New to IdeaBakers?';
   @tracked buttonName = 'Sign up';
+  @tracked changeset;
 
   beforeModel() {
     return get(this, 'session')
@@ -40,9 +41,14 @@ export default class LogInComponent extends Component {
     if (this.isLogInForm) {
       this.buttonName = 'Log in';
       this.stateText = 'Have an account?';
+      this.createChangeset();
     } else {
       this.stateText = 'New to IdeaBakers?';
       this.buttonName = 'Sign up';
+
+      if (typeof this.userModel.name === 'undefined') {
+        this.userModel.destroyRecord();
+      }
     }
     this.isLogInForm = !this.isLogInForm;
   }
@@ -83,14 +89,6 @@ export default class LogInComponent extends Component {
     }
   }
 
-  // setMessage() {
-  //   this.notify.alert(
-  //     'Congratulations! You have successfully joined us, log in!',
-  //     {
-  //       closeAfter: 5000,
-  //     }
-  //   );
-  // }
   setMessage() {
     const html =
       '<div class="alert" data-test-alert >Congratulations! You have successfully joined us, log in!</div>';
@@ -149,7 +147,6 @@ export default class LogInComponent extends Component {
 
   @action
   setDataToUpdate(data) {
-    this.createChangeset();
     this.prepareChangesetToValidate(data);
     this.changeset.validate().then(() => {
       if (this.changeset.get('isValid')) {
