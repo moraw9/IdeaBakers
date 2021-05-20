@@ -1,7 +1,6 @@
 import { module, test } from 'qunit';
 import { click, visit, currentURL } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
-import { currentRouteName } from '@ember/test-helpers/setup-application-context';
 
 module('Acceptance | idea bakers', function (hooks) {
   setupApplicationTest(hooks);
@@ -16,8 +15,5 @@ module('Acceptance | idea bakers', function (hooks) {
 
     await click('a .login');
     assert.equal(currentURL(), '/LogIn');
-
-    await click('idea-title a h1');
-    assert.equal(currentRouteName(), '/ideas/:id');
   });
 });

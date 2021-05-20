@@ -1,0 +1,44 @@
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
+import { hbs } from 'ember-cli-htmlbars';
+
+module('Integration | Component | Details', function (hooks) {
+  setupRenderingTest(hooks);
+  test('it renders information about a details of idea property', async function (assert) {
+    this.setProperties({
+      model: {
+        // title: 'Simple Title',
+        // description: 'Lorem ipsum dolor',
+        // numberOfKudos: 15,
+        // imageURL:
+        //   'https://upload.wikimedia.org/wikipedia/commons/c/cb/Crane_estate_(5).jpg',
+        // userRecordID: 'aOeEiqbwXig2PCgCBEtz',
+        // userUID: 'VmfhNjdWTedYBF4r3Ny0WHNBQxH2',
+        id: 'DVYAD8BNi82pC0VVMUZ2',
+      },
+    });
+    await this.pauseTest();
+    await render(hbs`<Details @model={{this.model}} />`);
+    await this.pauseTest();
+    assert.dom('.card').exists();
+    assert.dom('[data-test-details-kudos]').hasText('43');
+    assert.dom('[data-test-details-title]').hasText('Lotos Camp');
+    assert
+      .dom('[data-test-details-description]')
+      .hasTextContaining(
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
+      );
+    // await this.pauseTest();
+    // assert.dom('[data-test-author]').hasText('Admin');
+    assert.dom('[data-test-details-img]').hasAttribute('src');
+
+    let src = document
+      .querySelector('[data-test-details-img]')
+      .getAttribute('src');
+    assert.equal(
+      src,
+      `https://firebasestorage.googleapis.com/v0/b/ideabakers-c756c.appspot.com/o/project%2FIMG-1042.jpg%2F1620041822498?alt=media&token=dc872de7-906f-4dbe-8654-eb43af2e0942`
+    );
+  });
+});

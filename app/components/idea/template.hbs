@@ -1,25 +1,23 @@
 <div class="card">
   {{!-- allowed when `allowDynamicStyles` is enabled  --}}
   {{!-- template-lint-disable no-inline-styles --}}
-  <div class="idea-img" style={{html-safe (concat "background-image: url(" @idea.imageURL ");" ) }} ></div>
+  <div class="idea-img" style={{html-safe (concat "background-image: url(" @idea.imageURL ");" ) }} data-test-img ></div>
   <div class="idea-title">
     <LinkTo @route="idea-details" @model={{@idea.id}}>
-      <h1>{{@idea.title}}</h1>
+      <h1 data-test-title>{{@idea.title}}</h1>
     </LinkTo>
   </div>
-  <div class="idea-short-description">
+  <div class="idea-short-description" data-test-description>
     {{ getExcerpt @idea.description}}
   </div>
   <div class="idea-author">
     <span>Created by: </span>
-    <i>
-    {{#if this.session.isAuthenticated}}
+    {{#if (and this.session.isAuthenticated this.otherUser)}}
       <LinkTo @route="user-profile" @model={{this.otherUser.id}}>
-        {{this.otherUser.name}}
+         <i data-test-author>{{this.otherUser.name}}</i>
       </LinkTo>
     {{else}}
-      {{this.otherUser.name}}
+     <i data-test-author>{{this.otherUser.name}}</i>
     {{/if}}
-    </i>
   </div>
 </div>
