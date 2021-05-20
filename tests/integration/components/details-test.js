@@ -2,24 +2,34 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
+import { setupMirage } from 'ember-cli-mirage/test-support';
 
 module('Integration | Component | Details', function (hooks) {
   setupRenderingTest(hooks);
+  setupMirage(hooks);
+
   test('it renders information about a details of idea property', async function (assert) {
-    this.setProperties({
-      model: {
-        // title: 'Simple Title',
-        // description: 'Lorem ipsum dolor',
-        // numberOfKudos: 15,
-        // imageURL:
-        //   'https://upload.wikimedia.org/wikipedia/commons/c/cb/Crane_estate_(5).jpg',
-        // userRecordID: 'aOeEiqbwXig2PCgCBEtz',
-        // userUID: 'VmfhNjdWTedYBF4r3Ny0WHNBQxH2',
-        id: 'DVYAD8BNi82pC0VVMUZ2',
-      },
+    let serverModel = this.server.create('idea', {
+      title: 'Ember Simple Title',
+      description: 'Lorem ipsum dolor',
+      numberOfKudos: 15,
+      imageURL:
+        'https://upload.wikimedia.org/wikipedia/commons/c/cb/Crane_estate_(5).jpg',
+      userRecordID: 'aOeEiqbwXig2PCgCBEtz',
+      userUID: 'VmfhNjdWTedYBF4r3Ny0WHNBQxH2',
     });
+    console.log('serverModel', serverModel);
+
+    let store = this.owner.lookup('service:store');
+    let ideas = await store.findAll('idea');
+    console.log('all ideas', ideas);
+    let model = await store.findRecord('idea', serverModel.id);
+    console.log('model', model);
     await this.pauseTest();
-    await render(hbs`<Details @model={{this.model}} />`);
+    this.set('model', model);
+
+    await render(hbs`<Details @model={{model}} />`);
+
     await this.pauseTest();
     assert.dom('.card').exists();
     assert.dom('[data-test-details-kudos]').hasText('43');
