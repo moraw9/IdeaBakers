@@ -9,6 +9,8 @@ module('Integration | Component | Details', function (hooks) {
   setupMirage(hooks);
 
   test('it renders information about a details of idea property', async function (assert) {
+    this.server.logging = true;
+
     let serverModel = this.server.create('idea', {
       title: 'Ember Simple Title',
       description: 'Lorem ipsum dolor',
@@ -18,18 +20,11 @@ module('Integration | Component | Details', function (hooks) {
       userRecordID: 'aOeEiqbwXig2PCgCBEtz',
       userUID: 'VmfhNjdWTedYBF4r3Ny0WHNBQxH2',
     });
-    console.log('serverModel', serverModel);
-
+    console.log('model', serverModel);
     let store = this.owner.lookup('service:store');
-    let ideas = await store.findAll('idea');
-    console.log('all ideas', ideas);
-    let model = await store.findRecord('idea', serverModel.id);
-    console.log('model', model);
-    await this.pauseTest();
+    let model = await store.findRecord('idea', '1');
     this.set('model', model);
-
     await render(hbs`<Details @model={{model}} />`);
-
     await this.pauseTest();
     assert.dom('.card').exists();
     assert.dom('[data-test-details-kudos]').hasText('43');
