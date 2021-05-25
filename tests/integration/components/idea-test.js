@@ -13,10 +13,10 @@ module('Integration | Component | idea', function (hooks) {
       title: 'Ember Simple Title',
       description: 'Lorem ipsum dolor',
       numberOfKudos: 15,
-      imageURL:
+      imageUrl:
         'https://upload.wikimedia.org/wikipedia/commons/c/cb/Crane_estate_(5).jpg',
-      userRecordID: 'aOeEiqbwXig2PCgCBEtz',
-      userUID: 'VmfhNjdWTedYBF4r3Ny0WHNBQxH2',
+      userRecordId: 'aOeEiqbwXig2PCgCBEtz',
+      userUid: 'VmfhNjdWTedYBF4r3Ny0WHNBQxH2',
     });
 
     await render(hbs`<Idea @idea={{this.idea}} />`);

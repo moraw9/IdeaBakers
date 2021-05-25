@@ -51,7 +51,7 @@ export default class KudosComponent extends Component {
 
   checkIfMine() {
     if (!this.currentUser) return;
-    return this.args.idea.get('userUID') === this.currentUser.uid;
+    return this.args.idea.get('userUid') === this.currentUser.uid;
   }
 
   sumVotes() {
@@ -60,7 +60,7 @@ export default class KudosComponent extends Component {
 
     this.votes.forEach((vote) => {
       sum += vote.numberOfVotes;
-      if (this.userRecord && vote.userRecordID === this.userRecord.id) {
+      if (this.userRecord && vote.userRecordId === this.userRecord.id) {
         sumYourVotes += vote.numberOfVotes;
       }
     });
@@ -130,7 +130,7 @@ export default class KudosComponent extends Component {
       this.difference >= this.changeset.numberOfVotes
     ) {
       this.changeset.ideaID = this.args.idea.get('id');
-      this.changeset.userRecordID = this.userRecord.id;
+      this.changeset.userRecordId = this.userRecord.id;
       this.changeset.date = new Date().getTime();
       this.changeset.validate().then(() => {
         if (this.changeset.get('isValid')) {

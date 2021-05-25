@@ -13,29 +13,41 @@ module('Integration | Component | Details', function (hooks) {
 
     let serverModel = this.server.create('idea', {
       title: 'Ember Simple Title',
-      description: 'Lorem ipsum dolor',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
       numberOfKudos: 15,
-      imageURL:
+      imageUrl:
         'https://upload.wikimedia.org/wikipedia/commons/c/cb/Crane_estate_(5).jpg',
-      userRecordID: 'aOeEiqbwXig2PCgCBEtz',
-      userUID: 'VmfhNjdWTedYBF4r3Ny0WHNBQxH2',
+      userRecordId: '1',
+      userUid: 'VmfhNjdWTedYBF4r3Ny0WHNBQxH2',
     });
-    console.log('model', serverModel);
+    this.server.create('user', {
+      name: 'Asia',
+      surname: 'Jamroz',
+      email: 'asai@wp.pl',
+      photoUrl: null,
+      pswd: '1234578',
+      rpswd: '12345678',
+      userKudos: 35,
+    });
+
     let store = this.owner.lookup('service:store');
-    let model = await store.findRecord('idea', '1');
+    await this.pauseTest();
+    let model = await store.findRecord('idea', serverModel.id);
+    console.log('model', model);
+    await this.pauseTest();
     this.set('model', model);
     await render(hbs`<Details @model={{model}} />`);
     await this.pauseTest();
     assert.dom('.card').exists();
-    assert.dom('[data-test-details-kudos]').hasText('43');
-    assert.dom('[data-test-details-title]').hasText('Lotos Camp');
+    assert.dom('[data-test-details-kudos]').hasText('15');
+    assert.dom('[data-test-details-title]').hasText('Ember Simple Title');
     assert
       .dom('[data-test-details-description]')
       .hasTextContaining(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
       );
     // await this.pauseTest();
-    // assert.dom('[data-test-author]').hasText('Admin');
+    assert.dom('[data-test-author]').hasText('Asia');
     assert.dom('[data-test-details-img]').hasAttribute('src');
 
     let src = document
@@ -43,7 +55,7 @@ module('Integration | Component | Details', function (hooks) {
       .getAttribute('src');
     assert.equal(
       src,
-      `https://firebasestorage.googleapis.com/v0/b/ideabakers-c756c.appspot.com/o/project%2FIMG-1042.jpg%2F1620041822498?alt=media&token=dc872de7-906f-4dbe-8654-eb43af2e0942`
+      'https://upload.wikimedia.org/wikipedia/commons/c/cb/Crane_estate_(5).jpg'
     );
   });
 });

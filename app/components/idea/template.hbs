@@ -1,7 +1,7 @@
 <div class="card">
   {{!-- allowed when `allowDynamicStyles` is enabled  --}}
   {{!-- template-lint-disable no-inline-styles --}}
-  <div class="idea-img" style={{html-safe (concat "background-image: url(" @idea.imageURL ");" ) }} data-test-img ></div>
+  <div class="idea-img" style={{html-safe (concat "background-image: url(" @idea.imageUrl ");" ) }} data-test-img ></div>
   <div class="idea-title">
     <LinkTo @route="idea-details" @model={{@idea.id}}>
       <h1 data-test-title>{{@idea.title}}</h1>

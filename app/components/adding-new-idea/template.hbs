@@ -31,10 +31,10 @@
               {{/if}}
             </div>
             <div class="form-group">
-              <label for="imageURL">Image:</label>
-              <input type="file" class="imageURL" id="imageURL" name="imageURL" accept="image/png, image/jpeg" onchange={{this.setValue}} >
-              {{#if this.changeset.error.imageURL}}
-                <p class="text-danger">{{this.changeset.error.imageURL.validation}}</p>
+              <label for="imageUrl">Image:</label>
+              <input type="file" class="imageUrl" id="imageUrl" name="imageUrl" accept="image/png, image/jpeg" onchange={{this.setValue}} >
+              {{#if this.changeset.error.imageUrl}}
+                <p class="text-danger">{{this.changeset.error.imageUrl.validation}}</p>
               {{/if}}
             </div>
             <div class="form-group">

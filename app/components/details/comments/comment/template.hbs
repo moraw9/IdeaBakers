@@ -4,7 +4,7 @@
     <h4>{{@comment.username}} <small><i>Posted on {{this.date}}</i></small></h4>
     <p>{{@comment.content}}</p>      
   </div>
-  {{#if (and @currentUserUID (eq @comment.userUID @currentUserUID)) }}
+  {{#if (and @currentUserUID (eq @comment.userUid @currentUserUID)) }}
     <button type="button" class="btn btn-danger" onclick={{this.removeComment}}><i class="far fa-trash-alt"></i></button>
   {{/if}}
 </div>

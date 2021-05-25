@@ -18,7 +18,7 @@ export default class IdeaComponent extends Component {
   @task({ restartable: true }) *findUserRecordTask() {
     this.otherUser = yield this.store.findRecord(
       'user',
-      this.args.idea.userRecordID
+      this.args.idea.userRecordId
     );
   }
 }

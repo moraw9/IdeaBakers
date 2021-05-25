@@ -12,12 +12,14 @@ export default class IndexComponent extends Component {
 
   constructor() {
     super(...arguments);
+    debugger;
     this.loadModelTask.perform();
   }
 
   @task({ restartable: true }) *loadModelTask() {
     this.model = yield this.store.findRecord('idea', this.args.model.id);
     this.users = yield this.store.findAll('user');
-    this.otherUser = this.store.findRecord('user', this.model.userRecordID);
+
+    this.otherUser = this.store.findRecord('user', this.model.userRecordId);
   }
 }
