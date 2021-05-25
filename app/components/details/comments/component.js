@@ -22,7 +22,7 @@ export default class CommentsComponent extends Component {
   @task({ restartable: true }) *findCommentsTask() {
     const comments = yield this.store.findAll('comment');
     const result = comments.filter(
-      (comment) => comment.postId === this.args.postId
+      (comment) => comment.postId === this.args.postID
     );
     if (result.length > 0) {
       this.hasComments = true;
@@ -35,7 +35,7 @@ export default class CommentsComponent extends Component {
     const newComment = this.store.createRecord('comment');
     newComment.username = this.currentUser.displayName;
     newComment.content = document.querySelector('textarea').value;
-    newComment.postId = this.args.postId;
+    newComment.postId = this.args.postID;
     newComment.userUid = this.currentUser.uid;
     newComment.userPhoto = this.currentUser.photoURL
       ? this.currentUser.photoURL

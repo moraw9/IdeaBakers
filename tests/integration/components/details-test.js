@@ -20,6 +20,7 @@ module('Integration | Component | Details', function (hooks) {
       userRecordId: '1',
       userUid: 'VmfhNjdWTedYBF4r3Ny0WHNBQxH2',
     });
+
     this.server.create('user', {
       name: 'Asia',
       surname: 'Jamroz',
@@ -30,14 +31,27 @@ module('Integration | Component | Details', function (hooks) {
       userKudos: 35,
     });
 
+    this.server.create('comment', {
+      username: 'Asia',
+      date: '1620400637563',
+      content: 'Hello everyone!',
+      postId: '1',
+      userUid: '63Cd6LUgPCe8Kn1UVKCnkVdos9m2',
+      userPhoto: null,
+    });
+
+    this.server.create('kudo', {
+      ideaId: '1',
+      date: '1620400637563',
+      numberOfVotes: 3,
+      userRecordId: 1,
+    });
+
     let store = this.owner.lookup('service:store');
-    await this.pauseTest();
     let model = await store.findRecord('idea', serverModel.id);
-    console.log('model', model);
-    await this.pauseTest();
     this.set('model', model);
     await render(hbs`<Details @model={{model}} />`);
-    await this.pauseTest();
+
     assert.dom('.card').exists();
     assert.dom('[data-test-details-kudos]').hasText('15');
     assert.dom('[data-test-details-title]').hasText('Ember Simple Title');
@@ -46,8 +60,7 @@ module('Integration | Component | Details', function (hooks) {
       .hasTextContaining(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
       );
-    // await this.pauseTest();
-    assert.dom('[data-test-author]').hasText('Asia');
+    assert.dom('[data-test-details-author]').hasText('Asia');
     assert.dom('[data-test-details-img]').hasAttribute('src');
 
     let src = document
@@ -57,5 +70,11 @@ module('Integration | Component | Details', function (hooks) {
       src,
       'https://upload.wikimedia.org/wikipedia/commons/c/cb/Crane_estate_(5).jpg'
     );
+
+    assert.dom('[data-test-comment-username]').hasTextContaining('Asia');
+    assert.dom('[data-test-comment-content]').hasText('Hello everyone!');
+
+    assert.dom('[data-test-vote-urename]').hasTextContaining('Asia');
+    assert.dom('[data-test-vote-number-of-votes]').hasTextContaining('3');
   });
 });

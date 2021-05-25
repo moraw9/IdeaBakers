@@ -30,7 +30,7 @@ export default class KudosComponent extends Component {
   @task({ restartable: true }) *findVotesTask() {
     const votes = yield this.store.findAll('kudo');
     this.votes = votes.filter(
-      (vote) => vote.ideaID == this.args.idea.get('id')
+      (vote) => vote.ideaId == this.args.idea.get('id')
     );
     this.sumVotes();
   }

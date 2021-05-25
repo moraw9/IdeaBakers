@@ -15,15 +15,14 @@
         Number of kudos: <span data-test-details-kudos>{{this.model.numberOfKudos}}</span>
       </div>
       <div class="details">
-        Author: <span>
+        Author:
           {{#if (and this.session.isAuthenticated this.otherUser) }}
             <LinkTo @route="user-profile" @model={{this.otherUser.id}}>
-              {{this.otherUser.name}}
+              <span data-test-details-author>{{this.otherUser.name}}</span>
             </LinkTo>
           {{else}}
-            {{this.otherUser.name}}
+            <span data-test-details-author>{{this.otherUser.name}}</span>
           {{/if}}
-        </span> 
       </div>
     </div>
   </div>

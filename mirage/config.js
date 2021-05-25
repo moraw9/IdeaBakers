@@ -15,30 +15,7 @@ export default function () {
   this.resource('ideas');
   this.resource('users');
   this.resource('comments');
-
-  this.post('/ideas');
-  this.get('/ideas');
-  this.put('/ideas'); // or this.patch
-  this.del('/ideas');
-  // this.get('/users', () => {
-  //   return {
-  //     data: [
-  //       {
-  //         id: 1,
-  //         type: 'users',
-  //         attributes: {
-  //           name: 'Asia',
-  //           surname: 'Jamroz',
-  //           email: 'asai@wp.pl',
-  //           photoUrl: null,
-  //           pswd: '1234578',
-  //           rpswd: '12345678',
-  //           userKudos: 35,
-  //         },
-  //       },
-  //     ],
-  //   };
-  // });
+  this.resource('kudos');
 
   // https://www.ember-cli-mirage.com/docs/route-handlers/shorthands
 }
