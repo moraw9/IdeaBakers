@@ -36,7 +36,7 @@ export default class CommentsComponent extends Component {
     newComment.username = this.currentUser.displayName;
     newComment.content = document.querySelector('textarea').value;
     newComment.postId = this.args.postID;
-    newComment.userUid = this.currentUser.uid;
+    newComment.userId = this.currentUser.id;
     newComment.userPhoto = this.currentUser.photoURL
       ? this.currentUser.photoURL
       : null;

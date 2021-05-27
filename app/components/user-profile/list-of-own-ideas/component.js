@@ -18,7 +18,7 @@ export default class ListOfOwnIdeasComponent extends Component {
   @task({ restartable: true }) *findUserIdeasTask() {
     const ideas = yield this.store.findAll('idea');
     this.userIdeasList = ideas.filter(
-      (idea) => idea.userRecordId == this.args.userData.id
+      (idea) => idea.userId == this.args.userData.id
     );
   }
 }

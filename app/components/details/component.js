@@ -19,9 +19,6 @@ export default class IndexComponent extends Component {
     this.model = yield this.store.findRecord('idea', this.args.model.id);
     this.users = yield this.store.findAll('user');
 
-    this.otherUser = yield this.store.findRecord(
-      'user',
-      this.model.userRecordId
-    );
+    this.otherUser = yield this.store.findRecord('user', this.model.userId);
   }
 }

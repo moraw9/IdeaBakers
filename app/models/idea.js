@@ -4,6 +4,5 @@ export default class IdeaModel extends Model {
   @attr('string') description;
   @attr('string') imageUrl;
   @attr('number') numberOfKudos;
-  @attr('string') userUid;
-  @attr('string') userRecordId;
+  @attr('string') userId;
 }

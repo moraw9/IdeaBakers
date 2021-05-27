@@ -18,7 +18,7 @@ export default class ListOfVotesComponent extends Component {
   @task({ restartable: true }) *findUserVotesTask() {
     const ideas = yield this.store.findAll('kudo');
     this.userVotesList = ideas.filter(
-      (vote) => vote.userRecordId == this.args.userData.id
+      (vote) => vote.userId == this.args.userData.id
     );
   }
 }

@@ -30,8 +30,7 @@ module('Acceptance | show-ideas', function (hooks) {
       description: 'Description for first idea',
       imageUrl: `https://loremflickr.com/cache/resized/65535_50323736618_46ca9bf94f_z_360_360_nofilter.jpg`,
       numberOfKudos: 40,
-      userUid: currentUser.id,
-      userRecordId: currentUser.id,
+      userId: currentUser.id,
     });
 
     this.server.create('idea', {
@@ -39,8 +38,7 @@ module('Acceptance | show-ideas', function (hooks) {
       description: 'Description for second idea',
       imageUrl: `https://loremflickr.com/cache/resized/65535_50745657987_4c85192fa9_360_360_nofilter.jpg`,
       numberOfKudos: 40,
-      userUid: currentUser.id,
-      userRecordId: currentUser.id,
+      userId: currentUser.id,
     });
 
     await authenticateSession({

@@ -4,7 +4,7 @@
     <h4 data-test-comment-username >{{@comment.username}} <small><i>Posted on {{this.date}}</i></small></h4>
     <p data-test-comment-content >{{@comment.content}}</p>      
   </div>
-  {{#if (and @currentUserUID (eq @comment.userUid @currentUserUID)) }}
+  {{#if (and @currentUserID (eq @comment.userId @currentUserID)) }}
     <button type="button" class="btn btn-danger" onclick={{this.removeComment}}><i class="far fa-trash-alt"></i></button>
   {{/if}}
 </div>

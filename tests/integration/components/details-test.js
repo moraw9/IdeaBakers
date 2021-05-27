@@ -17,8 +17,7 @@ module('Integration | Component | Details', function (hooks) {
       numberOfKudos: 15,
       imageUrl:
         'https://upload.wikimedia.org/wikipedia/commons/c/cb/Crane_estate_(5).jpg',
-      userRecordId: '1',
-      userUid: 'VmfhNjdWTedYBF4r3Ny0WHNBQxH2',
+      userId: '1',
     });
 
     this.server.create('user', {
@@ -36,7 +35,7 @@ module('Integration | Component | Details', function (hooks) {
       date: '1620400637563',
       content: 'Hello everyone!',
       postId: '1',
-      userUid: '63Cd6LUgPCe8Kn1UVKCnkVdos9m2',
+      userId: '1',
       userPhoto: null,
     });
 
@@ -44,7 +43,7 @@ module('Integration | Component | Details', function (hooks) {
       ideaId: '1',
       date: '1620400637563',
       numberOfVotes: 3,
-      userRecordId: 1,
+      userId: 1,
     });
 
     let store = this.owner.lookup('service:store');

@@ -15,8 +15,7 @@ module('Integration | Component | idea', function (hooks) {
       numberOfKudos: 15,
       imageUrl:
         'https://upload.wikimedia.org/wikipedia/commons/c/cb/Crane_estate_(5).jpg',
-      userRecordId: '1',
-      userUid: 'VmfhNjdWTedYBF4r3Ny0WHNBQxH2',
+      userId: '1',
     });
 
     this.server.create('user', {

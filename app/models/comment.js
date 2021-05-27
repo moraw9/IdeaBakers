@@ -9,6 +9,6 @@ export default class CommentModel extends Model {
   date;
   @attr('string') content;
   @attr('string') postId;
-  @attr('string') userUid;
+  @attr('string') userId;
   @attr('string') userPhoto;
 }

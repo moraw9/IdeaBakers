@@ -13,12 +13,12 @@ export default class AddingNewIdeaComponent extends Component {
   @service('current-user') user;
 
   @tracked changeset;
-  @tracked userRecord;
+  @tracked currentUser;
   @tracked ideaModel;
 
   constructor() {
     super(...arguments);
-    this.userRecord = this.user.currentUser;
+    this.currentUser = this.user.currentUser;
   }
 
   @action
@@ -34,7 +34,9 @@ export default class AddingNewIdeaComponent extends Component {
   @action
   closeModal() {
     document.getElementById('imageUrl').value = null;
-    this.ideaModel.destroyRecord();
+    if (typeof this.ideaModel.title === 'undefined') {
+      this.ideaModel.destroyRecord();
+    }
   }
 
   @action
@@ -68,9 +70,8 @@ export default class AddingNewIdeaComponent extends Component {
   @action
   async addIdea() {
     await this.setImageURLTask.perform();
-    this.changeset.userRecordId = this.userRecord.id;
-    this.changeset.userUid = this.args.currentUser.uid;
-    this.changeset.imageUrl = this.setImageUrlTask.lastSuccessful.value;
+    this.changeset.userId = this.currentUser.get('id');
+    this.changeset.imageUrl = this.setImageURLTask.lastSuccessful.value;
 
     this.changeset.validate().then(() => {
       if (this.changeset.get('isValid')) {

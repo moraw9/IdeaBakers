@@ -130,7 +130,7 @@ export default class LogInComponent extends Component {
         this.toggleEmailExistenceError(false);
         const id = await result.user.uid;
         const { name, surname, email, pswd, rpswd } = changeset;
-        const newUser = this.store.createRecord('user', {
+        const newUser = await this.store.createRecord('user', {
           id,
           name,
           surname,
@@ -138,9 +138,7 @@ export default class LogInComponent extends Component {
           pswd,
           rpswd,
         });
-
         await newUser.save();
-        this.userModel.destroyRecord();
         this.toggleForm();
         this.setMessage();
       })

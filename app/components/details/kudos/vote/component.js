@@ -19,7 +19,7 @@ export default class VoteComponent extends Component {
   @task({ restartable: true }) *findUserTask() {
     this.users = yield this.store.findAll('user');
     const [res] = this.users.filter(
-      (user) => user.id === this.args.vote.userRecordId
+      (user) => user.id === this.args.vote.userId
     );
     this.user = res;
   }

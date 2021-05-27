@@ -23,17 +23,11 @@ export default class UserProfileComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.model = this.store.findRecord('user', this.args.model.id);
-
     this.load();
     this.findUserDataTask.perform();
   }
 
   load() {
-    if (!this.session.isAuthenticated) {
-      return;
-    }
-
     this.currentUser = this.user.currentUser;
   }
   createChangeset() {
@@ -51,12 +45,22 @@ export default class UserProfileComponent extends Component {
       res = this.args.model;
       return res;
     }
-
-    const users = yield this.store.findAll('user');
-    [res] = users.filter((user) => user.email === this.currentUser.email);
+    res = yield this.user.currentUser;
 
     if (!res.pswd) this.isGoogleUser = true;
     return res;
+  }
+  @task({ restartable: true }) *putPhotoIntoStorageTask(photo) {
+    console.log('weszło w task');
+    const storageRef = this.firebase
+      .storage()
+      .ref('pictures' + this.userData.id);
+
+    yield storageRef.put(photo);
+    storageRef.getDownloadURL().then((url) => {
+      this.userData.photoURL = url;
+      console.log('ustawiło photoUrl');
+    });
   }
 
   @action
@@ -74,26 +78,22 @@ export default class UserProfileComponent extends Component {
   @action
   setDataToUpdate(data) {
     this.prepareChangesetToValidate(data);
-
     this.changeset.validate().then(() => {
       if (this.changeset.get('isValid')) {
+        console.log('is valid!');
         this.updateData(data);
       }
     });
   }
 
   prepareChangesetToValidate(data) {
-    this.changeset.name = data.name ? data.name : this.userData.name;
-    this.changeset.surname = data.surname
-      ? data.surname
-      : this.userData.surname;
-    this.changeset.email = data.email ? data.email : this.userData.email;
-
-    if (this.isGoogleUser) {
-      this.changeset.pswd = this.changeset.rpswd = '12345678';
-    } else {
-      this.changeset.pswd = data.pswd ? data.pswd : this.userData.pswd;
-      this.changeset.rpswd = data.rpswd ? data.rpswd : this.userData.rpswd;
+    for (const property in data) {
+      if (this.isGoogleUser && (property === 'pswd' || property === 'rpswd')) {
+        this.changeset[property] = '12345678';
+      }
+      this.changeset[property] = data[property]
+        ? data[property]
+        : this.userData[property];
     }
   }
 
@@ -134,72 +134,48 @@ export default class UserProfileComponent extends Component {
     document.getElementById('openModalButton').click();
   }
 
+  async saveRecord() {
+    this.userData
+      .save()
+      .then(() => {
+        console.log('zapisało');
+        document.getElementById('cancelForm').click();
+        alert('Updated data successfuly');
+        this.load();
+      })
+      .catch((error) => {
+        switch (error.code) {
+          case 'auth/user-token-expired':
+          case 'auth/requires-recent-login':
+            this.openModalForPassword();
+            break;
+        }
+      });
+  }
+
+  async setPhotoURL(photo) {
+    const storageRef = this.firebase
+      .storage()
+      .ref('pictures' + this.userData.id);
+
+    storageRef.put(photo).then(() => {
+      storageRef.getDownloadURL().then((url) => {
+        this.userData.photoURL = url;
+        this.saveRecord();
+      });
+    });
+  }
+
   async updateData(data) {
-    let isOk = true;
-
-    if (data.pswd) {
-      this.currentUser
-        .updatePassword(data.pswd)
-        .then(() => {
-          this.store.findRecord('user', this.userData.id).then(function (user) {
-            user.pswd = user.rpswd = data.pswd;
-            user.save();
-          });
-        })
-        .catch((error) => {
-          isOk = false;
-          switch (error.code) {
-            case 'auth/user-token-expired':
-            case 'auth/requires-recent-login':
-              this.openModalForPassword();
-              break;
-          }
-        });
+    for (const property in data) {
+      if (property !== 'photoURL' && data[property]) {
+        this.userData[property] = data[property];
+      }
     }
-
-    if (data.name) {
-      this.currentUser
-        .updateProfile({
-          displayName: data.name,
-        })
-        .then(() => {
-          this.store.findRecord('user', this.userData.id).then(function (user) {
-            user.name = data.name;
-            user.save();
-          });
-        });
-    }
-
-    if (data.surname) {
-      this.store.findRecord('user', this.userData.id).then(function (user) {
-        user.surname = data.surname;
-        user.save();
-      });
-    }
-
-    if (data.photoURL?.size) {
-      const storageRef = this.firebase
-        .storage()
-        .ref('pictures' + this.currentUser.id);
-
-      storageRef.put(data.photoURL).then(() => {
-        storageRef.getDownloadURL().then((url) => {
-          this.currentUser.updateProfile({
-            photoURL: url,
-          });
-
-          this.store.findRecord('user', this.userData.id).then(function (user) {
-            user.photoURL = url;
-            user.save();
-          });
-        });
-      });
-    }
-
-    if (isOk) {
-      document.getElementById('cancelForm').click();
-      alert('Updated data successfuly');
-      this.load();
+    if (data.photoURL) {
+      this.setPhotoURL(data.photoURL);
+    } else {
+      this.saveRecord();
     }
   }
 }
