@@ -29,7 +29,14 @@ export default class UserProfileComponent extends Component {
   }
 
   load() {
-    this.currentUser = this.firebase.auth().currentUser;
+    if (!this.session.isAuthenticated) {
+      return;
+    }
+
+    this.currentUser = this.store.findRecord(
+      'user',
+      this.session.data.authenticated.user.uid
+    );
   }
   createChangeset() {
     this.userModel = this.store.createRecord('user');
@@ -175,7 +182,7 @@ export default class UserProfileComponent extends Component {
     if (data.photoURL?.size) {
       const storageRef = this.firebase
         .storage()
-        .ref('pictures' + this.currentUser.uid);
+        .ref('pictures' + this.currentUser.id);
 
       storageRef.put(data.photoURL).then(() => {
         storageRef.getDownloadURL().then((url) => {

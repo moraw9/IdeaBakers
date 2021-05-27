@@ -36,7 +36,12 @@ export default class KudosComponent extends Component {
   }
 
   @task({ restartable: true }) *findUsersTask() {
-    this.currentUser = yield this.firebase.auth().currentUser;;
+    if (this.session.isAuthenticated) {
+      this.currentUser = yield this.store.findRecord(
+        'user',
+        this.session.data.authenticated.user.uid
+      );
+    }
     this.findUserRecord();
     this.isMine = this.checkIfMine();
   }
