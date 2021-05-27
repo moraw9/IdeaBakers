@@ -10,11 +10,10 @@
         <NavBar::SearchBar @value={{@query}} @onChange={{@setSearchQuery}} />
       {{/if}}
       <div class="button-wrapper">
-        {{#if (and this.session.isAuthenticated this.userRecord)}}
-        {{this.user.id}}
-          <LinkTo @route="user-profile" @model={{this.userRecord.id}}>
+        {{#if (and this.session.isAuthenticated)}}
+          <LinkTo @route="user-profile" @model={{this.currentUser.id}}>
             <div class="user-profile-link-wrapper btn btn-outline-danger" data-test-user-button >
-              <div class="user-profile-link-content" data-test-name-in-nav>{{if @userName @userName.displayName this.userName}}<span><i class="far fa-user"></i></span></div>
+              <div class="user-profile-link-content" data-test-name-in-nav>{{this.currentUser.displayName}}<span><i class="far fa-user"></i></span></div>
             </div>
           </LinkTo>
           <button type="button" class="log btn btn-outline-danger" {{on "click" this.invalidateSession}} data-test-log-out-button>

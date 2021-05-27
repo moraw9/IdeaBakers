@@ -16,12 +16,6 @@ export default class LogInComponent extends Component {
   @tracked buttonName = 'Sign up';
   @tracked changeset;
 
-  beforeModel() {
-    return get(this, 'session')
-      .fetch()
-      .catch(() => {});
-  }
-
   constructor() {
     super(...arguments);
     this.users = this.store.findAll('user');
@@ -54,7 +48,14 @@ export default class LogInComponent extends Component {
   }
 
   async createGoogleRecord() {
-    const currentGoogleUser = this.firebase.auth().currentUser;
+    if (!this.session.isAuthenticated) {
+      return;
+    }
+
+    const currentGoogleUser = this.store.findRecord(
+      'user',
+      this.session.data.authenticated.user.uid
+    );
 
     const [res] = this.users.filter(
       (user) => user.email == currentGoogleUser.email
@@ -76,7 +77,6 @@ export default class LogInComponent extends Component {
 
   @action
   googleLogin() {
-    // eslint-disable-next-line no-undef
     var provider = new firebase.auth.GoogleAuthProvider();
     try {
       this.session
@@ -131,12 +131,21 @@ export default class LogInComponent extends Component {
       .createUserWithEmailAndPassword(changeset.email, changeset.pswd)
       .then(async (result) => {
         this.toggleEmailExistenceError(false);
-        await changeset.save();
+        const id = await result.user.uid;
+        const { name, surname, email, pswd, rpswd } = changeset;
+        const newUser = this.store.createRecord('user', {
+          id,
+          name,
+          surname,
+          email,
+          pswd,
+          rpswd,
+        });
+
+        await newUser.save();
+        this.userModel.destroyRecord();
         this.toggleForm();
         this.setMessage();
-        return result.user.updateProfile({
-          displayName: changeset.name,
-        });
       })
       .catch((error) => {
         if (error.code === 'auth/email-already-in-use') {

@@ -23,7 +23,7 @@ export default class AddingNewIdeaComponent extends Component {
   @task({ restartable: true }) *findUserRecordTask() {
     const users = yield this.store.findAll('user');
     const [res] = users.filter(
-      (user) => user.email === this.args.currentUser.email
+      (user) => user.email === this.args.currentUser.get('email')
     );
     this.userRecord = res;
   }
