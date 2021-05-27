@@ -1,6 +1,5 @@
 import Model, { attr } from '@ember-data/model';
 export default class CommentModel extends Model {
-  @attr('string') username;
   @attr('number', {
     defaultValue() {
       return new Date().getTime();
@@ -10,5 +9,4 @@ export default class CommentModel extends Model {
   @attr('string') content;
   @attr('string') postId;
   @attr('string') userId;
-  @attr('string') userPhoto;
 }

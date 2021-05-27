@@ -1,7 +1,7 @@
 <div class="media border p-3">
-  <img src={{if @comment.userPhoto @comment.userPhoto '/assets/images/user.png'}} alt="user" class="mr-3 mt-3 rounded-circle">
+  <img src={{if this.commentUser.photoURL this.commentUser.photoURL '/assets/images/user.png'}} alt="user" class="mr-3 mt-3 rounded-circle">
   <div class="media-body">
-    <h4 data-test-comment-username >{{@comment.username}} <small><i>Posted on {{this.date}}</i></small></h4>
+    <h4 data-test-comment-username >{{this.commentUser.name}} <small><i>Posted on {{this.date}}</i></small></h4>
     <p data-test-comment-content >{{@comment.content}}</p>      
   </div>
   {{#if (and @currentUserID (eq @comment.userId @currentUserID)) }}

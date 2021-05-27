@@ -33,13 +33,9 @@ export default class CommentsComponent extends Component {
   @action
   submitComment() {
     const newComment = this.store.createRecord('comment');
-    newComment.username = this.currentUser.displayName;
     newComment.content = document.querySelector('textarea').value;
     newComment.postId = this.args.postID;
-    newComment.userId = this.currentUser.id;
-    newComment.userPhoto = this.currentUser.photoURL
-      ? this.currentUser.photoURL
-      : null;
+    newComment.userId = this.currentUser.get('id');
     newComment.save();
     this.cancel();
     this.findCommentsTask.perform();

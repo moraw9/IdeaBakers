@@ -3,7 +3,7 @@
     <h3>List of ideas</h3>
   </header>
   <div class="list-content">
-    {{#if (gt this.userIdeasList.length 1) }}
+    {{#if this.userIdeasList }}
       <ul>
         {{#each this.userIdeasList as |idea|}}
           <li>
