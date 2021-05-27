@@ -9,7 +9,7 @@ export default class LogInComponent extends Component {
   @service store;
   @service session;
   @service firebase;
-  @service notify;
+  @service('current-user') user;
 
   @tracked isLogInForm = true;
   @tracked stateText = 'New to IdeaBakers?';
@@ -52,10 +52,7 @@ export default class LogInComponent extends Component {
       return;
     }
 
-    const currentGoogleUser = this.store.findRecord(
-      'user',
-      this.session.data.authenticated.user.uid
-    );
+    const currentGoogleUser = this.user.currentUser;
 
     const [res] = this.users.filter(
       (user) => user.email == currentGoogleUser.email

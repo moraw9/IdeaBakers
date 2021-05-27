@@ -6,6 +6,7 @@ import { tracked } from '@glimmer/tracking';
 export default class NavBarComponent extends Component {
   @service session;
   @service store;
+  @service('current-user') user;
 
   @tracked currentUser;
 
@@ -15,10 +16,7 @@ export default class NavBarComponent extends Component {
       return;
     }
 
-    this.currentUser = this.store.findRecord(
-      'user',
-      this.session.data.authenticated.user.uid
-    );
+    this.currentUser = this.user.currentUser;
   }
 
   @action

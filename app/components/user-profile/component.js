@@ -12,6 +12,7 @@ export default class UserProfileComponent extends Component {
   @service store;
   @service session;
   @service firebase;
+  @service('current-user') user;
 
   @alias('findUserDataTask.lastSuccessful.value') userData;
 
@@ -33,10 +34,7 @@ export default class UserProfileComponent extends Component {
       return;
     }
 
-    this.currentUser = this.store.findRecord(
-      'user',
-      this.session.data.authenticated.user.uid
-    );
+    this.currentUser = this.user.currentUser;
   }
   createChangeset() {
     this.userModel = this.store.createRecord('user');

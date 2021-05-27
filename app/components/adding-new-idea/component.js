@@ -10,6 +10,7 @@ export default class AddingNewIdeaComponent extends Component {
   @service session;
   @service store;
   @service firebase;
+  @service('current-user') user;
 
   @tracked changeset;
   @tracked userRecord;
@@ -17,15 +18,7 @@ export default class AddingNewIdeaComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.findUserRecordTask.perform();
-  }
-
-  @task({ restartable: true }) *findUserRecordTask() {
-    const users = yield this.store.findAll('user');
-    const [res] = users.filter(
-      (user) => user.email === this.args.currentUser.get('email')
-    );
-    this.userRecord = res;
+    this.userRecord = this.user.currentUser;
   }
 
   @action

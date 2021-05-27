@@ -10,6 +10,7 @@ export default class KudosComponent extends Component {
   @service store;
   @service session;
   @service firebase;
+  @service('current-user') user;
 
   @tracked votes;
   @tracked numberOfVotes;
@@ -37,17 +38,15 @@ export default class KudosComponent extends Component {
 
   @task({ restartable: true }) *findUsersTask() {
     if (this.session.isAuthenticated) {
-      this.currentUser = yield this.store.findRecord(
-        'user',
-        this.session.data.authenticated.user.uid
-      );
+      this.currentUser = yield this.user.currentUser;
     }
-    this.findUserRecord();
+    if (this.currentUser) {
+      this.findUserRecord();
+    }
     this.isMine = this.checkIfMine();
   }
 
   findUserRecord() {
-    if (!this.currentUser) return;
     const [res] = this.args.users.filter(
       (user) => user.email == this.currentUser.email
     );

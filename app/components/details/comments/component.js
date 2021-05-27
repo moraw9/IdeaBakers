@@ -8,6 +8,7 @@ import { tracked } from '@glimmer/tracking';
 export default class CommentsComponent extends Component {
   @service store;
   @service session;
+  @service('current-user') user;
 
   @tracked hasComments = false;
   @tracked comments;
@@ -15,13 +16,7 @@ export default class CommentsComponent extends Component {
 
   constructor() {
     super(...arguments);
-    if (this.session.isAuthenticated) {
-      this.currentUser = this.store.findRecord(
-        'user',
-        this.session.data.authenticated.user.uid
-      );
-    }
-
+    this.currentUser = this.user.currentUser;
     this.findCommentsTask.perform();
   }
   @task({ restartable: true }) *findCommentsTask() {

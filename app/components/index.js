@@ -5,19 +5,16 @@ import { inject as service } from '@ember/service';
 export default class IndexComponent extends Component {
   @service store;
   @service session;
+  @service('current-user') user;
+
+  @tracked query = '';
+  @tracked currentUser;
+
   constructor() {
     super(...arguments);
     this.model = this.store.findAll('idea');
-    if (!this.session.isAuthenticated) {
-      return;
-    }
-
-    this.currentUser = this.store.findRecord(
-      'user',
-      this.session.data.authenticated.user.uid
-    );
+    this.currentUser = this.user.currentUser;
   }
-  @tracked query = '';
 
   @action
   setSearchQuery(event) {
