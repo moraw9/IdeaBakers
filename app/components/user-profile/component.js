@@ -51,7 +51,6 @@ export default class UserProfileComponent extends Component {
     return res;
   }
   @task({ restartable: true }) *putPhotoIntoStorageTask(photo) {
-    console.log('weszło w task');
     const storageRef = this.firebase
       .storage()
       .ref('pictures' + this.userData.id);
@@ -59,7 +58,6 @@ export default class UserProfileComponent extends Component {
     yield storageRef.put(photo);
     storageRef.getDownloadURL().then((url) => {
       this.userData.photoURL = url;
-      console.log('ustawiło photoUrl');
     });
   }
 
@@ -80,7 +78,6 @@ export default class UserProfileComponent extends Component {
     this.prepareChangesetToValidate(data);
     this.changeset.validate().then(() => {
       if (this.changeset.get('isValid')) {
-        console.log('is valid!');
         this.updateData(data);
       }
     });
@@ -138,7 +135,6 @@ export default class UserProfileComponent extends Component {
     this.userData
       .save()
       .then(() => {
-        console.log('zapisało');
         document.getElementById('cancelForm').click();
         alert('Updated data successfuly');
         this.load();

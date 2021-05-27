@@ -19,12 +19,12 @@ export default class KudosComponent extends Component {
   @tracked isMine;
   @tracked sumYourVotes;
   @tracked percent;
-  @tracked userRecord;
+  @tracked currentUser;
 
   constructor() {
     super(...arguments);
 
-    this.findUsersTask.perform();
+    this.findUserTask.perform();
     this.findVotesTask.perform();
   }
 
@@ -36,21 +36,9 @@ export default class KudosComponent extends Component {
     this.sumVotes();
   }
 
-  @task({ restartable: true }) *findUsersTask() {
-    if (this.session.isAuthenticated) {
-      this.currentUser = yield this.user.currentUser;
-    }
-    if (this.currentUser) {
-      this.findUserRecord();
-    }
+  @task({ restartable: true }) *findUserTask() {
+    this.currentUser = yield this.user.currentUser;
     this.isMine = this.checkIfMine();
-  }
-
-  findUserRecord() {
-    const [res] = this.args.users.filter(
-      (user) => user.email == this.currentUser.email
-    );
-    this.userRecord = res;
   }
 
   checkIfMine() {
@@ -64,7 +52,7 @@ export default class KudosComponent extends Component {
 
     this.votes.forEach((vote) => {
       sum += vote.numberOfVotes;
-      if (this.userRecord && vote.userId === this.userRecord.id) {
+      if (this.currentUser && vote.userId === this.currentUser.id) {
         sumYourVotes += vote.numberOfVotes;
       }
     });
@@ -76,7 +64,7 @@ export default class KudosComponent extends Component {
     this.setValueToBar();
 
     if (!this.currentUser) return;
-    if (this.userRecord.userKudos === 0 || this.difference === 0) {
+    if (this.currentUser.userKudos === 0 || this.difference === 0) {
       document.getElementById('addVoteButton').disabled = true;
     }
   }
@@ -120,34 +108,35 @@ export default class KudosComponent extends Component {
     this.isOpen = false;
   }
 
-  updateUserKudos() {
-    this.store.findRecord('user', this.userRecord.id).then((user) => {
-      user.userKudos = this.userRecord.userKudos - this.changeset.numberOfVotes;
-      user.save();
-    });
+  async updateUserKudos() {
+    this.currentUser.userKudos =
+      this.currentUser.get('userKudos') - this.changeset.numberOfVotes;
+    await this.currentUser.save();
   }
 
   @action
   vote() {
     if (
-      this.userRecord.userKudos >= this.changeset.numberOfVotes &&
+      this.currentUser.get('userKudos') >= this.changeset.numberOfVotes &&
       this.difference >= this.changeset.numberOfVotes
     ) {
-      this.changeset.ideaID = this.args.idea.get('id');
-      this.changeset.userId = this.userRecord.id;
+      this.changeset.ideaId = this.args.idea.get('id');
+      this.changeset.userId = this.currentUser.get('id');
       this.changeset.date = new Date().getTime();
       this.changeset.validate().then(() => {
         if (this.changeset.get('isValid')) {
           this.changeset.save().then(() => {
-            alert(`${this.args.idea.get('user')} thanks you for voiting!`);
+            alert(`Thank you for voiting!`);
             this.updateUserKudos();
             this.findVotesTask.perform();
           });
           this.clearForm();
         }
       });
-    } else if (this.userRecord.userKudos < this.changeset.numberOfVotes) {
-      alert(`You have only ${this.userRecord.userKudos} kudos to give`);
+    } else if (
+      this.currentUser.get('userKudos') < this.changeset.numberOfVotes
+    ) {
+      alert(`You have only ${this.currentUser.get('userKudos')} kudos to give`);
     } else {
       alert(`You can give max ${this.difference} kudos!`);
     }

@@ -51,25 +51,25 @@ export default class LogInComponent extends Component {
     if (!this.session.isAuthenticated) {
       return;
     }
-
-    const currentGoogleUser = this.user.currentUser;
-
+    const currentGoogleUser = this.session.data.authenticated.user;
     const [res] = this.users.filter(
-      (user) => user.email == currentGoogleUser.email
+      (user) => user.email === currentGoogleUser.email
     );
-    if (res.email) return;
 
-    const googleModel = this.store.createRecord('user');
+    if (typeof res !== 'undefined') return;
+
     const spaceIndex = currentGoogleUser.displayName.indexOf(' ');
-
-    googleModel.name = currentGoogleUser.displayName.slice(0, spaceIndex);
-    googleModel.surname = currentGoogleUser.displayName.slice(
-      spaceIndex + 1,
-      currentGoogleUser.displayName.length
-    );
-    googleModel.email = currentGoogleUser.email;
-    googleModel.photoURL = currentGoogleUser.photoURL;
-    googleModel.save();
+    const googleModel = this.store.createRecord('user', {
+      id: currentGoogleUser.uid,
+      name: currentGoogleUser.displayName.slice(0, spaceIndex),
+      surname: currentGoogleUser.displayName.slice(
+        spaceIndex + 1,
+        currentGoogleUser.displayName.length
+      ),
+      email: currentGoogleUser.email,
+      photoURL: currentGoogleUser.photoURL,
+    });
+    await googleModel.save();
   }
 
   @action
@@ -80,7 +80,7 @@ export default class LogInComponent extends Component {
         .authenticate('authenticator:firebase', (auth) => {
           return auth.signInWithPopup(provider);
         })
-        .then(() => this.createGoogleRecord());
+        .then((result) => this.createGoogleRecord(result));
     } catch (error) {
       this.errorMessage = error.error || error;
     }
