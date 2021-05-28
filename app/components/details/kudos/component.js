@@ -10,6 +10,7 @@ export default class KudosComponent extends Component {
   @service store;
   @service session;
   @service firebase;
+  @service notify;
   @service('current-user') user;
 
   @tracked votes;
@@ -114,6 +115,17 @@ export default class KudosComponent extends Component {
     await this.currentUser.save();
   }
 
+  setMessage(time, message, addedClass) {
+    this.notify.info(
+      {
+        html: `<div class="${addedClass}" data-test-vote-info >${message}</div>`,
+      },
+      {
+        closeAfter: time,
+      }
+    );
+  }
+
   @action
   vote() {
     if (
@@ -126,7 +138,7 @@ export default class KudosComponent extends Component {
       this.changeset.validate().then(() => {
         if (this.changeset.get('isValid')) {
           this.changeset.save().then(() => {
-            alert(`Thank you for voiting!`);
+            this.setMessage(4000, `Thank you for voiting!`, 'congratulation');
             this.updateUserKudos();
             this.findVotesTask.perform();
           });
@@ -136,9 +148,17 @@ export default class KudosComponent extends Component {
     } else if (
       this.currentUser.get('userKudos') < this.changeset.numberOfVotes
     ) {
-      alert(`You have only ${this.currentUser.get('userKudos')} kudos to give`);
+      this.setMessage(
+        6000,
+        `You have only ${this.currentUser.get('userKudos')} kudos to give`,
+        'error'
+      );
     } else {
-      alert(`You can give max ${this.difference} kudos!`);
+      this.setMessage(
+        6000,
+        `You can give max ${this.difference} kudos!`,
+        'error'
+      );
     }
   }
 }
