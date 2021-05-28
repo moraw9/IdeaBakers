@@ -7,22 +7,22 @@ module('Acceptance | log-in', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
 
-  // test('testing registration new user', async function (assert) {
-  //   await visit('/LogIn');
-  //   await click('[data-test-sign-up-button]');
+  skip('testing registration new user', async function (assert) {
+    await visit('/LogIn');
+    await click('[data-test-sign-up-button]');
 
-  //   await fillIn('[data-test-input="name"]', 'Aleksandra');
-  //   await fillIn('[data-test-input="surname"]', 'Olesiak');
-  //   await fillIn('[data-test-input="email"]', 'ola8@wp.pl');
-  //   await fillIn('[data-test-input="pswd"]', '12345678');
-  //   await fillIn('[data-test-input="rpswd"]', '12345678');
+    await fillIn('[data-test-input="name"]', 'Aleksandra');
+    await fillIn('[data-test-input="surname"]', 'Olesiak');
+    await fillIn('[data-test-input="email"]', 'ola8@wp.pl');
+    await fillIn('[data-test-input="pswd"]', '12345678');
+    await fillIn('[data-test-input="rpswd"]', '12345678');
 
-  //   await this.pauseTest();
-  //   await click('[data-test-button-save-form]');
-  //   await waitFor('[data-test-log-in-button]', { timeout: 3000 });
-  //   assert.dom('[data-test-state-text]').containsText('New to IdeaBakers?');
-  //   await this.pauseTest();
-  // });
+    await this.pauseTest();
+    await click('[data-test-button-save-form]');
+    await waitFor('[data-test-log-in-button]', { timeout: 3000 });
+    assert.dom('[data-test-state-text]').containsText('New to IdeaBakers?');
+    await this.pauseTest();
+  });
 
   skip('testing log in and log out', async function (assert) {
     this.server.create('user', {

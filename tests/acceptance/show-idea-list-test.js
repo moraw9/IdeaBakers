@@ -6,6 +6,7 @@ import {
   authenticateSession,
   invalidateSession,
 } from 'ember-simple-auth/test-support';
+import { currentURL } from '@ember/test-helpers/setup-application-context';
 
 const currentUser = {
   name: 'Aleksandra',
@@ -30,7 +31,7 @@ module('Acceptance | show-ideas', function (hooks) {
       description: 'Description for first idea',
       imageUrl: `https://loremflickr.com/cache/resized/65535_50323736618_46ca9bf94f_z_360_360_nofilter.jpg`,
       numberOfKudos: 40,
-      userId: currentUser.id,
+      userId: currentUser.uid,
     });
 
     this.server.create('idea', {
@@ -38,7 +39,7 @@ module('Acceptance | show-ideas', function (hooks) {
       description: 'Description for second idea',
       imageUrl: `https://loremflickr.com/cache/resized/65535_50745657987_4c85192fa9_360_360_nofilter.jpg`,
       numberOfKudos: 40,
-      userId: currentUser.id,
+      userId: currentUser.uid,
     });
 
     await authenticateSession({
@@ -49,14 +50,13 @@ module('Acceptance | show-ideas', function (hooks) {
 
   test('should display two ideas', async function (assert) {
     await visit('/');
-
-    await this.pauseTest();
-
     assert.dom('[data-test-idea]').exists({ count: 2 });
   });
 
-  test('shouldn`t access to xxx route', async function (assert) {
+  test('shouldn`t access to user profile route', async function (assert) {
     await invalidateSession();
     await visit('/');
+    await visit('/profile/1');
+    assert.equal(currentURL(), '/LogIn');
   });
 });
