@@ -19,6 +19,20 @@ module('Integration | Component | user-profile', function (hooks) {
       userKudos: 23,
     });
 
+    this.server.create('idea', {
+      title: 'Second idea',
+      description: 'Description for second idea',
+      imageUrl: `https://loremflickr.com/cache/resized/65535_50745657987_4c85192fa9_360_360_nofilter.jpg`,
+      numberOfKudos: 40,
+      userId: '1',
+    });
+    this.server.create('kudo', {
+      date: 1622146378162,
+      ideaId: '1',
+      userId: '1',
+      numberOfVotes: 5,
+    });
+
     let store = this.owner.lookup('service:store');
     let model = await store.findRecord('user', serverModel.id);
     this.set('model', model);
@@ -32,12 +46,9 @@ module('Integration | Component | user-profile', function (hooks) {
     assert.dom('[data-test-user-profile-email]').hasText('asia@wp.pl');
     assert.dom('[data-test-user-profile-photo]').hasNoAttribute('src');
     assert.dom('[data-test-user-profile-edit-button]').doesNotExist();
-    assert
-      .dom('[data-test-vote-no-kudos-text]')
-      .hasText(`There's no any given kudos yet...`);
-
-    assert
-      .dom('[data-test-idea-no-added-text]')
-      .hasText(`There's no any added idea yet...`);
+    assert.dom('[data-test-single-vote-in-list]').exists();
+    assert.dom('[data-test-single-vote-number-of-kudos]').hasText('5');
+    assert.dom('[data-test-single-added-idea-in-list]').exists();
+    assert.dom('[data-test-single-added-idea-title]').hasText('Second idea');
   });
 });

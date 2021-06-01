@@ -6,8 +6,8 @@
     {{#if this.userIdeasList }}
       <ul>
         {{#each this.userIdeasList as |idea|}}
-          <li>
-            <LinkTo @route="idea-details" @model={{idea.id}}>
+          <li data-test-single-added-idea-in-list> 
+            <LinkTo @route="idea-details" @model={{idea.id}} data-test-single-added-idea-title >
               {{idea.title}}
             </LinkTo>
           </li>

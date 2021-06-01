@@ -12,6 +12,7 @@ export default class UserProfileComponent extends Component {
   @service store;
   @service session;
   @service firebase;
+  @service notify;
   @service('current-user') user;
 
   @alias('findUserDataTask.lastSuccessful.value') userData;
@@ -120,10 +121,14 @@ export default class UserProfileComponent extends Component {
       .then(() => {
         input.value = '';
         document.getElementById('closeModalButton').click();
-        alert('Re authenticate finished successed, enert data one more time');
+        this.setMessage(
+          5000,
+          'Re authenticate finished successed, enert data one more time',
+          'congratulation'
+        );
       })
       .catch((error) => {
-        alert(`Error: ${error.message}`);
+        this.setMessage(5000, `Error: ${error.message}`, 'error');
       });
   }
 
@@ -136,7 +141,7 @@ export default class UserProfileComponent extends Component {
       .save()
       .then(() => {
         document.getElementById('cancelForm').click();
-        alert('Updated data successfuly');
+        this.setMessage(3000, 'Updated data successfuly', 'congratulation');
         this.load();
       })
       .catch((error) => {
@@ -160,6 +165,16 @@ export default class UserProfileComponent extends Component {
         this.saveRecord();
       });
     });
+  }
+  setMessage(time, message, addedClass) {
+    this.notify.info(
+      {
+        html: `<div class="${addedClass}" data-test-vote-info >${message}</div>`,
+      },
+      {
+        closeAfter: time,
+      }
+    );
   }
 
   async updateData(data) {

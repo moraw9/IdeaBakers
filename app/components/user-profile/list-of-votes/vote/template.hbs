@@ -1,4 +1,4 @@
-<div class="vote-wrapper">
+<div class="vote-wrapper" data-test-single-vote-in-list >
   <div class="information-wrapper">
     <h6>Idea title:
       <span>
@@ -12,6 +12,6 @@
     <h6>Date:<span>{{this.voteDate}}</span></h6>
   </div>
   <div class="information-wrapper">
-    <h6>Number of kudos:<span>{{@vote.numberOfVotes}}</span></h6>
+    <h6>Number of kudos:<span data-test-single-vote-number-of-kudos>{{@vote.numberOfVotes}}</span></h6>
   </div>
 </div>

@@ -24,7 +24,7 @@ module('Acceptance | log-in', function (hooks) {
     await this.pauseTest();
   });
 
-  test('testing log in and log out', async function (assert) {
+  skip('testing log in and log out', async function (assert) {
     this.server.create('user', {
       name: 'Aleksandra',
       surname: 'Olesiak',

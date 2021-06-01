@@ -2,6 +2,6 @@
     <label for={{@name}} class="label">{{@label}}</label>
     <input type={{@type}} class="form-control" placeholder={{get @placeholder @name}} id={{@name}} name={{@name}} onchange={{@onChange}} disabled={{@disabled}} data-test-input={{@name}} >
     {{#if  (get @changesetError @name) }}
-      <p class="text-danger">{{get @changesetError (concat @name ".validation") }}</p>
+      <p class="text-danger" data-test-form-validation-text={{@name}} >{{get @changesetError (concat @name ".validation") }}</p>
     {{/if}}
   </div>
