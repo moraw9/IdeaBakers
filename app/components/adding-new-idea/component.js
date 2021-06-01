@@ -10,6 +10,7 @@ export default class AddingNewIdeaComponent extends Component {
   @service session;
   @service store;
   @service firebase;
+  @service notify;
   @service('current-user') user;
 
   @tracked changeset;
@@ -18,7 +19,10 @@ export default class AddingNewIdeaComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.currentUser = this.user.currentUser;
+    this.getCurrentUserTask.perform();
+  }
+  @task({ restartable: true }) *getCurrentUserTask() {
+    this.currentUser = yield this.user.getCurrentUser();
   }
 
   @action
@@ -59,25 +63,37 @@ export default class AddingNewIdeaComponent extends Component {
           this.changeset.imageUrl.lastModified
       );
 
-    yield storageRef
-      .put(this.changeset.imageUrl)
-      .catch((error) => console.log(error));
+    yield storageRef.put(this.changeset.imageUrl);
 
     const url = yield storageRef.getDownloadURL();
     return url;
+  }
+  setMessage(time, message, addedClass) {
+    this.notify.info(
+      {
+        html: `<div class="${addedClass}" data-test-vote-info >${message}</div>`,
+      },
+      {
+        closeAfter: time,
+      }
+    );
   }
 
   @action
   async addIdea() {
     await this.setImageURLTask.perform();
-    this.changeset.userId = this.currentUser.get('id');
-    this.changeset.imageUrl = this.setImageURLTask.lastSuccessful.value;
+    this.changeset.userId = this.currentUser.id;
+    this.changeset.imageUrl = this.setImageURLTask.lastSuccessful?.value;
 
     this.changeset.validate().then(() => {
       if (this.changeset.get('isValid')) {
         this.changeset.save().then(() => {
           document.getElementById('closeModalButton').click();
-          alert('Congratulations! The idea has been added successfully!');
+          this.setMessage(
+            3000,
+            'Congratulations! The idea has been added successfully!',
+            'congratulation'
+          );
         });
       }
     });

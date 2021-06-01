@@ -24,9 +24,12 @@ export default class KudosComponent extends Component {
 
   constructor() {
     super(...arguments);
-
     this.findUserTask.perform();
     this.findVotesTask.perform();
+  }
+  @task({ restartable: true }) *findUserTask() {
+    this.currentUser = yield this.user.getCurrentUser();
+    this.isMine = this.checkIfMine();
   }
 
   @task({ restartable: true }) *findVotesTask() {
@@ -37,11 +40,6 @@ export default class KudosComponent extends Component {
     this.sumVotes();
   }
 
-  @task({ restartable: true }) *findUserTask() {
-    this.currentUser = yield this.user.currentUser;
-    this.isMine = this.checkIfMine();
-  }
-
   checkIfMine() {
     if (!this.currentUser) return;
     return this.args.idea.get('userId') === this.currentUser.id;
@@ -50,7 +48,6 @@ export default class KudosComponent extends Component {
   sumVotes() {
     let sum = 0;
     let sumYourVotes = 0;
-
     this.votes.forEach((vote) => {
       sum += vote.numberOfVotes;
       if (this.currentUser && vote.userId === this.currentUser.id) {
@@ -111,7 +108,7 @@ export default class KudosComponent extends Component {
 
   async updateUserKudos() {
     this.currentUser.userKudos =
-      this.currentUser.get('userKudos') - this.changeset.numberOfVotes;
+      this.currentUser.userKudos - this.changeset.numberOfVotes;
     await this.currentUser.save();
   }
 
@@ -129,11 +126,11 @@ export default class KudosComponent extends Component {
   @action
   vote() {
     if (
-      this.currentUser.get('userKudos') >= this.changeset.numberOfVotes &&
+      this.currentUser.userKudos >= this.changeset.numberOfVotes &&
       this.difference >= this.changeset.numberOfVotes
     ) {
       this.changeset.ideaId = this.args.idea.get('id');
-      this.changeset.userId = this.currentUser.get('id');
+      this.changeset.userId = this.currentUser.id;
       this.changeset.date = new Date().getTime();
       this.changeset.validate().then(() => {
         if (this.changeset.get('isValid')) {
@@ -145,12 +142,10 @@ export default class KudosComponent extends Component {
           this.clearForm();
         }
       });
-    } else if (
-      this.currentUser.get('userKudos') < this.changeset.numberOfVotes
-    ) {
+    } else if (this.currentUser.userKudos < this.changeset.numberOfVotes) {
       this.setMessage(
         6000,
-        `You have only ${this.currentUser.get('userKudos')} kudos to give`,
+        `You have only ${this.currentUser.userKudos} kudos to give`,
         'error'
       );
     } else {

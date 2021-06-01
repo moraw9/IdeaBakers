@@ -6,7 +6,6 @@ import {
   authenticateSession,
   invalidateSession,
 } from 'ember-simple-auth/test-support';
-import { currentURL } from '@ember/test-helpers/setup-application-context';
 import fillIn from '@ember/test-helpers/dom/fill-in';
 
 const currentUser = {
@@ -23,7 +22,7 @@ const otherUser = {
   name: 'Katarzyna',
   surname: 'Smilek',
   email: 'kasia@wp.pl',
-  userKudos: 35,
+  userKudos: 2,
   photoURL: '',
   pswd: '12345678',
   rpswd: '12345678',
@@ -59,7 +58,7 @@ module('Acceptance | vote', function (hooks) {
     assert.dom('[data-test-open-vote-form-button]').doesNotExist();
   });
 
-  test('it should be possible to vote more than once', async function (assert) {
+  test('it should be possible to vote more than once and block after five given kudos', async function (assert) {
     await visit('/');
     await click('[data-test-title]');
 
@@ -68,6 +67,7 @@ module('Acceptance | vote', function (hooks) {
     await click('[data-test-open-vote-form-button]');
     await fillIn('[data-test-number-of-votes-input ]', 2);
     await click('[data-test-add-vote]');
+    assert.equal(this.server.db.users[0].userKudos, 33);
     assert.dom('[data-test-info-no-votes-yet ]').doesNotExist();
 
     await click('[data-test-user-button]');
@@ -77,13 +77,42 @@ module('Acceptance | vote', function (hooks) {
     await click('[data-test-open-vote-form-button]');
     await fillIn('[data-test-number-of-votes-input ]', 3);
     await click('[data-test-add-vote]');
+    const disabledProperty = document.getElementById('addVoteButton').disabled;
+    assert.equal(disabledProperty, true);
+    assert.equal(this.server.db.users[0].userKudos, 30);
 
     await click('[data-test-user-button]');
     assert.dom('[data-test-user-profile-kudos]').hasText('30');
+  });
 
-    // await visit('/ideas/1');
-    // await this.pauseTest();
-    // const disabledProperty = document.getElementById('addVoteButton').disabled;
-    // assert.equal(disabledProperty, true);
+  test('it should be forbidden to vote if user doesn`t have kudos', async function (assert) {
+    await invalidateSession();
+    await authenticateSession({
+      authToken: '12345',
+      user: otherUser,
+    });
+
+    this.server.create('idea', {
+      title: 'Second idea',
+      description: 'Description for first idea',
+      imageUrl: `https://loremflickr.com/cache/resized/65535_50323736618_46ca9bf94f_z_360_360_nofilter.jpg`,
+      numberOfKudos: 40,
+      userId: '1',
+    });
+
+    await visit('/ideas/2');
+    await click('[data-test-open-vote-form-button]');
+    await fillIn('[data-test-number-of-votes-input ]', 5);
+    await click('[data-test-add-vote]');
+    assert.equal(this.server.db.users[1].userKudos, 2);
+    assert.dom('[data-test-info-no-votes-yet ]').exists();
+
+    await fillIn('[data-test-number-of-votes-input ]', 2);
+    await click('[data-test-add-vote]');
+    assert.equal(this.server.db.users[1].userKudos, 0);
+    assert.dom('[data-test-info-no-votes-yet ]').doesNotExist();
+
+    const disabledProperty = document.getElementById('addVoteButton').disabled;
+    assert.equal(disabledProperty, true);
   });
 });

@@ -16,9 +16,14 @@ export default class CommentsComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.currentUser = this.user.currentUser;
+    this.getCurrentUserTask.perform();
     this.findCommentsTask.perform();
   }
+
+  @task *getCurrentUserTask() {
+    this.currentUser = yield this.user.getCurrentUser();
+  }
+
   @task({ restartable: true }) *findCommentsTask() {
     const comments = yield this.store.findAll('comment');
     const result = comments.filter(
@@ -35,7 +40,7 @@ export default class CommentsComponent extends Component {
     const newComment = this.store.createRecord('comment');
     newComment.content = document.querySelector('textarea').value;
     newComment.postId = this.args.postID;
-    newComment.userId = this.currentUser.get('id');
+    newComment.userId = this.currentUser.id;
     newComment.save();
     this.cancel();
     this.findCommentsTask.perform();

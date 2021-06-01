@@ -13,7 +13,7 @@ export default class IndexComponent extends Component {
   constructor() {
     super(...arguments);
     this.model = this.store.findAll('idea');
-    this.currentUser = this.user.currentUser;
+    this.currentUser = this.user.getCurrentUser();
   }
 
   @action

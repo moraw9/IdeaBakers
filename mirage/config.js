@@ -1,6 +1,7 @@
 export default function () {
   // These comments are here to help you get started. Feel free to delete them.
-
+  this.passthrough('https://firebasestorage.googleapis.com/**');
+  // this.passthrough('https://firestore.googleapis.com/**');
   /*
     Config (with defaults).
 

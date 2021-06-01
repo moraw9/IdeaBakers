@@ -27,8 +27,8 @@ export default class UserProfileComponent extends Component {
     this.findUserDataTask.perform();
   }
 
-  load() {
-    this.currentUser = this.user.currentUser;
+  async load() {
+    this.currentUser = await this.user.getCurrentUser();
   }
   createChangeset() {
     this.userModel = this.store.createRecord('user');
@@ -45,7 +45,7 @@ export default class UserProfileComponent extends Component {
       res = this.args.model;
       return res;
     }
-    res = yield this.user.currentUser;
+    res = yield this.user.getCurrentUser();
 
     if (!res.pswd) this.isGoogleUser = true;
     return res;

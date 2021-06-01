@@ -2,12 +2,12 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import { task } from 'ember-concurrency';
 
 export default class NavBarComponent extends Component {
   @service session;
   @service store;
   @service('current-user') user;
-
   @tracked currentUser;
 
   constructor() {
@@ -15,12 +15,14 @@ export default class NavBarComponent extends Component {
     if (!this.session.isAuthenticated) {
       return;
     }
-
-    this.currentUser = this.user.currentUser;
+    this.getCurrentUserTask.perform();
   }
 
   @action
   invalidateSession() {
     this.session.invalidate();
+  }
+  @task *getCurrentUserTask() {
+    this.currentUser = yield this.user.getCurrentUser();
   }
 }

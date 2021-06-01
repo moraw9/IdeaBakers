@@ -5,13 +5,14 @@ export default class CurrentUserService extends Service {
   @service session;
   @service store;
 
-  get currentUser() {
+  async getCurrentUser() {
     if (!this.session.isAuthenticated) {
       return null;
     }
-    return this.store.findRecord(
+    const user = await this.store.findRecord(
       'user',
       this.session.data.authenticated.user.uid
     );
+    return user;
   }
 }

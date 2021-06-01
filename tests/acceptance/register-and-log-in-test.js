@@ -1,4 +1,4 @@
-import { module, skip } from 'qunit';
+import { module, skip, test } from 'qunit';
 import { click, visit, fillIn, waitFor } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
@@ -24,7 +24,7 @@ module('Acceptance | log-in', function (hooks) {
     await this.pauseTest();
   });
 
-  skip('testing log in and log out', async function (assert) {
+  test('testing log in and log out', async function (assert) {
     this.server.create('user', {
       name: 'Aleksandra',
       surname: 'Olesiak',
@@ -51,17 +51,6 @@ module('Acceptance | log-in', function (hooks) {
     assert.dom('[data-test-name-in-nav]').hasText('Aleksandra');
 
     await this.pauseTest();
-
-    // eslint-disable-next-line no-undef
-    const currentUser = firebase.auth().currentUser;
-    // const store = this.owner.lookup('service:store');
-    // const users = await store.findAll('user');
-    // const [userRecord] = users.filter(
-    //   (user) => user.email === currentUser.email
-    // );
-
-    // await userRecord.destroyRecord();
-    // await currentUser.delete();
 
     assert.dom('[data-test-log-out-button]').exists();
     await click('[data-test-log-out-button]', { timeout: 3000 });
