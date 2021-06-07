@@ -31,6 +31,7 @@ export default class UserProfileComponent extends Component {
   async load() {
     this.currentUser = await this.user.getCurrentUser();
   }
+
   createChangeset() {
     this.userModel = this.store.createRecord('user');
     this.changeset = new Changeset(
@@ -51,15 +52,16 @@ export default class UserProfileComponent extends Component {
     if (!res.pswd) this.isGoogleUser = true;
     return res;
   }
-  @task({ restartable: true }) *putPhotoIntoStorageTask(photo) {
+
+  @task({ restartable: true }) *setImageURLTask(photo) {
     const storageRef = this.firebase
       .storage()
       .ref('pictures' + this.userData.id);
 
     yield storageRef.put(photo);
-    storageRef.getDownloadURL().then((url) => {
-      this.userData.photoURL = url;
-    });
+
+    const url = yield storageRef.getDownloadURL();
+    return url;
   }
 
   @action
@@ -69,6 +71,7 @@ export default class UserProfileComponent extends Component {
     }
     this.isUpdate = !this.isUpdate;
   }
+
   @action
   deleteModel() {
     this.userModel.destroyRecord();
@@ -99,6 +102,7 @@ export default class UserProfileComponent extends Component {
     function checkIfErrorIs() {
       return parent.lastChild.textContent === message;
     }
+
     if (isError && !checkIfErrorIs()) {
       let html = `<p class="text-danger">${message}</p>`;
       parent.insertAdjacentHTML('beforeend', html);
@@ -155,17 +159,11 @@ export default class UserProfileComponent extends Component {
   }
 
   async setPhotoURL(photo) {
-    const storageRef = this.firebase
-      .storage()
-      .ref('pictures' + this.userData.id);
-
-    storageRef.put(photo).then(() => {
-      storageRef.getDownloadURL().then((url) => {
-        this.userData.photoURL = url;
-        this.saveRecord();
-      });
-    });
+    await this.setImageURLTask.perform(photo);
+    this.userData.photoURL = this.setImageURLTask.lastSuccessful?.value;
+    this.saveRecord();
   }
+
   setMessage(time, message, addedClass) {
     this.notify.info(
       {
@@ -183,6 +181,7 @@ export default class UserProfileComponent extends Component {
         this.userData[property] = data[property];
       }
     }
+
     if (data.photoURL) {
       this.setPhotoURL(data.photoURL);
     } else {

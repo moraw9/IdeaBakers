@@ -40,7 +40,7 @@ module('Acceptance | vote', function (hooks) {
     this.server.create('idea', {
       title: 'First idea',
       description: 'Description for first idea',
-      imageUrl: `https://loremflickr.com/cache/resized/65535_50323736618_46ca9bf94f_z_360_360_nofilter.jpg`,
+      imageUrl: `https://cdn.pixabay.com/photo/2016/12/06/17/11/fushimi-inari-shrine-1886975_1280.jpg`,
       numberOfKudos: 40,
       userId: '2',
     });
@@ -95,7 +95,7 @@ module('Acceptance | vote', function (hooks) {
     this.server.create('idea', {
       title: 'Second idea',
       description: 'Description for first idea',
-      imageUrl: `https://loremflickr.com/cache/resized/65535_50323736618_46ca9bf94f_z_360_360_nofilter.jpg`,
+      imageUrl: `https://cdn.pixabay.com/photo/2016/12/06/17/11/fushimi-inari-shrine-1886975_1280.jpg`,
       numberOfKudos: 40,
       userId: '1',
     });

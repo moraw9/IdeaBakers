@@ -4,6 +4,7 @@ import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 import fillIn from '@ember/test-helpers/dom/fill-in';
+import triggerEvent from '@ember/test-helpers/dom/trigger-event';
 
 const currentUser = {
   name: 'Aleksandra',
@@ -15,6 +16,11 @@ const currentUser = {
   rpswd: '12345678',
   uid: 1,
 };
+const fakeFile = new File([''], 'testPhoto.png', {
+  type: 'image/png',
+  lastModified: 1622146774905,
+  name: 'testPhoto',
+});
 
 module('Acceptance | edit-user-data', function (hooks) {
   setupApplicationTest(hooks);
@@ -46,6 +52,15 @@ module('Acceptance | edit-user-data', function (hooks) {
   });
 
   test('should be possible to edit user data', async function (assert) {
+    const firebase = this.owner.lookup('service:firebase');
+    firebase.storage().ref = () => {
+      return {
+        put: () => {},
+        getDownloadURL: () =>
+          'https://cdn.pixabay.com/photo/2016/12/06/17/11/fushimi-inari-shrine-1886975_1280.jpg',
+      };
+    };
+
     await visit('/profile/1');
     assert.dom('[data-test-user-profile-edit-button]').exists();
     await click('[data-test-user-profile-edit-button]');
@@ -69,10 +84,21 @@ module('Acceptance | edit-user-data', function (hooks) {
     await fillIn('[data-test-input=name', '');
     await fillIn('[data-test-input=pswd', 'Bianka1234');
     await fillIn('[data-test-input=rpswd', 'Bianka1234');
+    triggerEvent('[data-test-input=file]', 'change', {
+      files: [fakeFile],
+    });
     await click('[data-test-button-save-form]');
 
     assert.equal(this.server.db.users[0].name, 'Olcia');
     assert.equal(this.server.db.users[0].pswd, 'Bianka1234');
     assert.equal(this.server.db.users[0].rpswd, 'Bianka1234');
+
+    let src = document
+      .querySelector('[data-test-user-profile-photo]')
+      .getAttribute('src');
+    assert.equal(
+      src,
+      `https://cdn.pixabay.com/photo/2016/12/06/17/11/fushimi-inari-shrine-1886975_1280.jpg`
+    );
   });
 });

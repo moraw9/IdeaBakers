@@ -22,7 +22,7 @@ module('Integration | Component | user-profile', function (hooks) {
     this.server.create('idea', {
       title: 'Second idea',
       description: 'Description for second idea',
-      imageUrl: `https://loremflickr.com/cache/resized/65535_50745657987_4c85192fa9_360_360_nofilter.jpg`,
+      imageUrl: `https://cdn.pixabay.com/photo/2016/12/06/17/11/fushimi-inari-shrine-1886975_1280.jpg`,
       numberOfKudos: 40,
       userId: '1',
     });

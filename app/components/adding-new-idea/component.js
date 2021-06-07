@@ -21,6 +21,7 @@ export default class AddingNewIdeaComponent extends Component {
     super(...arguments);
     this.getCurrentUserTask.perform();
   }
+
   @task({ restartable: true }) *getCurrentUserTask() {
     this.currentUser = yield this.user.getCurrentUser();
   }
@@ -68,6 +69,7 @@ export default class AddingNewIdeaComponent extends Component {
     const url = yield storageRef.getDownloadURL();
     return url;
   }
+
   setMessage(time, message, addedClass) {
     this.notify.info(
       {
