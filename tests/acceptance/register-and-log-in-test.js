@@ -1,4 +1,4 @@
-import { module, skip, test } from 'qunit';
+import { module, test } from 'qunit';
 import { click, visit, fillIn, waitFor } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import CloudFirestoreAdapter from 'ember-cloud-firestore-adapter/adapters/cloud-firestore';
@@ -40,11 +40,12 @@ module('Acceptance | log-in', function (hooks) {
     assert.dom('[data-test-name-in-nav]').hasText('Aleksandra');
 
     const user = firebase.auth().currentUser;
-    store.findRecord('user', user.uid, { reload: true }).then((currentUser) => {
-      return currentUser.destroyRecord();
-    });
+    await store
+      .findRecord('user', user.uid, { reload: true })
+      .then((currentUser) => {
+        return currentUser.destroyRecord();
+      });
     await user.delete();
-    console.log('log po usunięciach');
 
     assert.dom('[data-test-log-out-button]').exists();
     await click('[data-test-log-out-button]', { timeout: 3000 });
