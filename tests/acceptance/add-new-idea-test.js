@@ -1,4 +1,4 @@
-import { module, skip, test } from 'qunit';
+import { module, test } from 'qunit';
 import { visit, click } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
@@ -44,8 +44,16 @@ module('Acceptance | add-new-idea', function (hooks) {
     assert.dom('[data-test-open-modal-for-idea-button]').doesNotExist();
   });
 
-  skip('it should be possible to add project to idea`s list', async function (assert) {
+  test('it should be possible to add project to idea`s list', async function (assert) {
     await visit('/');
+    const firebase = this.owner.lookup('service:firebase');
+    firebase.storage().ref = () => {
+      return {
+        put: () => {},
+        getDownloadURL: () =>
+          'https://cdn.pixabay.com/photo/2016/12/06/17/11/fushimi-inari-shrine-1886975_1280.jpg',
+      };
+    };
 
     assert.dom('[data-test-open-modal-for-idea-button]').exists();
     await click('[data-test-open-modal-for-idea-button]');
@@ -67,6 +75,7 @@ module('Acceptance | add-new-idea', function (hooks) {
       files: [fakeFile],
     });
     await click('[data-test-add-idea-button]');
+
     assert.dom('[data-test-idea]').exists({ count: 1 });
   });
 });
