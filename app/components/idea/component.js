@@ -12,13 +12,10 @@ export default class IdeaComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.findUserRecordTask.perform();
+    this.findUserTask.perform();
   }
 
-  @task({ restartable: true }) *findUserRecordTask() {
-    this.otherUser = yield this.store.findRecord(
-      'user',
-      this.args.idea.userRecordID
-    );
+  @task({ restartable: true }) *findUserTask() {
+    this.otherUser = yield this.store.findRecord('user', this.args.idea.userId);
   }
 }

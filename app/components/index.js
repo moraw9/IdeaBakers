@@ -5,13 +5,16 @@ import { inject as service } from '@ember/service';
 export default class IndexComponent extends Component {
   @service store;
   @service session;
-  @service firebase;
+  @service('current-user') user;
+
+  @tracked query = '';
+  @tracked currentUser;
+
   constructor() {
     super(...arguments);
     this.model = this.store.findAll('idea');
-    this.currentUser = this.firebase.auth().currentUser;
+    this.currentUser = this.user.getCurrentUser();
   }
-  @tracked query = '';
 
   @action
   setSearchQuery(event) {

@@ -18,6 +18,7 @@ export default class IndexComponent extends Component {
   @task({ restartable: true }) *loadModelTask() {
     this.model = yield this.store.findRecord('idea', this.args.model.id);
     this.users = yield this.store.findAll('user');
-    this.otherUser = this.store.findRecord('user', this.model.userRecordID);
+
+    this.otherUser = yield this.store.findRecord('user', this.model.userId);
   }
 }

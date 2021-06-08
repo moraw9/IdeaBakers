@@ -12,6 +12,8 @@ export default class UserProfileComponent extends Component {
   @service store;
   @service session;
   @service firebase;
+  @service notify;
+  @service('current-user') user;
 
   @alias('findUserDataTask.lastSuccessful.value') userData;
 
@@ -22,15 +24,14 @@ export default class UserProfileComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.model = this.store.findRecord('user', this.args.model.id);
-
     this.load();
     this.findUserDataTask.perform();
   }
 
-  load() {
-    this.currentUser = this.firebase.auth().currentUser;
+  async load() {
+    this.currentUser = await this.user.getCurrentUser();
   }
+
   createChangeset() {
     this.userModel = this.store.createRecord('user');
     this.changeset = new Changeset(
@@ -46,12 +47,21 @@ export default class UserProfileComponent extends Component {
       res = this.args.model;
       return res;
     }
-
-    const users = yield this.store.findAll('user');
-    [res] = users.filter((user) => user.email === this.currentUser.email);
+    res = yield this.user.getCurrentUser();
 
     if (!res.pswd) this.isGoogleUser = true;
     return res;
+  }
+
+  @task({ restartable: true }) *setImageURLTask(photo) {
+    const storageRef = this.firebase
+      .storage()
+      .ref('pictures' + this.userData.id);
+
+    yield storageRef.put(photo);
+
+    const url = yield storageRef.getDownloadURL();
+    return url;
   }
 
   @action
@@ -61,6 +71,7 @@ export default class UserProfileComponent extends Component {
     }
     this.isUpdate = !this.isUpdate;
   }
+
   @action
   deleteModel() {
     this.userModel.destroyRecord();
@@ -69,7 +80,6 @@ export default class UserProfileComponent extends Component {
   @action
   setDataToUpdate(data) {
     this.prepareChangesetToValidate(data);
-
     this.changeset.validate().then(() => {
       if (this.changeset.get('isValid')) {
         this.updateData(data);
@@ -78,17 +88,13 @@ export default class UserProfileComponent extends Component {
   }
 
   prepareChangesetToValidate(data) {
-    this.changeset.name = data.name ? data.name : this.userData.name;
-    this.changeset.surname = data.surname
-      ? data.surname
-      : this.userData.surname;
-    this.changeset.email = data.email ? data.email : this.userData.email;
-
-    if (this.isGoogleUser) {
-      this.changeset.pswd = this.changeset.rpswd = '12345678';
-    } else {
-      this.changeset.pswd = data.pswd ? data.pswd : this.userData.pswd;
-      this.changeset.rpswd = data.rpswd ? data.rpswd : this.userData.rpswd;
+    for (const property in data) {
+      if (this.isGoogleUser && (property === 'pswd' || property === 'rpswd')) {
+        this.changeset[property] = '12345678';
+      }
+      this.changeset[property] = data[property]
+        ? data[property]
+        : this.userData[property];
     }
   }
 
@@ -96,6 +102,7 @@ export default class UserProfileComponent extends Component {
     function checkIfErrorIs() {
       return parent.lastChild.textContent === message;
     }
+
     if (isError && !checkIfErrorIs()) {
       let html = `<p class="text-danger">${message}</p>`;
       parent.insertAdjacentHTML('beforeend', html);
@@ -118,10 +125,14 @@ export default class UserProfileComponent extends Component {
       .then(() => {
         input.value = '';
         document.getElementById('closeModalButton').click();
-        alert('Re authenticate finished successed, enert data one more time');
+        this.setMessage(
+          5000,
+          'Re authenticate finished successed, enert data one more time',
+          'congratulation'
+        );
       })
       .catch((error) => {
-        alert(`Error: ${error.message}`);
+        this.setMessage(5000, `Error: ${error.message}`, 'error');
       });
   }
 
@@ -129,72 +140,52 @@ export default class UserProfileComponent extends Component {
     document.getElementById('openModalButton').click();
   }
 
+  async saveRecord() {
+    this.userData
+      .save()
+      .then(() => {
+        document.getElementById('cancelForm').click();
+        this.setMessage(3000, 'Updated data successfuly', 'congratulation');
+        this.load();
+      })
+      .catch((error) => {
+        switch (error.code) {
+          case 'auth/user-token-expired':
+          case 'auth/requires-recent-login':
+            this.openModalForPassword();
+            break;
+        }
+      });
+  }
+
+  async setPhotoURL(photo) {
+    await this.setImageURLTask.perform(photo);
+    this.userData.photoURL = this.setImageURLTask.lastSuccessful?.value;
+    this.saveRecord();
+  }
+
+  setMessage(time, message, addedClass) {
+    this.notify.info(
+      {
+        html: `<div class="${addedClass}" data-test-vote-info >${message}</div>`,
+      },
+      {
+        closeAfter: time,
+      }
+    );
+  }
+
   async updateData(data) {
-    let isOk = true;
-
-    if (data.pswd) {
-      this.currentUser
-        .updatePassword(data.pswd)
-        .then(() => {
-          this.store.findRecord('user', this.userData.id).then(function (user) {
-            user.pswd = user.rpswd = data.pswd;
-            user.save();
-          });
-        })
-        .catch((error) => {
-          isOk = false;
-          switch (error.code) {
-            case 'auth/user-token-expired':
-            case 'auth/requires-recent-login':
-              this.openModalForPassword();
-              break;
-          }
-        });
+    for (const property in data) {
+      if (property !== 'photoURL' && data[property]) {
+        this.userData[property] = data[property];
+      }
     }
 
-    if (data.name) {
-      this.currentUser
-        .updateProfile({
-          displayName: data.name,
-        })
-        .then(() => {
-          this.store.findRecord('user', this.userData.id).then(function (user) {
-            user.name = data.name;
-            user.save();
-          });
-        });
-    }
-
-    if (data.surname) {
-      this.store.findRecord('user', this.userData.id).then(function (user) {
-        user.surname = data.surname;
-        user.save();
-      });
-    }
-
-    if (data.photoURL?.size) {
-      const storageRef = this.firebase
-        .storage()
-        .ref('pictures' + this.currentUser.uid);
-
-      storageRef.put(data.photoURL).then(() => {
-        storageRef.getDownloadURL().then((url) => {
-          this.currentUser.updateProfile({
-            photoURL: url,
-          });
-
-          this.store.findRecord('user', this.userData.id).then(function (user) {
-            user.photoURL = url;
-            user.save();
-          });
-        });
-      });
-    }
-
-    if (isOk) {
-      document.getElementById('cancelForm').click();
-      alert('Updated data successfuly');
-      this.load();
+    if (data.photoURL) {
+      this.setPhotoURL(data.photoURL);
+    } else {
+      this.saveRecord();
     }
   }
 }

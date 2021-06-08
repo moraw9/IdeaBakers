@@ -3,14 +3,14 @@
     <h3>List of votes</h3>
   </header>
   <div class="list-content">
-    {{#if (gt this.userVotesList.length 1) }}
+    {{#if this.userVotesList }}
       {{#each (sort-by 'date:desc' this.userVotesList) as |vote|}}
         <div class="item-wrapper">
           <UserProfile::ListOfVotes::Vote @vote={{vote}} />
         </div>
       {{/each}}
     {{else}}
-      <p>There's no any given kudos yet...</p>
+      <p data-test-vote-no-kudos-text >There's no any given kudos yet...</p>
     {{/if}}
   </div>
 </div>

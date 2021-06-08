@@ -19,4 +19,14 @@ $darkRed: #7c0e0e;
       border-color: $red;
     }
   }
+  .congratulation {
+    background-color: green;
+    color: white;
+    border-radius: 3px;
+  }
+  .error {
+    background-color: $red;
+    color: white;
+    border-radius: 3px;
+  }
 }

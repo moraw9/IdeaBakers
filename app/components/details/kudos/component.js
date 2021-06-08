@@ -10,6 +10,8 @@ export default class KudosComponent extends Component {
   @service store;
   @service session;
   @service firebase;
+  @service notify;
+  @service('current-user') user;
 
   @tracked votes;
   @tracked numberOfVotes;
@@ -18,49 +20,37 @@ export default class KudosComponent extends Component {
   @tracked isMine;
   @tracked sumYourVotes;
   @tracked percent;
-  @tracked userRecord;
+  @tracked currentUser;
 
   constructor() {
     super(...arguments);
-
-    this.findUsersTask.perform();
+    this.findUserTask.perform();
     this.findVotesTask.perform();
+  }
+  @task({ restartable: true }) *findUserTask() {
+    this.currentUser = yield this.user.getCurrentUser();
+    this.isMine = this.checkIfMine();
   }
 
   @task({ restartable: true }) *findVotesTask() {
     const votes = yield this.store.findAll('kudo');
     this.votes = votes.filter(
-      (vote) => vote.ideaID == this.args.idea.get('id')
+      (vote) => vote.ideaId == this.args.idea.get('id')
     );
     this.sumVotes();
   }
 
-  @task({ restartable: true }) *findUsersTask() {
-    this.currentUser = yield this.firebase.auth().currentUser;;
-    this.findUserRecord();
-    this.isMine = this.checkIfMine();
-  }
-
-  findUserRecord() {
-    if (!this.currentUser) return;
-    const [res] = this.args.users.filter(
-      (user) => user.email == this.currentUser.email
-    );
-    this.userRecord = res;
-  }
-
   checkIfMine() {
     if (!this.currentUser) return;
-    return this.args.idea.get('userUID') === this.currentUser.uid;
+    return this.args.idea.get('userId') === this.currentUser.id;
   }
 
   sumVotes() {
     let sum = 0;
     let sumYourVotes = 0;
-
     this.votes.forEach((vote) => {
       sum += vote.numberOfVotes;
-      if (this.userRecord && vote.userRecordID === this.userRecord.id) {
+      if (this.currentUser && vote.userId === this.currentUser.id) {
         sumYourVotes += vote.numberOfVotes;
       }
     });
@@ -72,7 +62,7 @@ export default class KudosComponent extends Component {
     this.setValueToBar();
 
     if (!this.currentUser) return;
-    if (this.userRecord.userKudos === 0 || this.difference === 0) {
+    if (this.currentUser.userKudos === 0 || this.difference === 0) {
       document.getElementById('addVoteButton').disabled = true;
     }
   }
@@ -116,36 +106,54 @@ export default class KudosComponent extends Component {
     this.isOpen = false;
   }
 
-  updateUserKudos() {
-    this.store.findRecord('user', this.userRecord.id).then((user) => {
-      user.userKudos = this.userRecord.userKudos - this.changeset.numberOfVotes;
-      user.save();
-    });
+  async updateUserKudos() {
+    this.currentUser.userKudos =
+      this.currentUser.userKudos - this.changeset.numberOfVotes;
+    await this.currentUser.save();
+  }
+
+  setMessage(time, message, addedClass) {
+    this.notify.info(
+      {
+        html: `<div class="${addedClass}" data-test-vote-info >${message}</div>`,
+      },
+      {
+        closeAfter: time,
+      }
+    );
   }
 
   @action
   vote() {
     if (
-      this.userRecord.userKudos >= this.changeset.numberOfVotes &&
+      this.currentUser.userKudos >= this.changeset.numberOfVotes &&
       this.difference >= this.changeset.numberOfVotes
     ) {
-      this.changeset.ideaID = this.args.idea.get('id');
-      this.changeset.userRecordID = this.userRecord.id;
+      this.changeset.ideaId = this.args.idea.get('id');
+      this.changeset.userId = this.currentUser.id;
       this.changeset.date = new Date().getTime();
       this.changeset.validate().then(() => {
         if (this.changeset.get('isValid')) {
           this.changeset.save().then(() => {
-            alert(`${this.args.idea.get('user')} thanks you for voiting!`);
+            this.setMessage(4000, `Thank you for voiting!`, 'congratulation');
             this.updateUserKudos();
             this.findVotesTask.perform();
           });
           this.clearForm();
         }
       });
-    } else if (this.userRecord.userKudos < this.changeset.numberOfVotes) {
-      alert(`You have only ${this.userRecord.userKudos} kudos to give`);
+    } else if (this.currentUser.userKudos < this.changeset.numberOfVotes) {
+      this.setMessage(
+        6000,
+        `You have only ${this.currentUser.userKudos} kudos to give`,
+        'error'
+      );
     } else {
-      alert(`You can give max ${this.difference} kudos!`);
+      this.setMessage(
+        6000,
+        `You can give max ${this.difference} kudos!`,
+        'error'
+      );
     }
   }
 }

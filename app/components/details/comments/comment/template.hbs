@@ -1,10 +1,10 @@
-<div class="media border p-3">
-  <img src={{if @comment.userPhoto @comment.userPhoto '/assets/images/user.png'}} alt="user" class="mr-3 mt-3 rounded-circle">
+<div class="media border p-3" data-test-comment-box >
+  <img src={{if this.commentUser.photoURL this.commentUser.photoURL '/assets/images/user.png'}} alt="user" class="mr-3 mt-3 rounded-circle">
   <div class="media-body">
-    <h4>{{@comment.username}} <small><i>Posted on {{this.date}}</i></small></h4>
-    <p>{{@comment.content}}</p>      
+    <h4 data-test-comment-username >{{this.commentUser.name}} <small><i>Posted on {{this.date}}</i></small></h4>
+    <p data-test-comment-content >{{@comment.content}}</p>      
   </div>
-  {{#if (and @currentUserUID (eq @comment.userUID @currentUserUID)) }}
-    <button type="button" class="btn btn-danger" onclick={{this.removeComment}}><i class="far fa-trash-alt"></i></button>
+  {{#if (and @currentUserID (eq @comment.userId @currentUserID)) }}
+    <button type="button" class="btn btn-danger" onclick={{this.removeComment}} data-test-remove-comment-button ><i class="far fa-trash-alt"></i></button>
   {{/if}}
 </div>

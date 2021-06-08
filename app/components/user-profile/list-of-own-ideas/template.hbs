@@ -3,18 +3,18 @@
     <h3>List of ideas</h3>
   </header>
   <div class="list-content">
-    {{#if (gt this.userIdeasList.length 1) }}
+    {{#if this.userIdeasList }}
       <ul>
         {{#each this.userIdeasList as |idea|}}
-          <li>
-            <LinkTo @route="idea-details" @model={{idea.id}}>
+          <li data-test-single-added-idea-in-list> 
+            <LinkTo @route="idea-details" @model={{idea.id}} data-test-single-added-idea-title >
               {{idea.title}}
             </LinkTo>
           </li>
         {{/each}}
       </ul>
     {{else}}
-      <p>There's no any added idea yet...</p>
+      <p data-test-idea-no-added-text >There's no any added idea yet...</p>
     {{/if}}
   </div>
 </div>

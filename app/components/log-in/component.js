@@ -9,17 +9,12 @@ export default class LogInComponent extends Component {
   @service store;
   @service session;
   @service firebase;
-  @service notify;
+  @service('current-user') user;
 
   @tracked isLogInForm = true;
   @tracked stateText = 'New to IdeaBakers?';
   @tracked buttonName = 'Sign up';
-
-  beforeModel() {
-    return get(this, 'session')
-      .fetch()
-      .catch(() => {});
-  }
+  @tracked changeset;
 
   constructor() {
     super(...arguments);
@@ -40,57 +35,57 @@ export default class LogInComponent extends Component {
     if (this.isLogInForm) {
       this.buttonName = 'Log in';
       this.stateText = 'Have an account?';
+      this.createChangeset();
     } else {
       this.stateText = 'New to IdeaBakers?';
       this.buttonName = 'Sign up';
+
+      if (typeof this.userModel.name === 'undefined') {
+        this.userModel.destroyRecord();
+      }
     }
     this.isLogInForm = !this.isLogInForm;
   }
 
   async createGoogleRecord() {
-    const currentGoogleUser = this.firebase.auth().currentUser;
-
+    if (!this.session.isAuthenticated) {
+      return;
+    }
+    const currentGoogleUser = this.session.data.authenticated.user;
     const [res] = this.users.filter(
-      (user) => user.email == currentGoogleUser.email
+      (user) => user.email === currentGoogleUser.email
     );
-    if (res.email) return;
 
-    const googleModel = this.store.createRecord('user');
+    if (typeof res !== 'undefined') return;
+
     const spaceIndex = currentGoogleUser.displayName.indexOf(' ');
-
-    googleModel.name = currentGoogleUser.displayName.slice(0, spaceIndex);
-    googleModel.surname = currentGoogleUser.displayName.slice(
-      spaceIndex + 1,
-      currentGoogleUser.displayName.length
-    );
-    googleModel.email = currentGoogleUser.email;
-    googleModel.photoURL = currentGoogleUser.photoURL;
-    googleModel.save();
+    const googleModel = this.store.createRecord('user', {
+      id: currentGoogleUser.uid,
+      name: currentGoogleUser.displayName.slice(0, spaceIndex),
+      surname: currentGoogleUser.displayName.slice(
+        spaceIndex + 1,
+        currentGoogleUser.displayName.length
+      ),
+      email: currentGoogleUser.email,
+      photoURL: currentGoogleUser.photoURL,
+    });
+    await googleModel.save();
   }
 
   @action
   googleLogin() {
-    // eslint-disable-next-line no-undef
     var provider = new firebase.auth.GoogleAuthProvider();
     try {
       this.session
         .authenticate('authenticator:firebase', (auth) => {
           return auth.signInWithPopup(provider);
         })
-        .then(() => this.createGoogleRecord());
+        .then((result) => this.createGoogleRecord(result));
     } catch (error) {
       this.errorMessage = error.error || error;
     }
   }
 
-  // setMessage() {
-  //   this.notify.alert(
-  //     'Congratulations! You have successfully joined us, log in!',
-  //     {
-  //       closeAfter: 5000,
-  //     }
-  //   );
-  // }
   setMessage() {
     const html =
       '<div class="alert" data-test-alert >Congratulations! You have successfully joined us, log in!</div>';
@@ -133,12 +128,19 @@ export default class LogInComponent extends Component {
       .createUserWithEmailAndPassword(changeset.email, changeset.pswd)
       .then(async (result) => {
         this.toggleEmailExistenceError(false);
-        await changeset.save();
+        const id = await result.user.uid;
+        const { name, surname, email, pswd, rpswd } = changeset;
+        const newUser = await this.store.createRecord('user', {
+          id,
+          name,
+          surname,
+          email,
+          pswd,
+          rpswd,
+        });
+        await newUser.save();
         this.toggleForm();
         this.setMessage();
-        return result.user.updateProfile({
-          displayName: changeset.name,
-        });
       })
       .catch((error) => {
         if (error.code === 'auth/email-already-in-use') {
@@ -149,7 +151,6 @@ export default class LogInComponent extends Component {
 
   @action
   setDataToUpdate(data) {
-    this.createChangeset();
     this.prepareChangesetToValidate(data);
     this.changeset.validate().then(() => {
       if (this.changeset.get('isValid')) {

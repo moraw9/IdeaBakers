@@ -6,24 +6,23 @@
   {{/if}}
   <div class="details-wrapper">
     <div class="card">
-      <h1 class="flexible">{{this.model.title}}</h1>
-      <img alt="project img" src="{{this.model.imageURL}}" class="rounded">
-      <div class="description">
+      <h1 class="flexible" data-test-details-title>{{this.model.title}}</h1>
+      <img alt="project img" src="{{this.model.imageUrl}}" class="rounded" data-test-details-img>
+      <div class="description" data-test-details-description>
         <p>{{this.model.description}}</p>
       </div>
       <div class="details">
-        Number of kudos: <span>{{this.model.numberOfKudos}}</span>
+        Number of kudos: <span data-test-details-kudos>{{this.model.numberOfKudos}}</span>
       </div>
       <div class="details">
-        Author: <span>
+        Author:
           {{#if (and this.session.isAuthenticated this.otherUser) }}
             <LinkTo @route="user-profile" @model={{this.otherUser.id}}>
-              {{this.otherUser.name}}
+              <span data-test-details-author>{{this.otherUser.name}}</span>
             </LinkTo>
           {{else}}
-            {{this.otherUser.name}}
+            <span data-test-details-author>{{this.otherUser.name}}</span>
           {{/if}}
-        </span> 
       </div>
     </div>
   </div>

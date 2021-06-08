@@ -4,9 +4,9 @@
     <div class="add-new-comment-wrapper">
       <form class="p-3">
         <label for="commentArea">Add public comment:</label>
-        <textarea id="commentArea" name="commentArea" placeholder="Write comment..." onchange={{this.toggleDisable}}/>
+        <textarea id="commentArea" name="commentArea" placeholder="Write comment..." onchange={{this.toggleDisable}} data-test-comment-textarea/>
         <div class="button-wrapper">
-          <button type="button" id="submitButton" onclick={{this.submitComment}} class="btn btn-primary" disabled >Comment</button>
+          <button type="button" id="submitButton" onclick={{this.submitComment}} class="btn btn-primary" disabled data-test-add-comment-button >Comment</button>
           <button type="button" onclick={{this.cancel}} class="btn btn-dark">cancel</button>
         </div>
       </form>
@@ -20,10 +20,10 @@
       {{/if}}
     {{#if this.hasComments}}
       {{#each (sort-by 'date:desc' this.comments) as |com|}}
-        <Details::Comments::Comment @comment={{com}} @currentUserUID={{this.currentUser.uid}} @removeComment={{this.removeComment}}/>
+        <Details::Comments::Comment @comment={{com}} @currentUserID={{this.currentUser.id}} @removeComment={{this.removeComment}}/>
       {{/each}}
     {{else}}
-    <h4>There are no comments yet :(</h4>
+    <h4 data-test-info-no-comment-yet >There are no comments yet :(</h4>
     {{/if}}
   </div>
 </div>

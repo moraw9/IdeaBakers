@@ -8,7 +8,7 @@ import { tracked } from '@glimmer/tracking';
 export default class CommentsComponent extends Component {
   @service store;
   @service session;
-  @service firebase;
+  @service('current-user') user;
 
   @tracked hasComments = false;
   @tracked comments;
@@ -16,13 +16,18 @@ export default class CommentsComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.currentUser = this.firebase.auth().currentUser;
+    this.getCurrentUserTask.perform();
     this.findCommentsTask.perform();
   }
+
+  @task *getCurrentUserTask() {
+    this.currentUser = yield this.user.getCurrentUser();
+  }
+
   @task({ restartable: true }) *findCommentsTask() {
     const comments = yield this.store.findAll('comment');
     const result = comments.filter(
-      (comment) => comment.postID === this.args.postID
+      (comment) => comment.postId === this.args.postID
     );
     if (result.length > 0) {
       this.hasComments = true;
@@ -33,13 +38,9 @@ export default class CommentsComponent extends Component {
   @action
   submitComment() {
     const newComment = this.store.createRecord('comment');
-    newComment.username = this.currentUser.displayName;
     newComment.content = document.querySelector('textarea').value;
-    newComment.postID = this.args.postID;
-    newComment.userUID = this.currentUser.uid;
-    newComment.userPhoto = this.currentUser.photoURL
-      ? this.currentUser.photoURL
-      : null;
+    newComment.postId = this.args.postID;
+    newComment.userId = this.currentUser.id;
     newComment.save();
     this.cancel();
     this.findCommentsTask.perform();
