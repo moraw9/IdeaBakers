@@ -83,6 +83,7 @@
                   background: linear-gradient(55deg, rgba(255,0,0,1) 0%, rgba(180,20,20,1) 28%, rgba(124,14,14,1) 65%, rgba(65,10,10,1) 100%);
                   -webkit-background-clip: text;
                   -webkit-text-fill-color: transparent;
+                  font-family: "Pacifico", cursive;
                 }
               }
             }
@@ -122,7 +123,11 @@
           background-color: rgba(241,238,234,0.2);
           padding: 20px;
           text-align: center;
-          color: #3D3D66;    
+          color: #3D3D66;
+
+          h1{ 
+            font-family: 'Anton', sans-serif;    
+          }
         }
 
         .top {

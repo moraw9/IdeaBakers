@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Dancing+Script:wght@500&family=Lobster&family=Oleo+Script:wght@400;700&family=Pacifico&family=Sigmar+One&display=swap');
 $red: #b41414;
 $darkRed: #7c0e0e;
 
@@ -7,6 +8,18 @@ $darkRed: #7c0e0e;
   
   .body {
     margin: 0 20px;
+  }
+  .header-bar {
+    background: rgb(255,0,0);
+    background: linear-gradient(55deg, rgba(255,0,0,1) 0%, rgba(180,20,20,1) 28%, rgba(124,14,14,1) 65%, rgba(65,10,10,1) 100%);
+  
+    h3 {
+      font-weight: 900;
+      padding: 20px 15px;
+      color: white;
+      font-family: 'Lobster', cursive;
+
+    }
   }
   
   .btn-outline-danger {
