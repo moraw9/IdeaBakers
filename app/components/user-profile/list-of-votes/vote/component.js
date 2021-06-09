@@ -19,7 +19,7 @@ export default class VoteComponent extends Component {
   @task({ restartable: true }) *findIdeaTask() {
     this.ideas = yield this.store.findAll('idea');
     const [res] = this.ideas.filter(
-      (idea) => idea.id === this.args.vote.ideaID
+      (idea) => idea.id === this.args.vote.ideaId
     );
     this.idea = res;
   }
