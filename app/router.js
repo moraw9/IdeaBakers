@@ -9,4 +9,5 @@ Router.map(function () {
   this.route('idea-details', { path: '/ideas/:id' });
   this.route('log-in', { path: '/LogIn' });
   this.route('user-profile', { path: '/profile/:user_id' });
+  this.route('not-found', { path: '/*path' });
 });
